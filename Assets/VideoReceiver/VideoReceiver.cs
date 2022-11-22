@@ -12,7 +12,7 @@ public class VideoReceiver : MonoBehaviour
 
     private void Start()
     {
-        Instance = this;
+        Instance ??= this;
 
         peer.UDP.OnReceivedData.AddListener(OnReceiveNewFrame);
     }

@@ -32,7 +32,7 @@ public sealed class RCAS_Peer : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        Instance ??= this;
 
         TCP = new RCAS_TCP_Connection();
         UDP = new RCAS_UDP_Connection();
@@ -82,14 +82,14 @@ public sealed class RCAS_Peer : MonoBehaviour
         yield return new WaitForSeconds(1);
         UDP.StartReceiver();
 
-        UDP.OnReceivedData.AddListener(PairingSearchReceived);
+        UDP.OnReceivedData.AddListener(OnPairingOfferReceived);
 
         yield return new WaitUntil(() => isConnected);
 
-        UDP.OnReceivedData.RemoveListener(PairingSearchReceived);
+        UDP.OnReceivedData.RemoveListener(OnPairingOfferReceived);
     }
 
-    void PairingSearchReceived(byte[] data)
+    void OnPairingOfferReceived(byte[] data)
     {
         Debug.Log($"DEVICE PAIRING OFFER: {Encoding.ASCII.GetString(data, 0, data.Length)}");
 

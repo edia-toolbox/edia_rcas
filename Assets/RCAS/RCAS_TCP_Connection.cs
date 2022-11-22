@@ -63,7 +63,7 @@ public sealed class RCAS_TCP_Connection
         }
     }
 
-    public void SendMessage(RCAS_Message message)
+    public void SendMessage(RCAS_TCPMessage message)
     {
         Debug.Log("Sending Data: " + Encoding.ASCII.GetString(message.GetMessage()));
         Debug.Log("Type: " + message.GetMessageType());
@@ -77,12 +77,12 @@ public sealed class RCAS_TCP_Connection
 
     public void SendData(string sendData)
     {      
-        SendMessage(new RCAS_Message(sendData, RCAS_MESSAGETYPE.NONE));
+        SendMessage(new RCAS_TCPMessage(sendData, RCAS_TCP_MESSAGETYPE.NONE));
     }
 
     public void SendRemoteEvent(string message)
     {
-        SendMessage(new RCAS_Message(message, RCAS_MESSAGETYPE.REMOTE_EVENT));
+        SendMessage(new RCAS_TCPMessage(message, RCAS_TCP_MESSAGETYPE.REMOTE_EVENT));
     }
 
     public void Update()
@@ -96,12 +96,12 @@ public sealed class RCAS_TCP_Connection
 
     public void ReceiveData(byte[] receiveData)
     {
-        RCAS_Message msg = new RCAS_Message(receiveData);
+        RCAS_TCPMessage msg = new RCAS_TCPMessage(receiveData);
 
         Debug.Log("Received Data: " + Encoding.ASCII.GetString(msg.GetMessage()));
         Debug.Log("Type: " + msg.GetMessageType());
 
-        if (msg.GetMessageType() == RCAS_MESSAGETYPE.REMOTE_EVENT)
+        if (msg.GetMessageType() == RCAS_TCP_MESSAGETYPE.REMOTE_EVENT)
         {
             TriggerEvent(msg.GetMessageAsString());
         }

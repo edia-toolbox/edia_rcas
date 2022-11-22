@@ -16,7 +16,7 @@ public class VideoStreamer : MonoBehaviour
     
     void Start()
     {
-        Instance = this;
+        Instance ??= this;
 
         // Make sure this platform support what we need
         Debug.Assert(SystemInfo.copyTextureSupport.HasFlag(UnityEngine.Rendering.CopyTextureSupport.RTToTexture));
@@ -63,7 +63,6 @@ public class VideoStreamer : MonoBehaviour
 
             // TODO:
             // Send tex_data
-            //VideoNetwork.Instance.SendImage(tex_data);
             if (peer.isConnected)
             {
                 peer.UDP.SendData(tex_data, video_channel);

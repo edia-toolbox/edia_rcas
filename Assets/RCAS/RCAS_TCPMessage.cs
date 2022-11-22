@@ -4,28 +4,28 @@ using UnityEngine;
 using System;
 using System.Text;
 
-public enum RCAS_MESSAGETYPE
+public enum RCAS_TCP_MESSAGETYPE
 {
     NONE = 0,
     REMOTE_EVENT = 1,
     // TODO ...
 };
 
-public ref struct RCAS_Message
+public ref struct RCAS_TCPMessage
 {
     public Span<byte> raw_data;
 
-    public RCAS_Message(string message, byte messageType)
+    public RCAS_TCPMessage(string message, byte messageType)
     {
         raw_data = Encoding.ASCII.GetBytes((char)messageType + message);
     }
 
-    public RCAS_Message(string message, RCAS_MESSAGETYPE messageType)
+    public RCAS_TCPMessage(string message, RCAS_TCP_MESSAGETYPE messageType)
     {
         raw_data = Encoding.ASCII.GetBytes((char)messageType + message);
     }
 
-    public RCAS_Message(byte[] raw_data)
+    public RCAS_TCPMessage(byte[] raw_data)
     {
         this.raw_data = raw_data;
     }
@@ -40,8 +40,8 @@ public ref struct RCAS_Message
         return Encoding.ASCII.GetString(GetMessage());
     }
 
-    public RCAS_MESSAGETYPE GetMessageType()
+    public RCAS_TCP_MESSAGETYPE GetMessageType()
     {
-        return (RCAS_MESSAGETYPE)raw_data[0];
+        return (RCAS_TCP_MESSAGETYPE)raw_data[0];
     }
 }
