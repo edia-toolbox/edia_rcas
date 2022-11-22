@@ -6,6 +6,6 @@ public class TriggerRemoteEvent : MonoBehaviour
 {
     public void TriggerEvent(string eventName)
     {
-        RCAS_Peer.Instance.TCP.SendMessage(eventName, 1);
+        RCAS_Peer.Instance.TCP.SendRemoteEvent(eventName);
     }
 }

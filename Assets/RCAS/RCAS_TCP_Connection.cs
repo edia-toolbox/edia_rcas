@@ -63,21 +63,11 @@ public sealed class RCAS_TCP_Connection
         }
     }
 
-    public void SendData(System.Span<byte> sendData)
+    public void SendMessage(RCAS_Message message)
     {
-        Debug.Log("Sending Data:" + Encoding.ASCII.GetString(sendData));
-        SendQueue.Enqueue(sendData.ToArray());
-        if (SenderTask == null || SenderTask.Status != TaskStatus.Running)
-        {
-            SenderTask = new Task(TaskFunc_Sender);
-            SenderTask.Start();
-        }
-    }
-
-    public void SendData(byte[] sendData)
-    {
-        Debug.Log("Sending Data:" + Encoding.ASCII.GetString(sendData));
-        SendQueue.Enqueue(sendData);
+        Debug.Log("Sending Data: " + Encoding.ASCII.GetString(message.GetMessage()));
+        Debug.Log("Type: " + message.GetMessageType());
+        SendQueue.Enqueue(message.raw_data.ToArray());
         if (SenderTask == null || SenderTask.Status != TaskStatus.Running)
         {
             SenderTask = new Task(TaskFunc_Sender);
@@ -86,15 +76,13 @@ public sealed class RCAS_TCP_Connection
     }
 
     public void SendData(string sendData)
-    {
-        SendData(Encoding.ASCII.GetBytes(sendData));        
+    {      
+        SendMessage(new RCAS_Message(sendData, RCAS_MESSAGETYPE.NONE));
     }
 
-    public void SendMessage(string message, byte messageType)
+    public void SendRemoteEvent(string message)
     {
-        TCPMessage msg = new TCPMessage(message, messageType);
-
-        SendData(msg.Data);
+        SendMessage(new RCAS_Message(message, RCAS_MESSAGETYPE.REMOTE_EVENT));
     }
 
     public void Update()
@@ -108,22 +96,15 @@ public sealed class RCAS_TCP_Connection
 
     public void ReceiveData(byte[] receiveData)
     {
-        //string dataReceived = Encoding.ASCII.GetString(receiveData);
-        //Debug.Log("Received : " + dataReceived);
+        RCAS_Message msg = new RCAS_Message(receiveData);
 
-        System.Span<byte> rd = receiveData;
-        //byte messageType = rd[0];
-        //var message = rd.Slice(1);
-        var message = receiveData;
-        var message_string = Encoding.ASCII.GetString(message);
+        Debug.Log("Received Data: " + Encoding.ASCII.GetString(msg.GetMessage()));
+        Debug.Log("Type: " + msg.GetMessageType());
 
-        //Debug.Log($"Message: |{message_string}|");
-        //Debug.Log(message_string == "change_color_to_red");
-
-        //if(messageType == 1)
-        //{
-        TriggerEvent(message_string);
-        //}
+        if (msg.GetMessageType() == RCAS_MESSAGETYPE.REMOTE_EVENT)
+        {
+            TriggerEvent(msg.GetMessageAsString());
+        }
     }
 
     public void TriggerEvent(string event_name)
@@ -218,28 +199,4 @@ public sealed class RCAS_TCP_Connection
             Client.GetStream().Write(sendData);
         }
     }
-}
-
-
-public ref struct TCPMessage
-{
-    public System.Span<byte> Data;
-
-    public TCPMessage(string message, byte messageType)
-    {
-        Data = Encoding.ASCII.GetBytes(message);
-        //Data[0] = messageType;
-    }
-
-    // TODO: Make sure this works
-    //public unsafe TCPMessage(byte[] message, byte messageType)
-    //{
-    //    Data = new byte[message.Length + 16];
-    //    Data[0] = messageType;
-    //    fixed (byte* bp = Data)
-    //    {
-    //        System.IntPtr ptr = System.IntPtr.Add((System.IntPtr)bp, 16 * sizeof(byte));
-    //        System.Runtime.InteropServices.Marshal.Copy(message, 0, ptr, message.Length);
-    //    }
-    //}
 }

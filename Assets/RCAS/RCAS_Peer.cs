@@ -25,7 +25,8 @@ public sealed class RCAS_Peer : MonoBehaviour
 
     public string ipAddress = "192.168.178.32";
 
-    public int port = 27016;
+    public int UDP_Port = 27015;
+    public int TCP_Port = 27016;
 
     public PairingOffer_UIPanel UIPanel;
 
@@ -41,7 +42,7 @@ public sealed class RCAS_Peer : MonoBehaviour
     {
         if (isHost)
         {
-            TCP.OpenConnection(ipAddress, port);
+            TCP.OpenConnection(ipAddress, TCP_Port);
             StartCoroutine(StartDevicePairingBroadcast());
         }
         else
@@ -66,7 +67,7 @@ public sealed class RCAS_Peer : MonoBehaviour
 
         UDP.StartSender();
 
-        RCAS_UDP_Channel pairing_channel = new RCAS_UDP_Channel(System.Net.IPAddress.Broadcast, 27015, 0);
+        RCAS_UDP_Channel pairing_channel = new RCAS_UDP_Channel(System.Net.IPAddress.Broadcast, UDP_Port, 0);
 
         while(!isConnected)
         {
