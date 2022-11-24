@@ -11,7 +11,7 @@ public class VideoStreamer : MonoBehaviour
     public RenderTexture mScreenCaptureTex;
     public Texture2D mStreamTexture;
 
-    private RCAS_UDP_Channel video_channel = new RCAS_UDP_Channel("192.168.178.23", 27015, 1);
+    public float delta = 0.04f;
 
     
     void Start()
@@ -34,6 +34,7 @@ public class VideoStreamer : MonoBehaviour
     {
         while(true)
         {
+            yield return new WaitForSeconds(delta);
             yield return new WaitForEndOfFrame();
 
             // NOTE: We currently don't use the lines below because we've (temporarily) switched to a separate render-texture camera
@@ -65,6 +66,8 @@ public class VideoStreamer : MonoBehaviour
             // Send tex_data
             if (peer.isConnected)
             {
+                RCAS_UDP_Channel video_channel = new RCAS_UDP_Channel(peer.CurrentRemotePeer.IPAddress, peer.CurrentRemotePeer.UDP_Port, 1);
+
                 //peer.UDP.SendData(tex_data, video_channel);
                 peer.UDP.SendMessage(
                     RCAS_UDPMessage.EncodeImage(tex_data),

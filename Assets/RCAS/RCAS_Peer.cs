@@ -23,26 +23,40 @@ public sealed class RCAS_Peer : MonoBehaviour
 
     public bool isHost = false;
 
-    public string ipAddress = "192.168.178.32";
-
     public int UDP_Port = 27015;
-    public int TCP_Port = 27016;
+    public int TCP_Port = 27015;
+
+    public string deviceName = "HTC Vive Focus 3";
+
+    private string _localIPAddress = "";
+    public string localIPAddress
+    {
+        get
+        {
+            if(_localIPAddress=="") _localIPAddress = RCAS_NetworkUtils.GetLocalIPAddress();
+            return _localIPAddress;
+        }
+    }
 
     public PairingOffer_UIPanel UIPanel;
+
+    public RCAS_RemotePeer CurrentRemotePeer { get; private set; } = null;
 
     private void Awake()
     {
         Instance ??= this;
 
-        TCP = new RCAS_TCP_Connection();
-        UDP = new RCAS_UDP_Connection(UDP_Port);
+        TCP = new RCAS_TCP_Connection(this);
+        UDP = new RCAS_UDP_Connection(this);
+
+        TCP.OnConnectionEstablished += OnConnectionEstablished;
     }
 
     private void Start()
     {
         if (isHost)
         {
-            TCP.OpenConnection(ipAddress, TCP_Port);
+            TCP.OpenConnection();
             StartCoroutine(StartDevicePairingBroadcast());
         }
         else
@@ -75,9 +89,9 @@ public sealed class RCAS_Peer : MonoBehaviour
 
             //UDP.SendData(RCAS_NetworkUtils.GetLocalIPAddress(), pairing_channel);
             UDP.SendMessage(RCAS_UDPMessage.EncodePairingOffer(
-                RCAS_NetworkUtils.GetLocalIPAddress(),
+                localIPAddress,
                 TCP_Port, UDP_Port,
-                "HTC Vive Focus 3"),
+                deviceName),
             pairing_channel);
         }
     }
@@ -96,7 +110,13 @@ public sealed class RCAS_Peer : MonoBehaviour
 
     void OnPairingOfferReceived(byte[] data)
     {
-        Debug.Log($"DEVICE PAIRING OFFER: {Encoding.ASCII.GetString(data, 0, data.Length)}");
+        //Debug.Log($"DEVICE PAIRING OFFER: {Encoding.ASCII.GetString(data, 0, data.Length)}");
+
+        if (data[0] != 0)
+        {
+            Debug.Log("Message is not a pairing offer");
+            return;
+        }
 
         (string ip_address, int tcp_port, int udp_port, string info) = RCAS_UDPMessage.DecodePairingOffer(new RCAS_UDPMessage(data));
 
@@ -112,11 +132,25 @@ public sealed class RCAS_Peer : MonoBehaviour
             }
         }
     }
+
+    void OnConnectionEstablished(EndPoint endpoint)
+    {
+        IPEndPoint EP = (IPEndPoint)endpoint;
+        Debug.Log($"Connection established with: {EP.Address}:{EP.Port}");
+        CurrentRemotePeer = new RCAS_RemotePeer(EP.Address, EP.Port, EP.Port);
+    }
 }
 
-struct RCAS_RemotePeer
+public class RCAS_RemotePeer
 {
-    IPAddress IPAddress;
-    int TCP_Port;
-    int UDP_Port;
+    public RCAS_RemotePeer(IPAddress IpAddress, int TCP_Port, int UDP_Port)
+    {
+        this.IPAddress = IpAddress;
+        this.TCP_Port = TCP_Port;
+        this.UDP_Port = UDP_Port;
+    }
+
+    public IPAddress IPAddress;
+    public int TCP_Port;
+    public int UDP_Port;
 }

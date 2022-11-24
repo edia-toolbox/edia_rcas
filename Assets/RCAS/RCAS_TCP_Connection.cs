@@ -27,11 +27,21 @@ public sealed class RCAS_TCP_Connection
     ConcurrentQueue<byte[]> SendQueue = new ConcurrentQueue<byte[]>();
     ConcurrentQueue<byte[]> ReceiveQueue = new ConcurrentQueue<byte[]>();
 
+    public RCAS_Peer Peer { get; private set; }
+
+    public IPEndPoint LocalEndPoint;
+
     public Dictionary<string, List<System.Action>> RemoteEvents = new Dictionary<string, List<System.Action>>();
 
-    public RCAS_TCP_Connection()
+    public delegate void dOnConnectionEstablished(EndPoint endpoint);
+    public dOnConnectionEstablished OnConnectionEstablished;
+
+    public RCAS_TCP_Connection(RCAS_Peer peer)
     {
-        //return;
+        this.Peer = peer;
+
+        this.LocalEndPoint = new IPEndPoint(IPAddress.Parse(peer.localIPAddress), peer.TCP_Port);
+
         // Find any and all methods marked as "RemoteEvent" in all assemplies:
         var methodsMarked =
             from a in System.AppDomain.CurrentDomain.GetAssemblies()
@@ -85,8 +95,15 @@ public sealed class RCAS_TCP_Connection
         SendMessage(new RCAS_TCPMessage(message, RCAS_TCP_MESSAGETYPE.REMOTE_EVENT));
     }
 
+    private bool prev_Connected = false;
     public void Update()
     {
+        if(!prev_Connected && isConnected)
+        {
+            OnConnectionEstablished.Invoke(Client.Client.RemoteEndPoint);
+        }
+        prev_Connected = isConnected;
+
         if (ReceiveQueue.TryDequeue(out var item))
         {
             byte[] data = item;
@@ -119,7 +136,7 @@ public sealed class RCAS_TCP_Connection
         }
     }
 
-    internal bool OpenConnection(string localIpAddress, int port)
+    internal bool OpenConnection()
     {
         // TODO: Ensure we're not already a client or awaiting connection or similar
 
@@ -127,8 +144,7 @@ public sealed class RCAS_TCP_Connection
 
         try
         {
-            IPAddress localAdd = IPAddress.Parse("192.168.178.32");
-            Listener = new TcpListener(localAdd, 27016);
+            Listener = new TcpListener(LocalEndPoint);
             
             ListenerTask = new Task(TaskFunc_Listener);
             ListenerTask.Start();
@@ -148,7 +164,9 @@ public sealed class RCAS_TCP_Connection
 
         try {
             Debug.Log($"Trying to connect to {ipAddress}:{port}");
-            Client = new TcpClient(ipAddress, port);
+            Client = new TcpClient(LocalEndPoint);
+            Client.Connect(ipAddress, port);
+
             return true;
         }
         catch {

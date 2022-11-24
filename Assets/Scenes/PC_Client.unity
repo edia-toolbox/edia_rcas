@@ -364,9 +364,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isHost: 0
-  ipAddress: 127.0.0.1
   UDP_Port: 27015
-  TCP_Port: 27016
+  TCP_Port: 27015
+  deviceName: HTC Vive Focus 3
+  _localIPAddress: 
   UIPanel: {fileID: 73231341}
 --- !u!1 &138199820
 GameObject:

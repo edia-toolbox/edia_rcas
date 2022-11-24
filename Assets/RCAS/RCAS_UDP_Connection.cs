@@ -22,6 +22,8 @@ public class RCAS_UDP_Connection
 
     static UdpClient Client;
 
+    public RCAS_Peer Peer { get; private set; }
+
     Task SenderTask;
     Task ReceiverTask;
 
@@ -34,11 +36,9 @@ public class RCAS_UDP_Connection
         SendQueue.Enqueue((msg.raw_data.ToArray(), channel));
     }
 
-    public RCAS_UDP_Connection(int port)
+    public RCAS_UDP_Connection(RCAS_Peer peer)
     {
-        Debug.Log("UPD init");
-
-        Port = port;
+        this.Peer = peer;
 
         Debug.Log(Permission.HasUserAuthorizedPermission("android.permission.INTERNET"));
 
@@ -48,7 +48,7 @@ public class RCAS_UDP_Connection
         if (Client == null)
         {
             //TODO: use actual port given as param
-            Client = new UdpClient(port);
+            Client = new UdpClient(Peer.UDP_Port);
         }
 
         Client.EnableBroadcast = true;
@@ -79,7 +79,7 @@ public class RCAS_UDP_Connection
                     if (SendQueue.TryDequeue(out var item))
                     {
                         //Client.Send(item.Item1, item.Item1.Length, item.Item2.channelEP);
-                        Client.Send(item.Item1, item.Item1.Length, new IPEndPoint(IPAddress.Parse("192.168.178.23"), 27015));
+                        Client.Send(item.Item1, item.Item1.Length, item.Item2.channelEP);
                         //Debug.Log("Message sent!");
                     }
                 }
@@ -112,7 +112,7 @@ public class RCAS_UDP_Connection
     private void TaskFunc_Receiver()
     {
         //UdpClient udpClient = new UdpClient(port);
-        IPEndPoint groupEP = new IPEndPoint(IPAddress.Any, Port);
+        IPEndPoint groupEP = new IPEndPoint(IPAddress.Any, Peer.UDP_Port);
 
         try
         {
