@@ -10,9 +10,16 @@ using UnityEngine.UI;
 using Unity.Collections;
 using UnityEngine.Android;
 using System.Collections.Concurrent;
+using UnityEngine.Events;
 
 public class RCAS_UDP_Connection
 {
+    public int Port { get; private set; }
+
+    public delegate void dOnReceivedData(byte[] data);
+    public dOnReceivedData OnReceivedData;
+
+
     static UdpClient Client;
 
     Task SenderTask;
@@ -22,23 +29,16 @@ public class RCAS_UDP_Connection
 
     ConcurrentQueue<(byte[], RCAS_UDP_Channel)> ReceiveQueue = new ConcurrentQueue<(byte[], RCAS_UDP_Channel)>();
 
-
-    // Event
-    public UnityEngine.Events.UnityEvent<byte[]> OnReceivedData = new UnityEngine.Events.UnityEvent<byte[]>();
-
-    public void SendData(byte[] sendData, RCAS_UDP_Channel channel)
+    public void SendMessage(RCAS_UDPMessage msg, RCAS_UDP_Channel channel)
     {
-        SendQueue.Enqueue((sendData, channel));
+        SendQueue.Enqueue((msg.raw_data.ToArray(), channel));
     }
 
-    public void SendData(string sendData, RCAS_UDP_Channel channel)
-    {
-        SendData(Encoding.ASCII.GetBytes(sendData), channel);
-    }
-
-    public RCAS_UDP_Connection()
+    public RCAS_UDP_Connection(int port)
     {
         Debug.Log("UPD init");
+
+        Port = port;
 
         Debug.Log(Permission.HasUserAuthorizedPermission("android.permission.INTERNET"));
 
@@ -48,7 +48,7 @@ public class RCAS_UDP_Connection
         if (Client == null)
         {
             //TODO: use actual port given as param
-            Client = new UdpClient(27015);
+            Client = new UdpClient(port);
         }
 
         Client.EnableBroadcast = true;
@@ -112,7 +112,7 @@ public class RCAS_UDP_Connection
     private void TaskFunc_Receiver()
     {
         //UdpClient udpClient = new UdpClient(port);
-        IPEndPoint groupEP = new IPEndPoint(IPAddress.Any, 27015);
+        IPEndPoint groupEP = new IPEndPoint(IPAddress.Any, Port);
 
         try
         {

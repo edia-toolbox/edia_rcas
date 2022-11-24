@@ -35,7 +35,7 @@ public sealed class RCAS_Peer : MonoBehaviour
         Instance ??= this;
 
         TCP = new RCAS_TCP_Connection();
-        UDP = new RCAS_UDP_Connection();
+        UDP = new RCAS_UDP_Connection(UDP_Port);
     }
 
     private void Start()
@@ -73,7 +73,12 @@ public sealed class RCAS_Peer : MonoBehaviour
         {
             yield return new WaitForSeconds(1);
 
-            UDP.SendData(RCAS_NetworkUtils.GetLocalIPAddress(), pairing_channel);
+            //UDP.SendData(RCAS_NetworkUtils.GetLocalIPAddress(), pairing_channel);
+            UDP.SendMessage(RCAS_UDPMessage.EncodePairingOffer(
+                RCAS_NetworkUtils.GetLocalIPAddress(),
+                TCP_Port, UDP_Port,
+                "HTC Vive Focus 3"),
+            pairing_channel);
         }
     }
 
@@ -82,11 +87,11 @@ public sealed class RCAS_Peer : MonoBehaviour
         yield return new WaitForSeconds(1);
         UDP.StartReceiver();
 
-        UDP.OnReceivedData.AddListener(OnPairingOfferReceived);
+        UDP.OnReceivedData += OnPairingOfferReceived;
 
         yield return new WaitUntil(() => isConnected);
 
-        UDP.OnReceivedData.RemoveListener(OnPairingOfferReceived);
+        UDP.OnReceivedData += OnPairingOfferReceived;
     }
 
     void OnPairingOfferReceived(byte[] data)
@@ -105,4 +110,11 @@ public sealed class RCAS_Peer : MonoBehaviour
             }
         }
     }
+}
+
+struct RCAS_RemotePeer
+{
+    IPAddress IPAddress;
+    int TCP_Port;
+    int UDP_Port;
 }

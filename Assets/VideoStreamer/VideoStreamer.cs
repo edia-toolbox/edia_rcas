@@ -65,7 +65,11 @@ public class VideoStreamer : MonoBehaviour
             // Send tex_data
             if (peer.isConnected)
             {
-                peer.UDP.SendData(tex_data, video_channel);
+                //peer.UDP.SendData(tex_data, video_channel);
+                peer.UDP.SendMessage(
+                    RCAS_UDPMessage.EncodeImage(tex_data),
+                    video_channel
+                );
             }
         }
     }

@@ -14,7 +14,12 @@ public class VideoReceiver : MonoBehaviour
     {
         Instance ??= this;
 
-        peer.UDP.OnReceivedData.AddListener(OnReceiveNewFrame);
+        peer.UDP.OnReceivedData += OnReceiveNewFrame;
+    }
+
+    private void OnDestroy()
+    {
+        peer.UDP.OnReceivedData -= OnReceiveNewFrame;
     }
 
     public void OnReceiveNewFrame(byte[] newframe)
