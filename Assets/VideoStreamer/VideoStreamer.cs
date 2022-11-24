@@ -66,7 +66,7 @@ public class VideoStreamer : MonoBehaviour
             // Send tex_data
             if (peer.isConnected)
             {
-                RCAS_UDP_Channel video_channel = new RCAS_UDP_Channel(peer.CurrentRemotePeer.IPAddress, peer.CurrentRemotePeer.UDP_Port, 1);
+                RCAS_UDP_Channel video_channel = new RCAS_UDP_Channel(peer.CurrentRemoteEndpoint, 1);
 
                 //peer.UDP.SendData(tex_data, video_channel);
                 peer.UDP.SendMessage(

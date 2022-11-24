@@ -48,7 +48,7 @@ public class RCAS_UDP_Connection
         if (Client == null)
         {
             //TODO: use actual port given as param
-            Client = new UdpClient(Peer.UDP_Port);
+            Client = new UdpClient(Peer.Port);
         }
 
         Client.EnableBroadcast = true;
@@ -112,7 +112,7 @@ public class RCAS_UDP_Connection
     private void TaskFunc_Receiver()
     {
         //UdpClient udpClient = new UdpClient(port);
-        IPEndPoint groupEP = new IPEndPoint(IPAddress.Any, Peer.UDP_Port);
+        IPEndPoint groupEP = new IPEndPoint(IPAddress.Any, Peer.Port);
 
         try
         {
@@ -146,6 +146,12 @@ public class RCAS_UDP_Channel
     public RCAS_UDP_Channel(IPAddress IpAddress, int port, byte channelID)
     {
         channelEP = new IPEndPoint(IpAddress, port);
+        this.channelID = channelID;
+    }
+
+    public RCAS_UDP_Channel(IPEndPoint EndPoint, byte channelID)
+    {
+        channelEP = EndPoint;
         this.channelID = channelID;
     }
 

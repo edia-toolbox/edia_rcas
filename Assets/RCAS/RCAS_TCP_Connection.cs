@@ -40,7 +40,7 @@ public sealed class RCAS_TCP_Connection
     {
         this.Peer = peer;
 
-        this.LocalEndPoint = new IPEndPoint(IPAddress.Parse(peer.localIPAddress), peer.TCP_Port);
+        this.LocalEndPoint = new IPEndPoint(IPAddress.Parse(peer.localIPAddress), peer.Port);
 
         // Find any and all methods marked as "RemoteEvent" in all assemplies:
         var methodsMarked =
