@@ -91,22 +91,24 @@ public sealed class RCAS_Peer : MonoBehaviour
 
         yield return new WaitUntil(() => isConnected);
 
-        UDP.OnReceivedData += OnPairingOfferReceived;
+        UDP.OnReceivedData -= OnPairingOfferReceived;
     }
 
     void OnPairingOfferReceived(byte[] data)
     {
         Debug.Log($"DEVICE PAIRING OFFER: {Encoding.ASCII.GetString(data, 0, data.Length)}");
 
-        if(UIPanel)
+        (string ip_address, int tcp_port, int udp_port, string info) = RCAS_UDPMessage.DecodePairingOffer(new RCAS_UDPMessage(data));
+
+        if (UIPanel)
         {
             UIPanel.gameObject.SetActive(true);
-            UIPanel.IP_Text.text = "IP: " + Encoding.ASCII.GetString(data, 0, data.Length);
+            UIPanel.IP_Text.text = $"IP: {ip_address}\nPORT: {tcp_port}/{udp_port}\n{info}";
 
             if(UIPanel.connectWasPressed)
             {
                 UIPanel.connectWasPressed = false;
-                TCP.ConnectTo("192.168.178.32", 27016);
+                TCP.ConnectTo(ip_address, tcp_port);
             }
         }
     }
