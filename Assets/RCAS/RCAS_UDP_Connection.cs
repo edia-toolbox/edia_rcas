@@ -19,6 +19,12 @@ public class RCAS_UDP_Connection
     public delegate void dOnReceivedData(byte[] data);
     public dOnReceivedData OnReceivedData;
 
+    public delegate void dOnReceivedPairingOffer(byte[] data);
+    public dOnReceivedPairingOffer OnReceivedPairingOffer;
+
+    public delegate void dOnReceivedImage(byte[] data);
+    public dOnReceivedImage OnReceivedImage;
+
 
     static UdpClient Client;
 
@@ -105,7 +111,7 @@ public class RCAS_UDP_Connection
         if(ReceiveQueue.TryDequeue(out var item))
         {
             (byte[] data, _) = item;
-            OnReceivedData.Invoke(data);
+            ProcessData(data);
         }
     }
 
@@ -134,6 +140,22 @@ public class RCAS_UDP_Connection
         finally
         {
             Client.Close();
+        }
+    }
+
+    private void ProcessData(byte[] data)
+    {
+        OnReceivedData.Invoke(data);
+
+        if (data[0] == 0)
+        {
+            // pairing offer
+            OnReceivedPairingOffer(data);
+        }
+        else if (data[0] == 1)
+        {
+            // image
+            OnReceivedImage(data);
         }
     }
 }

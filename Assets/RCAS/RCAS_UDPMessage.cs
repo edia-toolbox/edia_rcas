@@ -19,7 +19,7 @@ public ref struct RCAS_UDPMessage
         string str = Encoding.ASCII.GetString(msg.raw_data.Slice(1)); // slice of the channel-byte
         string[] strs = str.Split("&");
 
-        return (strs[0], int.Parse(strs[1]), strs[3]);
+        return (strs[0], int.Parse(strs[1]), strs[2]);
     }
 
     public static RCAS_UDPMessage EncodeImage(byte[] img_data)

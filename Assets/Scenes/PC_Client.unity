@@ -235,7 +235,6 @@ GameObject:
   - component: {fileID: 73231338}
   - component: {fileID: 73231340}
   - component: {fileID: 73231339}
-  - component: {fileID: 73231341}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -305,20 +304,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 73231337}
   m_CullTransparentMesh: 1
---- !u!114 &73231341
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 73231337}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c416681211b739b469c2168b1bb2d713, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IP_Text: {fileID: 138199822}
-  connectWasPressed: 0
 --- !u!1 &83698399
 GameObject:
   m_ObjectHideFlags: 0
@@ -330,7 +315,7 @@ GameObject:
   - component: {fileID: 83698401}
   - component: {fileID: 83698403}
   m_Layer: 0
-  m_Name: VideoNetwork
+  m_Name: Peer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -364,11 +349,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isHost: 0
-  UDP_Port: 27015
-  TCP_Port: 27015
+  Port: 27015
   deviceName: HTC Vive Focus 3
-  _localIPAddress: 
-  UIPanel: {fileID: 73231341}
 --- !u!1 &138199820
 GameObject:
   m_ObjectHideFlags: 0
@@ -1729,6 +1711,7 @@ GameObject:
   - component: {fileID: 1304878025}
   - component: {fileID: 1304878027}
   - component: {fileID: 1304878026}
+  - component: {fileID: 1304878028}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -1801,6 +1784,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1304878024}
   m_CullTransparentMesh: 1
+--- !u!114 &1304878028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1304878024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c416681211b739b469c2168b1bb2d713, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PairingOfferPanel: {fileID: 73231338}
+  IP_Text: {fileID: 138199822}
 --- !u!1 &1349107291
 GameObject:
   m_ObjectHideFlags: 0
@@ -1885,7 +1882,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 73231341}
+      - m_Target: {fileID: 1304878028}
         m_TargetAssemblyTypeName: PairingOffer_UIPanel, Assembly-CSharp
         m_MethodName: ConnectPressedd
         m_Mode: 1

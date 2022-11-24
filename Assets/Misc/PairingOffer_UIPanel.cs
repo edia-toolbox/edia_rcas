@@ -5,12 +5,36 @@ using UnityEngine.UI;
 
 public class PairingOffer_UIPanel : MonoBehaviour
 {
+    public RectTransform PairingOfferPanel;
     public TMPro.TMP_Text IP_Text;
 
-    public bool connectWasPressed = false;
+
+    private string ip = "";
+    private int port = 0;
 
     public void ConnectPressedd()
     {
-        connectWasPressed = true;
+        RCAS_Peer.Instance.TCP.ConnectTo(ip, port);
+    }
+
+    private void Start()
+    {
+        RCAS_Peer.Instance.UDP.OnReceivedPairingOffer += OnPairingOfferReceived;
+    }
+
+    private void OnDestroy()
+    {
+        RCAS_Peer.Instance.UDP.OnReceivedPairingOffer -= OnPairingOfferReceived;
+    }
+
+    void OnPairingOfferReceived(byte[] data)
+    {
+        (string ip_address, int port, string info) = RCAS_UDPMessage.DecodePairingOffer(new RCAS_UDPMessage(data));
+
+        PairingOfferPanel.gameObject.SetActive(true);
+        IP_Text.text = $"IP: {ip_address}\nPORT: {port}\n{info}";
+
+        ip = ip_address;
+        this.port = port;
     }
 }

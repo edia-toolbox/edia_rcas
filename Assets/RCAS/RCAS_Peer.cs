@@ -37,8 +37,6 @@ public sealed class RCAS_Peer : MonoBehaviour
         }
     }
 
-    public PairingOffer_UIPanel UIPanel;
-
     public IPEndPoint CurrentRemoteEndpoint { get; private set; } = null;
 
     private void Awake()
@@ -95,18 +93,24 @@ public sealed class RCAS_Peer : MonoBehaviour
         }
     }
 
+    
     IEnumerator StartDevicePairingSearch()
     {
         yield return new WaitForSeconds(1);
         UDP.StartReceiver();
 
-        UDP.OnReceivedData += OnPairingOfferReceived;
+        //UDP.OnReceivedData += OnPairingOfferReceived;
 
         yield return new WaitUntil(() => isConnected);
 
-        UDP.OnReceivedData -= OnPairingOfferReceived;
-    }
+        //UDP.OnReceivedData -= OnPairingOfferReceived;
 
+        // TODO:
+        //UDP.EndReceiver();
+    }
+    
+
+    /*
     void OnPairingOfferReceived(byte[] data)
     {
         //Debug.Log($"DEVICE PAIRING OFFER: {Encoding.ASCII.GetString(data, 0, data.Length)}");
@@ -131,6 +135,7 @@ public sealed class RCAS_Peer : MonoBehaviour
             }
         }
     }
+    */
 
     void OnConnectionEstablished(EndPoint endpoint)
     {
