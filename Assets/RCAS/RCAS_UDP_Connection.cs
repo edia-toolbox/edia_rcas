@@ -16,13 +16,13 @@ public class RCAS_UDP_Connection
 {
     public int Port { get; private set; }
 
-    public delegate void dOnReceivedData(byte[] data);
-    public dOnReceivedData OnReceivedData;
+    public delegate void dOnReceivedMessage(RCAS_UDPMessage msg);
+    public dOnReceivedMessage OnReceivedMessage;
 
-    public delegate void dOnReceivedPairingOffer(byte[] data);
+    public delegate void dOnReceivedPairingOffer(RCAS_UDPMessage msg);
     public dOnReceivedPairingOffer OnReceivedPairingOffer;
 
-    public delegate void dOnReceivedImage(byte[] data);
+    public delegate void dOnReceivedImage(RCAS_UDPMessage msg);
     public dOnReceivedImage OnReceivedImage;
 
 
@@ -145,17 +145,21 @@ public class RCAS_UDP_Connection
 
     private void ProcessData(byte[] data)
     {
-        OnReceivedData.Invoke(data);
+        RCAS_UDPMessage msg = new RCAS_UDPMessage(data);
+        OnReceivedMessage.Invoke(msg);
 
-        if (data[0] == 0)
+        switch(msg.GetChannel())
         {
-            // pairing offer
-            OnReceivedPairingOffer(data);
-        }
-        else if (data[0] == 1)
-        {
-            // image
-            OnReceivedImage(data);
+            case RCAS_UDP_CHANNEL.PAIRING:
+                {
+                    OnReceivedPairingOffer(msg);
+                    break;
+                }
+            case RCAS_UDP_CHANNEL.JPEG_STREAM:
+                {
+                    OnReceivedImage(msg);
+                    break;
+                }
         }
     }
 }

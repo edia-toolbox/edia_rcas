@@ -27,9 +27,9 @@ public class PairingOffer_UIPanel : MonoBehaviour
         RCAS_Peer.Instance.UDP.OnReceivedPairingOffer -= OnPairingOfferReceived;
     }
 
-    void OnPairingOfferReceived(byte[] data)
+    void OnPairingOfferReceived(RCAS_UDPMessage msg)
     {
-        (string ip_address, int port, string info) = RCAS_UDPMessage.DecodePairingOffer(new RCAS_UDPMessage(data));
+        (string ip_address, int port, string info) = RCAS_UDPMessage.DecodePairingOffer(msg);
 
         PairingOfferPanel.gameObject.SetActive(true);
         IP_Text.text = $"IP: {ip_address}\nPORT: {port}\n{info}";

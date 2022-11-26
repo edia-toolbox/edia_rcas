@@ -14,19 +14,19 @@ public class VideoReceiver : MonoBehaviour
     {
         Instance ??= this;
 
-        peer.UDP.OnReceivedData += OnReceiveNewFrame;
+        peer.UDP.OnReceivedImage += OnReceiveNewFrame;
     }
 
     private void OnDestroy()
     {
-        peer.UDP.OnReceivedData -= OnReceiveNewFrame;
+        peer.UDP.OnReceivedImage -= OnReceiveNewFrame;
     }
 
-    public void OnReceiveNewFrame(byte[] newframe)
+    public void OnReceiveNewFrame(RCAS_UDPMessage msg)
     {
         if (!peer.isConnected) return;
 
-        if (!ImageConversion.LoadImage(DisplayTexture, newframe))
+        if (!ImageConversion.LoadImage(DisplayTexture, msg.GetMessage().ToArray()))
         {
             Debug.LogError("???");
         }

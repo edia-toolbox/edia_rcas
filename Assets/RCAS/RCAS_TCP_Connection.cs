@@ -76,7 +76,8 @@ public sealed class RCAS_TCP_Connection
     public void SendMessage(RCAS_TCPMessage message)
     {
         Debug.Log("Sending Data: " + Encoding.ASCII.GetString(message.GetMessage()));
-        Debug.Log("Type: " + message.GetMessageType());
+        Debug.Log("Channel: " + message.GetChannel());
+
         SendQueue.Enqueue(message.raw_data.ToArray());
         if (SenderTask == null || SenderTask.Status != TaskStatus.Running)
         {
@@ -85,14 +86,9 @@ public sealed class RCAS_TCP_Connection
         }
     }
 
-    public void SendData(string sendData)
-    {      
-        SendMessage(new RCAS_TCPMessage(sendData, RCAS_TCP_MESSAGETYPE.NONE));
-    }
-
     public void SendRemoteEvent(string message)
     {
-        SendMessage(new RCAS_TCPMessage(message, RCAS_TCP_MESSAGETYPE.REMOTE_EVENT));
+        SendMessage(new RCAS_TCPMessage(message, RCAS_TCP_CHANNEL.REMOTE_EVENT));
     }
 
     private bool prev_Connected = false;
@@ -116,9 +112,9 @@ public sealed class RCAS_TCP_Connection
         RCAS_TCPMessage msg = new RCAS_TCPMessage(receiveData);
 
         Debug.Log("Received Data: " + Encoding.ASCII.GetString(msg.GetMessage()));
-        Debug.Log("Type: " + msg.GetMessageType());
+        Debug.Log("Channel: " + msg.GetChannel());
 
-        if (msg.GetMessageType() == RCAS_TCP_MESSAGETYPE.REMOTE_EVENT)
+        if (msg.GetChannel() == RCAS_TCP_CHANNEL.REMOTE_EVENT)
         {
             TriggerEvent(msg.GetMessageAsString());
         }
