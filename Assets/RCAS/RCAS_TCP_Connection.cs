@@ -34,7 +34,7 @@ public sealed class RCAS_TCP_Connection
     public Dictionary<string, List<System.Action>> RemoteEvents = new Dictionary<string, List<System.Action>>();
 
     public delegate void dOnConnectionEstablished(EndPoint endpoint);
-    public dOnConnectionEstablished OnConnectionEstablished;
+    public dOnConnectionEstablished OnConnectionEstablished = delegate { };
 
     public RCAS_TCP_Connection(RCAS_Peer peer)
     {

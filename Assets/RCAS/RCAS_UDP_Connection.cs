@@ -17,13 +17,13 @@ public class RCAS_UDP_Connection
     public int Port { get; private set; }
 
     public delegate void dOnReceivedMessage(RCAS_UDPMessage msg);
-    public dOnReceivedMessage OnReceivedMessage;
+    public dOnReceivedMessage OnReceivedMessage = delegate { };
 
     public delegate void dOnReceivedPairingOffer(RCAS_UDPMessage msg);
-    public dOnReceivedPairingOffer OnReceivedPairingOffer;
+    public dOnReceivedPairingOffer OnReceivedPairingOffer = delegate { };
 
     public delegate void dOnReceivedImage(RCAS_UDPMessage msg);
-    public dOnReceivedImage OnReceivedImage;
+    public dOnReceivedImage OnReceivedImage = delegate { };
 
 
     static UdpClient Client;
