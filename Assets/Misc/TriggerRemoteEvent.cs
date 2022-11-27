@@ -21,6 +21,6 @@ public class TriggerRemoteEvent : MonoBehaviour
 
     public void TriggerEvent_Color_To_Red()
     {
-        RCAS_Peer.Instance.TCP.SendRemoteEvent("change_color_to_red", "TESTEROO STRING YO");
+        RCAS_Peer.Instance.TCP.SendRemoteEvent("change_color_to_red", "Hello World");
     }
 }
