@@ -14,7 +14,7 @@ using UnityEngine.Events;
 
 public class RCAS_UDP_Connection
 {
-    public int Port { get; private set; }
+    public int Port => Peer.Port;
 
     public delegate void dOnReceivedMessage(RCAS_UDPMessage msg);
     public dOnReceivedMessage OnReceivedMessage = delegate { };
@@ -33,13 +33,23 @@ public class RCAS_UDP_Connection
     Task SenderTask;
     Task ReceiverTask;
 
-    ConcurrentQueue<(byte[], RCAS_UDP_Channel)> SendQueue = new ConcurrentQueue<(byte[], RCAS_UDP_Channel)>();
+    ConcurrentQueue<(byte[], IPEndPoint EP)> SendQueue = new ConcurrentQueue<(byte[], IPEndPoint EP)>();
 
-    ConcurrentQueue<(byte[], RCAS_UDP_Channel)> ReceiveQueue = new ConcurrentQueue<(byte[], RCAS_UDP_Channel)>();
+    ConcurrentQueue<byte[]> ReceiveQueue = new ConcurrentQueue<byte[]>();
 
-    public void SendMessage(RCAS_UDPMessage msg, RCAS_UDP_Channel channel)
+    public void SendMessage(RCAS_UDPMessage msg)
     {
-        SendQueue.Enqueue((msg.raw_data.ToArray(), channel));
+        SendQueue.Enqueue((msg.raw_data.ToArray(), null));
+    }
+
+    public void SendMessageToEndpoint(RCAS_UDPMessage msg, IPEndPoint EP)
+    {
+        SendQueue.Enqueue((msg.raw_data.ToArray(), EP));
+    }
+
+    public void BroadcastMessage(RCAS_UDPMessage msg)
+    {
+        SendQueue.Enqueue((msg.raw_data.ToArray(), new IPEndPoint(System.Net.IPAddress.Broadcast, Port)));
     }
 
     public RCAS_UDP_Connection(RCAS_Peer peer)
@@ -81,7 +91,7 @@ public class RCAS_UDP_Connection
 
                     if (SendQueue.TryDequeue(out var item))
                     {
-                        Client.Send(item.Item1, item.Item1.Length, item.Item2.channelEP);
+                        Client.Send(item.Item1, item.Item1.Length, item.Item2 != null ? item.Item2 : Peer.CurrentRemoteEndpoint);
                     }
                 }
                 catch (System.Exception e)
@@ -103,9 +113,8 @@ public class RCAS_UDP_Connection
 
     public void Update()
     {
-        if(ReceiveQueue.TryDequeue(out var item))
+        if(ReceiveQueue.TryDequeue(out var data))
         {
-            (byte[] data, _) = item;
             ProcessData(data);
         }
     }
@@ -120,7 +129,7 @@ public class RCAS_UDP_Connection
             {
                 byte[] receiveData = Client.Receive(ref groupEP);
 
-                ReceiveQueue.Enqueue((receiveData, null));
+                ReceiveQueue.Enqueue(receiveData);
             }
         }
         catch (SocketException e)
@@ -151,29 +160,5 @@ public class RCAS_UDP_Connection
                     break;
                 }
         }
-    }
-}
-
-public class RCAS_UDP_Channel
-{
-    public IPEndPoint channelEP;
-    public byte channelID;
-
-    public RCAS_UDP_Channel(IPAddress IpAddress, int port, byte channelID)
-    {
-        channelEP = new IPEndPoint(IpAddress, port);
-        this.channelID = channelID;
-    }
-
-    public RCAS_UDP_Channel(IPEndPoint EndPoint, byte channelID)
-    {
-        channelEP = EndPoint;
-        this.channelID = channelID;
-    }
-
-    public RCAS_UDP_Channel(string IpAddress, int port, byte channelID)
-    {
-        channelEP = new IPEndPoint(IPAddress.Parse(IpAddress), port);
-        this.channelID = channelID;
     }
 }

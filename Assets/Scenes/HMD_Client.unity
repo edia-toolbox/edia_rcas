@@ -984,7 +984,7 @@ RectTransform:
   m_Children:
   - {fileID: 1494152320}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1599,7 +1599,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &704197243
 GameObject:
@@ -1639,7 +1639,7 @@ Transform:
   - {fileID: 465882645}
   - {fileID: 705507995}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &705507993
 GameObject:
@@ -2073,7 +2073,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1494152319
 GameObject:
@@ -2795,53 +2795,6 @@ MonoBehaviour:
       m_Flags: 0
     m_Reference: {fileID: 0}
   m_ButtonPressPoint: 0.5
---- !u!1 &1645946841
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1645946842}
-  - component: {fileID: 1645946843}
-  m_Layer: 0
-  m_Name: VideoSender
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1645946842
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1645946841}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.4251285, y: -4.111253, z: 5.3589582}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1645946843
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1645946841}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f05623727f15ab498f4f55c476b94b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  peer: {fileID: 1692428692}
-  mScreenCaptureTex: {fileID: 8400000, guid: 5eb293f8011ad3140b6771aeb1cc4882, type: 2}
-  mStreamTexture: {fileID: 2800000, guid: f039520daa4bd564897958e6d544bf71, type: 3}
 --- !u!1 &1692428691
 GameObject:
   m_ObjectHideFlags: 0
@@ -2852,6 +2805,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1692428693}
   - component: {fileID: 1692428692}
+  - component: {fileID: 1692428694}
   m_Layer: 0
   m_Name: Peer
   m_TagString: Untagged
@@ -2872,9 +2826,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isHost: 1
-  ipAddress: 192.168.178.32
-  port: 27016
-  UIPanel: {fileID: 0}
+  Port: 27015
+  deviceName: HTC Vive Focus 3
 --- !u!4 &1692428693
 Transform:
   m_ObjectHideFlags: 0
@@ -2890,6 +2843,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1692428694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1692428691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f05623727f15ab498f4f55c476b94b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mScreenCaptureTex: {fileID: 8400000, guid: 5eb293f8011ad3140b6771aeb1cc4882, type: 2}
+  mStreamTexture: {fileID: 2800000, guid: f039520daa4bd564897958e6d544bf71, type: 3}
+  delta: 0.04
 --- !u!1 &2135309750
 GameObject:
   m_ObjectHideFlags: 0

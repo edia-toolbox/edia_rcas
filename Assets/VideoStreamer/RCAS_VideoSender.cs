@@ -2,12 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VideoStreamer : MonoBehaviour
+public class RCAS_VideoSender : MonoBehaviour
 {
-    public static VideoStreamer Instance;
-
-    public RCAS_Peer peer;
-
     public RenderTexture mScreenCaptureTex;
     public Texture2D mStreamTexture;
 
@@ -16,8 +12,6 @@ public class VideoStreamer : MonoBehaviour
     
     void Start()
     {
-        Instance ??= this;
-
         // Make sure this platform support what we need
         Debug.Assert(SystemInfo.copyTextureSupport.HasFlag(UnityEngine.Rendering.CopyTextureSupport.RTToTexture));
 
@@ -64,14 +58,11 @@ public class VideoStreamer : MonoBehaviour
 
             // TODO:
             // Send tex_data
-            if (peer.isConnected)
+            if (RCAS_Peer.Instance.isConnected)
             {
-                RCAS_UDP_Channel video_channel = new RCAS_UDP_Channel(peer.CurrentRemoteEndpoint, 1);
-
                 //peer.UDP.SendData(tex_data, video_channel);
-                peer.UDP.SendMessage(
-                    RCAS_UDPMessage.EncodeImage(tex_data),
-                    video_channel
+                RCAS_Peer.Instance.UDP.SendMessage(
+                    RCAS_UDPMessage.EncodeImage(tex_data)
                 );
             }
         }

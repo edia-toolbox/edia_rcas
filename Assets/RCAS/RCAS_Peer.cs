@@ -60,10 +60,6 @@ public sealed class RCAS_Peer : MonoBehaviour
         {
             StartCoroutine(StartDevicePairingSearch());
         }
-
-        foreach (var m in TCP.RemoteEvents.Keys) Debug.Log(m);
-
-        if (TCP.RemoteEvents.Keys.Count < 1) Debug.Log("Empty");
     }
 
     private void Update()
@@ -78,18 +74,15 @@ public sealed class RCAS_Peer : MonoBehaviour
 
         UDP.StartSender();
 
-        RCAS_UDP_Channel pairing_channel = new RCAS_UDP_Channel(System.Net.IPAddress.Broadcast, Port, 0);
-
         while(!isConnected)
         {
             yield return new WaitForSeconds(1);
 
-            //UDP.SendData(RCAS_NetworkUtils.GetLocalIPAddress(), pairing_channel);
-            UDP.SendMessage(RCAS_UDPMessage.EncodePairingOffer(
+            UDP.BroadcastMessage(RCAS_UDPMessage.EncodePairingOffer(
                 localIPAddress,
                 Port,
-                deviceName),
-            pairing_channel);
+                deviceName)
+            );
         }
     }
 
@@ -99,43 +92,11 @@ public sealed class RCAS_Peer : MonoBehaviour
         yield return new WaitForSeconds(1);
         UDP.StartReceiver();
 
-        //UDP.OnReceivedData += OnPairingOfferReceived;
-
         yield return new WaitUntil(() => isConnected);
-
-        //UDP.OnReceivedData -= OnPairingOfferReceived;
 
         // TODO:
         //UDP.EndReceiver();
     }
-    
-
-    /*
-    void OnPairingOfferReceived(byte[] data)
-    {
-        //Debug.Log($"DEVICE PAIRING OFFER: {Encoding.ASCII.GetString(data, 0, data.Length)}");
-
-        if (data[0] != 0)
-        {
-            Debug.Log("Message is not a pairing offer");
-            return;
-        }
-
-        (string ip_address, int port, string info) = RCAS_UDPMessage.DecodePairingOffer(new RCAS_UDPMessage(data));
-
-        if (UIPanel)
-        {
-            UIPanel.gameObject.SetActive(true);
-            UIPanel.IP_Text.text = $"IP: {ip_address}\nPORT: {port}\n{info}";
-
-            if(UIPanel.connectWasPressed)
-            {
-                UIPanel.connectWasPressed = false;
-                TCP.ConnectTo(ip_address, port);
-            }
-        }
-    }
-    */
 
     void OnConnectionEstablished(EndPoint endpoint)
     {

@@ -14,6 +14,8 @@ using System.Linq;
 
 public sealed class RCAS_TCP_Connection
 {
+    public int Port => Peer.Port;
+
     public bool isConnected => Client is not null && Client.Connected;
     public bool isAwaitingConnection => ListenerTask != null && ListenerTask.Status != TaskStatus.Running;
 
