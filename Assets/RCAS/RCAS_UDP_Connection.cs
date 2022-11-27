@@ -46,14 +46,11 @@ public class RCAS_UDP_Connection
     {
         this.Peer = peer;
 
-        Debug.Log(Permission.HasUserAuthorizedPermission("android.permission.INTERNET"));
-
         // Need internet access on android
         Debug.Assert(Permission.HasUserAuthorizedPermission("android.permission.INTERNET"));
 
         if (Client == null)
         {
-            //TODO: use actual port given as param
             Client = new UdpClient(Peer.Port);
         }
 
@@ -84,9 +81,7 @@ public class RCAS_UDP_Connection
 
                     if (SendQueue.TryDequeue(out var item))
                     {
-                        //Client.Send(item.Item1, item.Item1.Length, item.Item2.channelEP);
                         Client.Send(item.Item1, item.Item1.Length, item.Item2.channelEP);
-                        //Debug.Log("Message sent!");
                     }
                 }
                 catch (System.Exception e)
@@ -117,20 +112,15 @@ public class RCAS_UDP_Connection
 
     private void TaskFunc_Receiver()
     {
-        //UdpClient udpClient = new UdpClient(port);
         IPEndPoint groupEP = new IPEndPoint(IPAddress.Any, Peer.Port);
 
         try
         {
             while (true)
             {
-                //Debug.Log("Waiting for broadcast");
                 byte[] receiveData = Client.Receive(ref groupEP);
 
                 ReceiveQueue.Enqueue((receiveData, null));
-
-                //Debug.Log($"Received broadcast from {groupEP}. LEN: {receiveData.Length}");
-                //Debug.Log($" {Encoding.ASCII.GetString(receiveData, 0, receiveData.Length)}");
             }
         }
         catch (SocketException e)

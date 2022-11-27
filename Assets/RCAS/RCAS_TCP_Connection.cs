@@ -31,7 +31,7 @@ public sealed class RCAS_TCP_Connection
 
     public IPEndPoint LocalEndPoint;
 
-    public Dictionary<string, List<System.Action>> RemoteEvents = new Dictionary<string, List<System.Action>>();
+    public Dictionary<string, List<System.Action<string[]>>> RemoteEvents = new Dictionary<string, List<System.Action<string[]>>>();
 
     public delegate void dOnConnectionEstablished(EndPoint endpoint);
     public dOnConnectionEstablished OnConnectionEstablished = delegate { };
@@ -57,13 +57,26 @@ public sealed class RCAS_TCP_Connection
             {
                 try
                 {
-                    System.Action action = (System.Action)System.Delegate.CreateDelegate(typeof(System.Action), method.method);
                     string eventName = att.getEventName();
-                    if(!RemoteEvents.ContainsKey(eventName))
+
+                    // Single string function   static void func(string arg)
+                    if (method.method.GetParameters().Count() == 1 && method.method.GetParameters()[0].ParameterType == typeof(System.String))
                     {
-                        RemoteEvents.Add(eventName, new List<System.Action>());
+                        System.Action<string> action = (System.Action<string>)System.Delegate.CreateDelegate(typeof(System.Action<string>), method.method);
+                        RegisterRemoteEvent(eventName, (args) => action(args[0]));
                     }
-                    RemoteEvents[eventName].Add(action);
+                    // String-array function   static void func(string[] args)
+                    else if (method.method.GetParameters().Count() > 0)
+                    {
+                        System.Action<string[]> action = (System.Action<string[]>)System.Delegate.CreateDelegate(typeof(System.Action<string[]>), method.method);
+                        RegisterRemoteEvent(eventName, action);
+                    }
+                    // No-parameter function   static void func()
+                    else
+                    {
+                        System.Action action = (System.Action)System.Delegate.CreateDelegate(typeof(System.Action), method.method);
+                        RegisterRemoteEvent(eventName, (args) => action());
+                    }
                 }
                 catch (System.Exception)
                 {
@@ -73,11 +86,17 @@ public sealed class RCAS_TCP_Connection
         }
     }
 
+    private void RegisterRemoteEvent(string eventName, System.Action<string[]> action)
+    {
+        if (!RemoteEvents.ContainsKey(eventName))
+        {
+            RemoteEvents.Add(eventName, new List<System.Action<string[]>>());
+        }
+        RemoteEvents[eventName].Add(action);
+    }
+
     public void SendMessage(RCAS_TCPMessage message)
     {
-        Debug.Log("Sending Data: " + Encoding.ASCII.GetString(message.GetMessage()));
-        Debug.Log("Channel: " + message.GetChannel());
-
         SendQueue.Enqueue(message.raw_data.ToArray());
         if (SenderTask == null || SenderTask.Status != TaskStatus.Running)
         {
@@ -86,9 +105,19 @@ public sealed class RCAS_TCP_Connection
         }
     }
 
-    public void SendRemoteEvent(string message)
+    public void SendRemoteEvent(string eventName, string[] args)
     {
-        SendMessage(new RCAS_TCPMessage(message, RCAS_TCP_CHANNEL.REMOTE_EVENT));
+        SendMessage(RCAS_TCPMessage.EncodeRemoteEvent(eventName, args));
+    }
+
+    public void SendRemoteEvent(string eventName, string arg)
+    {
+        SendRemoteEvent(eventName, new string[] { arg });
+    }
+
+    public void SendRemoteEvent(string eventName)
+    {
+        SendRemoteEvent(eventName, "");
     }
 
     private bool prev_Connected = false;
@@ -103,33 +132,37 @@ public sealed class RCAS_TCP_Connection
         if (ReceiveQueue.TryDequeue(out var item))
         {
             byte[] data = item;
-            ReceiveData(data);
+            ProcessData(data);
         }
     }
 
-    public void ReceiveData(byte[] receiveData)
+    public void ProcessData(byte[] receiveData)
     {
         RCAS_TCPMessage msg = new RCAS_TCPMessage(receiveData);
 
-        Debug.Log("Received Data: " + Encoding.ASCII.GetString(msg.GetMessage()));
-        Debug.Log("Channel: " + msg.GetChannel());
-
         if (msg.GetChannel() == RCAS_TCP_CHANNEL.REMOTE_EVENT)
         {
-            TriggerEvent(msg.GetMessageAsString());
+
+            TriggerEvent(msg);
         }
     }
 
-    public void TriggerEvent(string event_name)
+    public void TriggerEvent(string eventName, string[] args)
     {
-        if(RemoteEvents.ContainsKey(event_name))
+        if (RemoteEvents.ContainsKey(eventName))
         {
-            foreach (var m in RemoteEvents[event_name]) m.Invoke();
+            foreach (var m in RemoteEvents[eventName]) m.Invoke(args);
         }
         else
         {
             Debug.LogError("Event does not exist!");
         }
+    }
+
+    public void TriggerEvent(RCAS_TCPMessage msg)
+    {
+        (string eventName, string[] args) = RCAS_TCPMessage.DecodeRemoteEvent(msg);
+        TriggerEvent(eventName, args);
     }
 
     internal bool OpenConnection()

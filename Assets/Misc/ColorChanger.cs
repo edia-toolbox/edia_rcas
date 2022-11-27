@@ -14,8 +14,9 @@ public class ColorChanger : MonoBehaviour
     }
 
     [RemoteEvent("change_color_to_red")]
-    public static void ChangeToRed()
+    public static void ChangeToRed(string col)
     {
+        Debug.Log("COLOR:"+col);
         Instance.m1.color = Instance.m2.color = Color.red;
     }
 

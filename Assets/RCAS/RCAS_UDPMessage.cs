@@ -14,6 +14,8 @@ public enum RCAS_UDP_CHANNEL
 
 public ref struct RCAS_UDPMessage
 {
+    public static char SEPARATOR = (char)17;
+
     public Span<byte> raw_data;
 
     public ReadOnlySpan<byte> GetMessage()
@@ -28,14 +30,14 @@ public ref struct RCAS_UDPMessage
 
     public static RCAS_UDPMessage EncodePairingOffer(string ip_address, int port, string info)
     {
-        string message = ip_address + "&" + port + "&" + info;
+        string message = ip_address + SEPARATOR + port + SEPARATOR + info;
         return new RCAS_UDPMessage(Encoding.ASCII.GetBytes(message), RCAS_UDP_CHANNEL.PAIRING);
     }
 
     public static (string ip_address, int port, string info) DecodePairingOffer(RCAS_UDPMessage msg)
     {
         string str = Encoding.ASCII.GetString(msg.GetMessage()); // slice of the channel-byte
-        string[] strs = str.Split("&");
+        string[] strs = str.Split(SEPARATOR);
 
         return (strs[0], int.Parse(strs[1]), strs[2]);
     }

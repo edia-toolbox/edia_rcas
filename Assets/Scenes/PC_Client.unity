@@ -930,8 +930,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 764604696}
         m_TargetAssemblyTypeName: TriggerRemoteEvent, Assembly-CSharp
-        m_MethodName: TriggerEvent
-        m_Mode: 5
+        m_MethodName: TriggerEvent_Color_To_Red
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
