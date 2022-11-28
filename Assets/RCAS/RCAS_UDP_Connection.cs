@@ -61,9 +61,11 @@ public class RCAS_UDP_Connection
 
         if (Client == null)
         {
-            Client = new UdpClient(Peer.Port);
+            Client = new UdpClient();
+            Client.ExclusiveAddressUse = false;
+            Client.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+            Client.Client.Bind(Peer.LocalEndPoint);
         }
-
         Client.EnableBroadcast = true;
     }
 

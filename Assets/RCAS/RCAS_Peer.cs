@@ -23,6 +23,9 @@ public sealed class RCAS_Peer : MonoBehaviour
 
     public bool isHost = false;
 
+    public bool startPairingFunctionOnStart = true;
+    public bool startPairingFunctionOnDisconnect = false; //TODO: this doesn't do anything yet
+
     public int Port = 27015;
 
     public string deviceName = "HTC Vive Focus 3";
@@ -37,11 +40,15 @@ public sealed class RCAS_Peer : MonoBehaviour
         }
     }
 
+    public IPEndPoint LocalEndPoint { get; private set; } = null;
+
     public IPEndPoint CurrentRemoteEndpoint { get; private set; } = null;
 
     private void Awake()
     {
         Instance ??= this;
+
+        LocalEndPoint = new IPEndPoint(IPAddress.Parse(localIPAddress), Port);
 
         TCP = new RCAS_TCP_Connection(this);
         UDP = new RCAS_UDP_Connection(this);
@@ -51,14 +58,17 @@ public sealed class RCAS_Peer : MonoBehaviour
 
     private void Start()
     {
-        if (isHost)
+        if (startPairingFunctionOnStart)
         {
-            TCP.OpenConnection();
-            StartCoroutine(StartDevicePairingBroadcast());
-        }
-        else
-        {
-            StartCoroutine(StartDevicePairingSearch());
+            if (isHost)
+            {
+                TCP.OpenConnection();
+                StartCoroutine(StartDevicePairingBroadcast());
+            }
+            else
+            {
+                StartCoroutine(StartDevicePairingSearch());
+            }
         }
     }
 
