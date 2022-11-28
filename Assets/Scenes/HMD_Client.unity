@@ -2828,7 +2828,8 @@ MonoBehaviour:
   isHost: 1
   startPairingFunctionOnStart: 1
   startPairingFunctionOnDisconnect: 0
-  Port: 27015
+  LocalPort: 27016
+  RemotePort: 27015
   deviceName: HTC Vive Focus 3
 --- !u!4 &1692428693
 Transform:

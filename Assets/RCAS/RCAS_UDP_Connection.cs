@@ -14,7 +14,7 @@ using UnityEngine.Events;
 
 public class RCAS_UDP_Connection
 {
-    public int Port => Peer.Port;
+    public int LocalPort => Peer.LocalPort;
 
     public delegate void dOnReceivedMessage(RCAS_UDPMessage msg);
     public dOnReceivedMessage OnReceivedMessage = delegate { };
@@ -49,7 +49,7 @@ public class RCAS_UDP_Connection
 
     public void BroadcastMessage(RCAS_UDPMessage msg)
     {
-        SendQueue.Enqueue((msg.raw_data.ToArray(), new IPEndPoint(System.Net.IPAddress.Broadcast, Port)));
+        SendQueue.Enqueue((msg.raw_data.ToArray(), new IPEndPoint(System.Net.IPAddress.Broadcast, Peer.RemotePort)));
     }
 
     public RCAS_UDP_Connection(RCAS_Peer peer)
@@ -93,7 +93,7 @@ public class RCAS_UDP_Connection
 
                     if (SendQueue.TryDequeue(out var item))
                     {
-                        Client.Send(item.Item1, item.Item1.Length, item.Item2 != null ? item.Item2 : Peer.CurrentRemoteEndpoint);
+                        Client.Send(item.Item1, item.Item1.Length, item.Item2 != null ? item.Item2 : Peer.RemoteEndpoint);
                     }
                 }
                 catch (System.Exception e)
@@ -123,13 +123,13 @@ public class RCAS_UDP_Connection
 
     private void TaskFunc_Receiver()
     {
-        IPEndPoint groupEP = new IPEndPoint(IPAddress.Any, Peer.Port);
-
         try
         {
             while (true)
             {
-                byte[] receiveData = Client.Receive(ref groupEP);
+                IPEndPoint EP = Peer.LocalEndPoint;
+
+                byte[] receiveData = Client.Receive(ref EP);
 
                 ReceiveQueue.Enqueue(receiveData);
             }

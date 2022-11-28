@@ -14,7 +14,7 @@ using System.Linq;
 
 public sealed class RCAS_TCP_Connection
 {
-    public int Port => Peer.Port;
+    public int LocalPort => Peer.LocalPort;
 
     public bool isConnected => Client is not null && Client.Connected;
     public bool isAwaitingConnection => ListenerTask != null && ListenerTask.Status != TaskStatus.Running;
@@ -31,8 +31,6 @@ public sealed class RCAS_TCP_Connection
 
     public RCAS_Peer Peer { get; private set; }
 
-    public IPEndPoint LocalEndPoint;
-
     public Dictionary<string, List<System.Action<string[]>>> RemoteEvents = new Dictionary<string, List<System.Action<string[]>>>();
 
     public delegate void dOnConnectionEstablished(EndPoint endpoint);
@@ -41,8 +39,6 @@ public sealed class RCAS_TCP_Connection
     public RCAS_TCP_Connection(RCAS_Peer peer)
     {
         this.Peer = peer;
-
-        this.LocalEndPoint = new IPEndPoint(IPAddress.Parse(peer.localIPAddress), peer.Port);
 
         // Find any and all methods marked as "RemoteEvent" in all assemplies:
         var methodsMarked =
@@ -175,7 +171,7 @@ public sealed class RCAS_TCP_Connection
 
         try
         {
-            Listener = new TcpListener(LocalEndPoint);
+            Listener = new TcpListener(Peer.LocalEndPoint);
             
             ListenerTask = new Task(TaskFunc_Listener);
             ListenerTask.Start();
@@ -195,13 +191,14 @@ public sealed class RCAS_TCP_Connection
 
         try {
             Debug.Log($"Trying to connect to {ipAddress}:{port}");
-            Client = new TcpClient(LocalEndPoint);
+            Client = new TcpClient(Peer.LocalEndPoint);
             Client.Connect(ipAddress, port);
 
             return true;
         }
-        catch {
+        catch (System.Exception e) {
             Debug.Log("Could not connect!");
+            Debug.LogException(e);
             return false;
         }
     }

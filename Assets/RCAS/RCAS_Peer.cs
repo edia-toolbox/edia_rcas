@@ -26,7 +26,8 @@ public sealed class RCAS_Peer : MonoBehaviour
     public bool startPairingFunctionOnStart = true;
     public bool startPairingFunctionOnDisconnect = false; //TODO: this doesn't do anything yet
 
-    public int Port = 27015;
+    public int LocalPort = 27015;
+    public int RemotePort = 27016;
 
     public string deviceName = "HTC Vive Focus 3";
 
@@ -42,13 +43,14 @@ public sealed class RCAS_Peer : MonoBehaviour
 
     public IPEndPoint LocalEndPoint { get; private set; } = null;
 
-    public IPEndPoint CurrentRemoteEndpoint { get; private set; } = null;
+    public IPEndPoint RemoteEndpoint { get; private set; } = null;
 
     private void Awake()
     {
         Instance ??= this;
 
-        LocalEndPoint = new IPEndPoint(IPAddress.Parse(localIPAddress), Port);
+        LocalEndPoint = new IPEndPoint(IPAddress.Parse(localIPAddress), LocalPort);
+
 
         TCP = new RCAS_TCP_Connection(this);
         UDP = new RCAS_UDP_Connection(this);
@@ -90,7 +92,7 @@ public sealed class RCAS_Peer : MonoBehaviour
 
             UDP.BroadcastMessage(RCAS_UDPMessage.EncodePairingOffer(
                 localIPAddress,
-                Port,
+                LocalPort,
                 deviceName)
             );
         }
@@ -112,6 +114,6 @@ public sealed class RCAS_Peer : MonoBehaviour
     {
         IPEndPoint EP = (IPEndPoint)endpoint;
         Debug.Log($"Connection established with: {EP.Address}:{EP.Port}");
-        CurrentRemoteEndpoint = EP;
+        RemoteEndpoint = EP;
     }
 }
