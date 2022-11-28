@@ -13,11 +13,17 @@ public class ColorChanger : MonoBehaviour
         Instance = this;
     }
 
-    [RemoteEvent("change_color_to_red")]
-    public static void ChangeToRed(string col)
+    [RemoteEvent("change_color_to_custom")]
+    public static void ChangeToCustom(string col)
     {
-        Debug.Log("COLOR:"+col);
-        Instance.m1.color = Instance.m2.color = Color.red;
+        if(ColorUtility.TryParseHtmlString(col, out Color color))
+        {
+            Instance.m1.color = Instance.m2.color = color;
+        }
+        else
+        {
+            Debug.Log("Could not parse the given color!");
+        }
     }
 
     [RemoteEvent("change_color_to_green")]
