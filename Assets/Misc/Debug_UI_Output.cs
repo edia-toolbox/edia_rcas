@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine.UI;
 using Unity.Collections;
+using RCAS;
 
 public class Debug_UI_Output : MonoBehaviour
 {
