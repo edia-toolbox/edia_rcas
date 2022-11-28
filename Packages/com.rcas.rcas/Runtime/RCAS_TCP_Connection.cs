@@ -165,7 +165,8 @@ namespace RCAS
             TriggerEvent(eventName, args);
         }
 
-        internal bool OpenConnection()
+        //TODO: change to internal
+        public bool OpenConnection()
         {
             // TODO: Ensure we're not already a client or awaiting connection or similar
 
@@ -187,7 +188,8 @@ namespace RCAS
             }
         }
 
-        internal bool ConnectTo(string ipAddress, int port)
+        //TODO: change to internal
+        public bool ConnectTo(string ipAddress, int port)
         {
             // TODO: Ensure we are not awaiting connection already
 

@@ -15,6 +15,8 @@ namespace RCAS_Editor
             DrawDefaultInspector();
 
             RCAS_Peer peer = (RCAS_Peer)target;
+
+            // Nothing here yet!
         }
     }
 }

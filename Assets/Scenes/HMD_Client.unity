@@ -2804,8 +2804,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1692428693}
-  - component: {fileID: 1692428692}
-  - component: {fileID: 1692428694}
+  - component: {fileID: 1692428696}
+  - component: {fileID: 1692428695}
   m_Layer: 0
   m_Name: Peer
   m_TagString: Untagged
@@ -2813,24 +2813,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1692428692
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1692428691}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f86a85fe01a7694cadac635ffeb3de9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isHost: 1
-  startPairingFunctionOnStart: 1
-  startPairingFunctionOnDisconnect: 0
-  LocalPort: 27016
-  RemotePort: 27015
-  deviceName: HTC Vive Focus 3
 --- !u!4 &1692428693
 Transform:
   m_ObjectHideFlags: 0
@@ -2846,7 +2828,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1692428694
+--- !u!114 &1692428695
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2855,12 +2837,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 1692428691}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f05623727f15ab498f4f55c476b94b2, type: 3}
+  m_Script: {fileID: 11500000, guid: 4208647a2ca15d147acf7dd04bbfd57f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mScreenCaptureTex: {fileID: 8400000, guid: 5eb293f8011ad3140b6771aeb1cc4882, type: 2}
-  mStreamTexture: {fileID: 2800000, guid: f039520daa4bd564897958e6d544bf71, type: 3}
+  mScreenCaptureTex: {fileID: 8400000, guid: 193a222fa15bcc74b9333a6330741d59, type: 2}
+  mStreamTexture: {fileID: 2800000, guid: 01d608ece15f8d443b4bd7f6a2d42343, type: 3}
   delta: 0.04
+--- !u!114 &1692428696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1692428691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d34d9b8e03fb2746ae69f504ffd1b06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isHost: 1
+  startPairingFunctionOnStart: 1
+  startPairingFunctionOnDisconnect: 0
+  LocalPort: 27016
+  RemotePort: 27015
+  deviceName: HTC Vive Focus 3
 --- !u!1 &2135309750
 GameObject:
   m_ObjectHideFlags: 0
