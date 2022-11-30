@@ -8,7 +8,7 @@ namespace RCAS
 {
     public enum RCAS_TCP_CHANNEL
     {
-        ROOT = 0,
+        INVALID = 0,
         REMOTE_EVENT = 1,
         // TODO ...
     };
@@ -29,13 +29,9 @@ namespace RCAS
             raw_data = Encoding.ASCII.GetBytes((char)channel + message);
         }
 
-        public RCAS_TCPMessage(string raw_data)
-        {
-            this.raw_data = Encoding.ASCII.GetBytes(raw_data);
-        }
-
         public RCAS_TCPMessage(byte[] raw_data)
         {
+            if (raw_data.Length < 1) this.raw_data = new byte[] { (byte)RCAS_TCP_CHANNEL.INVALID };
             this.raw_data = raw_data;
         }
 
@@ -56,8 +52,8 @@ namespace RCAS
 
         public static RCAS_TCPMessage EncodeRemoteEvent(string eventName, string[] args)
         {
-            eventName = (char)RCAS_TCP_CHANNEL.REMOTE_EVENT + eventName + SEPARATOR + string.Join(SEPARATOR, args);
-            return new RCAS_TCPMessage(eventName);
+            eventName = eventName + SEPARATOR + string.Join(SEPARATOR, args);
+            return new RCAS_TCPMessage(eventName, RCAS_TCP_CHANNEL.REMOTE_EVENT);
 
         }
 

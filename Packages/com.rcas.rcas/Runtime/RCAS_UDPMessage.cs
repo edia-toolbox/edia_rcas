@@ -8,7 +8,7 @@ namespace RCAS
 {
     public enum RCAS_UDP_CHANNEL
     {
-        ROOT = 0,
+        INVALID = 0,
         PAIRING = 1,
         JPEG_STREAM = 2,
         // TODO ...
@@ -66,6 +66,7 @@ namespace RCAS
 
         public RCAS_UDPMessage(byte[] raw_data)
         {
+            if (raw_data.Length < 1) this.raw_data = new byte[] { (byte)RCAS_UDP_CHANNEL.INVALID };
             this.raw_data = raw_data;
         }
 

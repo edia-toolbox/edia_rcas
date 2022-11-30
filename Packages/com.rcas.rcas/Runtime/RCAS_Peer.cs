@@ -29,6 +29,9 @@ namespace RCAS
         public bool startPairingFunctionOnStart = true;
         public bool startPairingFunctionOnDisconnect = false; //TODO: this doesn't do anything yet
 
+        public bool ReceiveTCP = true; //TODO: this doesn't do anything yet
+        public bool ReceiveUDP = true; //TODO: this doesn't do anything yet
+
         public int LocalPort = 27015;
         public int RemotePort = 27016;
 
@@ -61,22 +64,12 @@ namespace RCAS
             UDP = new RCAS_UDP_Connection(this);
 
             TCP.OnConnectionEstablished += OnConnectionEstablished;
+            TCP.OnConnectionLost += OnConnectionLost;
         }
 
         private void Start()
         {
-            if (startPairingFunctionOnStart)
-            {
-                if (isHost)
-                {
-                    TCP.OpenConnection();
-                    StartCoroutine(StartDevicePairingBroadcast());
-                }
-                else
-                {
-                    StartCoroutine(StartDevicePairingSearch());
-                }
-            }
+            if (startPairingFunctionOnStart) BeginPairing();
         }
 
         private void Update()
@@ -84,9 +77,29 @@ namespace RCAS
             UDP.Update();
             TCP.Update();
         }
+
+        private void OnDestroy()
+        {
+            UDP.Dispose();
+            TCP.Dispose();
+        }
         #endregion
 
         #region PAIRING
+        void BeginPairing()
+        {
+            if(isHost)
+            {
+                TCP.CloseConnection();
+                TCP.OpenConnection();
+                StartCoroutine(StartDevicePairingBroadcast());
+            }
+            else
+            {
+                StartCoroutine(StartDevicePairingSearch());
+            }
+        }
+
         IEnumerator StartDevicePairingBroadcast()
         {
             yield return new WaitForSeconds(1);
@@ -124,6 +137,18 @@ namespace RCAS
             IPEndPoint EP = (IPEndPoint)endpoint;
             Debug.Log($"Connection established with: {EP.Address}:{EP.Port}");
             RemoteEndpoint = EP;
+        }
+
+        void OnConnectionLost()
+        {
+            Debug.Log($"Connection to {RemoteEndpoint.Address}:{RemoteEndpoint.Port} lost.");
+
+            RemoteEndpoint = null;
+
+            if (startPairingFunctionOnDisconnect)
+            {
+                BeginPairing();
+            }
         }
         #endregion
     }

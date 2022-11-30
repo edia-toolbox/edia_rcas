@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace RCAS
 {
-    public sealed class RCAS_TCP_Connection
+    public sealed class RCAS_TCP_Connection : System.IDisposable
     {
         public int LocalPort => Peer.LocalPort;
 
@@ -37,6 +37,9 @@ namespace RCAS
 
         public delegate void dOnConnectionEstablished(EndPoint endpoint);
         public dOnConnectionEstablished OnConnectionEstablished = delegate { };
+
+        public delegate void dOnConnectionLost();
+        public dOnConnectionLost OnConnectionLost = delegate { };
 
         public RCAS_TCP_Connection(RCAS_Peer peer)
         {
@@ -127,6 +130,10 @@ namespace RCAS
             {
                 OnConnectionEstablished.Invoke(Client.Client.RemoteEndPoint);
             }
+            else if(prev_Connected && !isConnected)
+            {
+                OnConnectionLost.Invoke();
+            }
             prev_Connected = isConnected;
 
             if (ReceiveQueue.TryDequeue(out var item))
@@ -139,6 +146,7 @@ namespace RCAS
         public void ProcessData(byte[] receiveData)
         {
             RCAS_TCPMessage msg = new RCAS_TCPMessage(receiveData);
+            Debug.Log("Received Message over channel " +msg.GetChannel());
 
             if (msg.GetChannel() == RCAS_TCP_CHANNEL.REMOTE_EVENT)
             {
@@ -209,12 +217,11 @@ namespace RCAS
             }
         }
 
-        internal bool CloseConnection()
+        internal void CloseConnection()
         {
+            Client?.GetStream()?.Close();
             Client?.Close();
             Listener?.Stop();
-
-            return false;
         }
 
         private void TaskFunc_Listener()
@@ -234,9 +241,17 @@ namespace RCAS
             {
                 System.Span<byte> buffer = new byte[Client.ReceiveBufferSize];
 
+                Debug.Log("Receiver");
+
                 int bytesRead = Client.GetStream().Read(buffer);
 
-                //ReceiveData(buffer.Slice(0, bytesRead).ToArray());
+                Debug.Log("ReceiverEnd");
+
+                if (bytesRead == 0)
+                {
+                    CloseConnection();
+                    return;
+                }
 
                 ReceiveQueue.Enqueue(buffer.Slice(0, bytesRead).ToArray());
             }
@@ -250,6 +265,12 @@ namespace RCAS
 
                 Client.GetStream().Write(sendData);
             }
+        }
+
+        public void Dispose()
+        {
+            CloseConnection();
+            Client?.Dispose();
         }
     }
 }
