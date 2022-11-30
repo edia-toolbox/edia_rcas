@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RCAS
 {
-    public class RCAS_VideoSender : MonoBehaviour
+    sealed class RCAS_VideoSender : MonoBehaviour
     {
         public RenderTexture mRenderTexture;
         public TextureFormat mTextureFormat = TextureFormat.ARGB32;

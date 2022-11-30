@@ -53,9 +53,9 @@ namespace RCAS
                 from a in System.AppDomain.CurrentDomain.GetAssemblies()
                 from t in a.GetTypes()
                 from m in t.GetMethods(System.Reflection.BindingFlags.Static | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic))
-                let attributes = m.GetCustomAttributes(typeof(RemoteEvent), true)
+                let attributes = m.GetCustomAttributes(typeof(RCAS_RemoteEvent), true)
                 where attributes != null && attributes.Length > 0
-                select new { method = m, attributes = attributes.Cast<RemoteEvent>() };
+                select new { method = m, attributes = attributes.Cast<RCAS_RemoteEvent>() };
 
             foreach (var method in methodsMarked)
             {

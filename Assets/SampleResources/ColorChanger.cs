@@ -14,7 +14,7 @@ public class ColorChanger : MonoBehaviour
         Instance = this;
     }
 
-    [RemoteEvent("change_color_to_custom")]
+    [RCAS_RemoteEvent("change_color_to_custom")]
     public static void ChangeToCustom(string col)
     {
         if(ColorUtility.TryParseHtmlString(col, out Color color))
@@ -27,13 +27,13 @@ public class ColorChanger : MonoBehaviour
         }
     }
 
-    [RemoteEvent("change_color_to_green")]
+    [RCAS_RemoteEvent("change_color_to_green")]
     public static void ChangeToGreen()
     {
         Instance.m1.color = Instance.m2.color = Color.green;
     }
 
-    [RemoteEvent("change_color_to_blue")]
+    [RCAS_RemoteEvent("change_color_to_blue")]
     public static void ChangeToBlue()
     {
         Instance.m1.color = Instance.m2.color = Color.blue;

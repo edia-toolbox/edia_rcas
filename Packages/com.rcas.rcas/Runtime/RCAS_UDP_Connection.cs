@@ -14,7 +14,7 @@ using UnityEngine.Events;
 
 namespace RCAS
 {
-    public class RCAS_UDP_Connection : System.IDisposable
+    public sealed class RCAS_UDP_Connection : System.IDisposable
     {
         public int LocalPort => Peer.LocalPort;
 

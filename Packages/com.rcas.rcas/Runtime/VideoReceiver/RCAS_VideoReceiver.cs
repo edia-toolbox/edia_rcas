@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RCAS
 {
-    public class RCAS_VideoReceiver : MonoBehaviour
+    sealed class RCAS_VideoReceiver : MonoBehaviour
     {
         public Texture2D DisplayTexture;
 

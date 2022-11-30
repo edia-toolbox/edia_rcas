@@ -7,11 +7,11 @@ using System.Linq;
 namespace RCAS
 {
     [AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = true)]
-    public class RemoteEvent : Attribute
+    public class RCAS_RemoteEvent : Attribute
     {
         private string event_name;
 
-        public RemoteEvent(string event_name)
+        public RCAS_RemoteEvent(string event_name)
         {
             this.event_name = event_name;
         }
