@@ -176,9 +176,13 @@ namespace RCAS
         //TODO: change to internal
         public bool OpenConnection()
         {
-            // TODO: Ensure we're not already a client or awaiting connection or similar
+            if (isConnected || isAwaitingConnection)
+            {
+                Debug.LogError("Tried to connect to a TCP EndPoint whilst awaiting a client or already connected!");
+                return false;
+            }
 
-            Debug.Log("OPENING TCP SERVER...");
+            Debug.Log("Opening TCP Connection");
 
             try
             {
@@ -191,7 +195,7 @@ namespace RCAS
             }
             catch
             {
-                Debug.Log("COULD NOT OPEN TCP SERVER!");
+                Debug.Log("Could not open TCP Connection!");
                 return false;
             }
         }
@@ -199,7 +203,12 @@ namespace RCAS
         //TODO: change to internal
         public bool ConnectTo(string ipAddress, int port)
         {
-            // TODO: Ensure we are not awaiting connection already
+            // Ensure we are not awaiting connection already
+            if(isConnected || isAwaitingConnection)
+            {
+                Debug.LogError("Tried to connect to a TCP EndPoint whilst awaiting a client or already connected!");
+                return false;
+            }
 
             try
             {
@@ -207,10 +216,14 @@ namespace RCAS
                 Client = new TcpClient(Peer.LocalEndPoint);
                 Client.Connect(ipAddress, port);
 
+                ReceiverTask = new Task(TaskFunc_Receiver);
+                ReceiverTask.Start();
+
                 return true;
             }
             catch (System.Exception e)
             {
+                CloseConnection();
                 Debug.Log("Could not connect!");
                 Debug.LogException(e);
                 return false;
@@ -219,58 +232,72 @@ namespace RCAS
 
         internal void CloseConnection()
         {
-            Client?.GetStream()?.Close();
-            Client?.Close();
-            Listener?.Stop();
+            Debug.Log("Connection closed");
+            try
+            {
+                Listener?.Stop();
+                Client?.GetStream()?.Close();
+                Client?.Client?.Close();
+                Client?.Close();
+            }
+            catch { }
+            Client = null;
         }
 
         private void TaskFunc_Listener()
         {
-            Listener.Start();
-            Client = Listener.AcceptTcpClient();
-            ReceiverTask = new Task(TaskFunc_Receiver);
-            ReceiverTask.Start();
-            Listener.Stop();
-
-            Debug.Log("RCAS: Client connected to Server!");
+            try
+            {
+                Debug.Log("Listener started");
+                Listener.Start();
+                Client = Listener.AcceptTcpClient();
+                ReceiverTask = new Task(TaskFunc_Receiver);
+                ReceiverTask.Start();
+                Listener.Stop();
+                Debug.Log("RCAS: Client connected to Server!");
+            }
+            catch(System.Exception)
+            {
+                Debug.Log("TCP Listener failed");
+            }
         }
 
         private void TaskFunc_Receiver()
         {
+            Debug.Log("Receiver started");
             while (isConnected)
             {
                 System.Span<byte> buffer = new byte[Client.ReceiveBufferSize];
 
-                Debug.Log("Receiver");
-
                 int bytesRead = Client.GetStream().Read(buffer);
-
-                Debug.Log("ReceiverEnd");
 
                 if (bytesRead == 0)
                 {
                     CloseConnection();
+                    Debug.Log("Receiver ended");
                     return;
                 }
 
                 ReceiveQueue.Enqueue(buffer.Slice(0, bytesRead).ToArray());
             }
+            Debug.Log("Receiver ended");
         }
 
         private void TaskFunc_Sender()
         {
+            Debug.Log("Sender started");
             while (SendQueue.TryDequeue(out byte[] sendData))
             {
                 if (!Client.Connected) continue;
 
                 Client.GetStream().Write(sendData);
             }
+            Debug.Log("Sender ended");
         }
 
         public void Dispose()
         {
             CloseConnection();
-            Client?.Dispose();
         }
     }
 }

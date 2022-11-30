@@ -364,7 +364,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHost: 0
   startPairingFunctionOnStart: 1
-  startPairingFunctionOnDisconnect: 0
+  startPairingFunctionOnDisconnect: 1
+  ReceiveTCP: 1
+  ReceiveUDP: 1
   LocalPort: 27015
   RemotePort: 27016
   deviceName: PC Client

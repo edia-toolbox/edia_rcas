@@ -27,6 +27,8 @@ namespace RCAS
         public delegate void dOnReceivedImage(RCAS_UDPMessage msg);
         public dOnReceivedImage OnReceivedImage = delegate { };
 
+        Task ReceiverTask;
+        Task SenderTask;
 
         static UdpClient Client;
 
@@ -79,12 +81,18 @@ namespace RCAS
 
         public void StartSender()
         {
-            Task.Run(() => TaskFunc_Sender(CTS.Token));
+            if (SenderTask == null || SenderTask.Status != TaskStatus.Running)
+            {
+                SenderTask = Task.Run(() => TaskFunc_Sender(CTS.Token));
+            }
         }
 
         public void StartReceiver()
         {
-            Task.Run(() => TaskFunc_Receiver(CTS.Token));
+            if (ReceiverTask == null || ReceiverTask.Status != TaskStatus.Running)
+            {
+                ReceiverTask = Task.Run(() => TaskFunc_Receiver(CTS.Token));
+            }
         }
 
         private async Task TaskFunc_Sender(CancellationToken CT)
@@ -103,6 +111,10 @@ namespace RCAS
                         {
                             Client.Send(item.Item1, item.Item1.Length, item.Item2 != null ? item.Item2 : Peer.RemoteEndpoint);
                         }
+                    }
+                    catch (TaskCanceledException)
+                    {
+                        return;
                     }
                     catch (System.Exception e)
                     {
