@@ -10,6 +10,11 @@ namespace RCAS
 
         private void Start()
         {
+            if(!DisplayTexture)
+            {
+                Debug.LogWarning("RCAS_VideoReceiver has no DisplayTexture set!");
+            }
+
             RCAS_Peer.Instance.UDP.OnReceivedImage += OnReceiveNewFrame;
         }
 
@@ -20,13 +25,16 @@ namespace RCAS
 
         public void OnReceiveNewFrame(RCAS_UDPMessage msg)
         {
-            if (!RCAS_Peer.Instance.isConnected) return;
+            if (!DisplayTexture || !RCAS_Peer.Instance.isConnected) return;
 
             if (!ImageConversion.LoadImage(DisplayTexture, msg.GetMessage().ToArray()))
             {
-                Debug.LogError("???");
+                Debug.LogError("Could not load image from received texture data!");
             }
-            DisplayTexture.Apply();
+            else
+            {
+                DisplayTexture.Apply();
+            }
         }
     }
 }

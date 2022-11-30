@@ -349,7 +349,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f67e33049c10e6e45a4e7ed73ea1cc15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DisplayTexture: {fileID: 2800000, guid: 49443e297a17c8f48914459e8bf5ebee, type: 3}
+  DisplayTexture: {fileID: 2800000, guid: 75fe17d7e0490924a97c2f4742862fc5, type: 3}
 --- !u!114 &83698403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -367,7 +367,7 @@ MonoBehaviour:
   startPairingFunctionOnDisconnect: 0
   LocalPort: 27015
   RemotePort: 27016
-  deviceName: HTC Vive Focus 3
+  deviceName: PC Client
 --- !u!1 &138199820
 GameObject:
   m_ObjectHideFlags: 0
@@ -1177,7 +1177,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: b611b44a62c4c374aa944e8c48039858, type: 3}
+  m_Texture: {fileID: 2800000, guid: 75fe17d7e0490924a97c2f4742862fc5, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0

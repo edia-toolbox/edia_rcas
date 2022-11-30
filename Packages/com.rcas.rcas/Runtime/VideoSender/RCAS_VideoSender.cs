@@ -6,10 +6,15 @@ namespace RCAS
 {
     public class RCAS_VideoSender : MonoBehaviour
     {
-        public RenderTexture mScreenCaptureTex;
-        public Texture2D mStreamTexture;
+        public RenderTexture mRenderTexture;
+        public TextureFormat mTextureFormat = TextureFormat.ARGB32;
 
-        public float delta = 0.04f;
+        private Texture2D mSendTexture;
+
+        public float fps = 25f;
+
+        [Range(1, 100)]
+        public int quality = 70;
 
 
         void Start()
@@ -17,25 +22,26 @@ namespace RCAS
             // Make sure this platform support what we need
             Debug.Assert(SystemInfo.copyTextureSupport.HasFlag(UnityEngine.Rendering.CopyTextureSupport.RTToTexture));
 
+            mSendTexture = new Texture2D(
+                mRenderTexture.width,
+                mRenderTexture.height,
+                mTextureFormat,
+                false
+            );
+
             StartCoroutine(CaptureAndSendScreen());
-        }
-
-
-        void Update()
-        {
-
         }
 
         private IEnumerator CaptureAndSendScreen()
         {
             while (true)
             {
-                yield return new WaitForSeconds(delta);
+                yield return new WaitForSeconds(1.0f / fps);
                 yield return new WaitForEndOfFrame();
 
                 // NOTE: We currently don't use the lines below because we've (temporarily) switched to a separate render-texture camera
                 // Take screenshot
-                //ScreenCapture.CaptureScreenshotIntoRenderTexture(mScreenCaptureTex);
+                //ScreenCapture.CaptureScreenshotIntoRenderTexture(mRenderTexture);
                 // TODO: Potentially use AsyncRequest to speed up ReadPixels: https://docs.unity3d.com/ScriptReference/ScreenCapture.CaptureScreenshotIntoRenderTexture.html
 
                 /*
@@ -49,23 +55,18 @@ namespace RCAS
                 */
 
                 // Copy to stream-texture
-                Graphics.ConvertTexture(mScreenCaptureTex, mStreamTexture);
-
+                Graphics.ConvertTexture(mRenderTexture, mSendTexture);
 
                 // Retrieve stream-tex
-                mStreamTexture.ReadPixels(new Rect(0, 0, mScreenCaptureTex.width, mScreenCaptureTex.height), 0, 0);
+                mSendTexture.ReadPixels(new Rect(0, 0, mRenderTexture.width, mRenderTexture.height), 0, 0);
                 // get data 
-                //byte[] tex_data = mStreamTexture.EncodeToPNG();
-                byte[] tex_data = mStreamTexture.EncodeToJPG(70);
+                //byte[] tex_data = mSendTexture.EncodeToPNG();
+                byte[] tex_data = mSendTexture.EncodeToJPG(quality);
 
-                // TODO:
                 // Send tex_data
                 if (RCAS_Peer.Instance.isConnected)
                 {
-                    //peer.UDP.SendData(tex_data, video_channel);
-                    RCAS_Peer.Instance.UDP.SendMessage(
-                        RCAS_UDPMessage.EncodeImage(tex_data)
-                    );
+                    RCAS_Peer.Instance.UDP.SendImage(tex_data);
                 }
             }
         }

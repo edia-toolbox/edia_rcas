@@ -44,6 +44,11 @@ namespace RCAS
             SendQueue.Enqueue((msg.raw_data.ToArray(), null));
         }
 
+        public void SendImage(byte[] ImageData)
+        {
+            SendMessage(RCAS_UDPMessage.EncodeImage(ImageData));
+        }
+
         public void SendMessageToEndpoint(RCAS_UDPMessage msg, IPEndPoint EP)
         {
             SendQueue.Enqueue((msg.raw_data.ToArray(), EP));
