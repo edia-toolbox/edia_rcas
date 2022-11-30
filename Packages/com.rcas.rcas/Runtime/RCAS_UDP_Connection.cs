@@ -178,12 +178,12 @@ namespace RCAS
 
             switch (msg.GetChannel())
             {
-                case RCAS_UDP_CHANNEL.PAIRING:
+                case RCAS_UDP_CHANNEL.RESERVED_PAIRING:
                     {
                         OnReceivedPairingOffer(msg);
                         break;
                     }
-                case RCAS_UDP_CHANNEL.JPEG_STREAM:
+                case RCAS_UDP_CHANNEL.RESERVED_JPEG_STREAM:
                     {
                         OnReceivedImage(msg);
                         break;

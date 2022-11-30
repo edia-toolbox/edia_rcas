@@ -8,9 +8,16 @@ namespace RCAS
 {
     public enum RCAS_UDP_CHANNEL
     {
-        INVALID = 0,
-        PAIRING = 1,
-        JPEG_STREAM = 2,
+        RESERVED_INVALID = 0,
+        RESERVED_PAIRING = 1,
+        RESERVED_JPEG_STREAM = 2,
+        CUSTOM_3 = 3,
+        CUSTOM_4 = 4,
+        CUSTOM_5 = 5,
+        CUSTOM_6 = 6,
+        CUSTOM_7 = 7,
+        CUSTOM_8 = 8,
+        CUSTOM_9 = 9,
         // TODO ...
     };
 
@@ -33,7 +40,7 @@ namespace RCAS
         public static RCAS_UDPMessage EncodePairingOffer(string ip_address, int port, string info)
         {
             string message = ip_address + SEPARATOR + port + SEPARATOR + info;
-            return new RCAS_UDPMessage(Encoding.ASCII.GetBytes(message), RCAS_UDP_CHANNEL.PAIRING);
+            return new RCAS_UDPMessage(Encoding.ASCII.GetBytes(message), RCAS_UDP_CHANNEL.RESERVED_PAIRING);
         }
 
         public static (string ip_address, int port, string info) DecodePairingOffer(RCAS_UDPMessage msg)
@@ -46,7 +53,7 @@ namespace RCAS
 
         public static RCAS_UDPMessage EncodeImage(byte[] img_data)
         {
-            return new RCAS_UDPMessage(img_data, RCAS_UDP_CHANNEL.JPEG_STREAM);
+            return new RCAS_UDPMessage(img_data, RCAS_UDP_CHANNEL.RESERVED_JPEG_STREAM);
         }
 
         public static byte[] DecodeImage(RCAS_UDPMessage msg)
@@ -66,7 +73,7 @@ namespace RCAS
 
         public RCAS_UDPMessage(byte[] raw_data)
         {
-            if (raw_data.Length < 1) this.raw_data = new byte[] { (byte)RCAS_UDP_CHANNEL.INVALID };
+            if (raw_data.Length < 1) this.raw_data = new byte[] { (byte)RCAS_UDP_CHANNEL.RESERVED_INVALID };
             this.raw_data = raw_data;
         }
 

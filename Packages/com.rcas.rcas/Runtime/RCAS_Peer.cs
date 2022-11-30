@@ -27,10 +27,7 @@ namespace RCAS
         public bool isHost = false;
 
         public bool startPairingFunctionOnStart = true;
-        public bool startPairingFunctionOnDisconnect = false; //TODO: this doesn't do anything yet
-
-        public bool ReceiveTCP = true; //TODO: this doesn't do anything yet
-        public bool ReceiveUDP = true; //TODO: this doesn't do anything yet
+        public bool startPairingFunctionOnDisconnect = false;
 
         public int LocalPort = 27015;
         public int RemotePort = 27016;
@@ -63,8 +60,15 @@ namespace RCAS
             TCP = new RCAS_TCP_Connection(this);
             UDP = new RCAS_UDP_Connection(this);
 
-            TCP.OnConnectionEstablished += OnConnectionEstablished;
-            TCP.OnConnectionLost += OnConnectionLost;
+            TCP.OnConnectionEstablished += ConnectionEstablished;
+            TCP.OnConnectionEstablished += (m) => this.OnConnectionEstablished.Invoke(m);
+            TCP.OnConnectionLost += ConnectionLost;
+            TCP.OnConnectionLost += () => this.OnConnectionLost.Invoke();
+            UDP.OnReceivedPairingOffer += (m) =>
+            {
+                (var ip, var port, var info) = RCAS.RCAS_UDPMessage.DecodePairingOffer(m);
+                this.OnReceivedPairingOffer.Invoke(ip, port, info);
+            };
         }
 
         private void Start()
@@ -85,8 +89,31 @@ namespace RCAS
         }
         #endregion
 
+        #region NETWORKING
+        public void OpenConnection() => TCP.OpenConnection();
+
+        public void ConnectTo(string IP, int port) => TCP.ConnectTo(IP, port);
+
+        public void CloseConnection() => TCP.CloseConnection();
+
+        public void TriggerRemoteEvent(string EventName, string[] args) => TCP.SendRemoteEvent(EventName, args);
+        public void TriggerRemoteEvent(string EventName, string args) => TCP.SendRemoteEvent(EventName, args);
+        public void TriggerRemoteEvent(string EventName) => TCP.SendRemoteEvent(EventName);
+
+        public delegate void dOnReceivedPairingOffer(string IPAddress, int Port, string DeviceInfo);
+        public dOnReceivedPairingOffer OnReceivedPairingOffer = delegate { };
+
+        public delegate void dOnConnectionEstablished(EndPoint endpoint);
+        public dOnConnectionEstablished OnConnectionEstablished = delegate { };
+
+        public delegate void dOnConnectionLost();
+        public dOnConnectionLost OnConnectionLost = delegate { };
+
+
+        #endregion
+
         #region PAIRING
-        void BeginPairing()
+        public void BeginPairing()
         {
             if(isHost)
             {
@@ -125,21 +152,18 @@ namespace RCAS
             UDP.StartReceiver();
 
             yield return new WaitUntil(() => isConnected);
-
-            // TODO:
-            //UDP.EndReceiver();
         }
         #endregion
 
         #region CALLBACKS
-        void OnConnectionEstablished(EndPoint endpoint)
+        void ConnectionEstablished(EndPoint endpoint)
         {
             IPEndPoint EP = (IPEndPoint)endpoint;
             Debug.Log($"Connection established with: {EP.Address}:{EP.Port}");
             RemoteEndpoint = EP;
         }
 
-        void OnConnectionLost()
+        void ConnectionLost()
         {
             Debug.Log($"Connection to {RemoteEndpoint.Address}:{RemoteEndpoint.Port} lost.");
 

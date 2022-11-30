@@ -8,8 +8,16 @@ namespace RCAS
 {
     public enum RCAS_TCP_CHANNEL
     {
-        INVALID = 0,
-        REMOTE_EVENT = 1,
+        RESERVED_INVALID = 0,
+        RESERVED_REMOTE_EVENT = 1,
+        CUSTOM_2 = 2,
+        CUSTOM_3 = 3,
+        CUSTOM_4 = 4,
+        CUSTOM_5 = 5,
+        CUSTOM_6 = 6,
+        CUSTOM_7 = 7,
+        CUSTOM_8 = 8,
+        CUSTOM_9 = 9,
         // TODO ...
     };
 
@@ -31,7 +39,7 @@ namespace RCAS
 
         public RCAS_TCPMessage(byte[] raw_data)
         {
-            if (raw_data.Length < 1) this.raw_data = new byte[] { (byte)RCAS_TCP_CHANNEL.INVALID };
+            if (raw_data.Length < 1) this.raw_data = new byte[] { (byte)RCAS_TCP_CHANNEL.RESERVED_INVALID };
             this.raw_data = raw_data;
         }
 
@@ -53,7 +61,7 @@ namespace RCAS
         public static RCAS_TCPMessage EncodeRemoteEvent(string eventName, string[] args)
         {
             eventName = eventName + SEPARATOR + string.Join(SEPARATOR, args);
-            return new RCAS_TCPMessage(eventName, RCAS_TCP_CHANNEL.REMOTE_EVENT);
+            return new RCAS_TCPMessage(eventName, RCAS_TCP_CHANNEL.RESERVED_REMOTE_EVENT);
 
         }
 

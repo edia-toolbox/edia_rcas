@@ -15,42 +15,40 @@ public class PairingOffer_UIPanel : MonoBehaviour
 
     public void ConnectPressedd()
     {
-        RCAS_Peer.Instance.TCP.ConnectTo(ip, port);
+        RCAS_Peer.Instance.ConnectTo(ip, port);
     }
 
     private void Start()
     {
-        RCAS_Peer.Instance.UDP.OnReceivedPairingOffer += OnPairingOfferReceived;
-        RCAS_Peer.Instance.TCP.OnConnectionEstablished += OnConnected;
-        RCAS_Peer.Instance.TCP.OnConnectionLost += OnDisconnected;
+        RCAS_Peer.Instance.OnReceivedPairingOffer += PairingOfferReceived;
+        RCAS_Peer.Instance.OnConnectionEstablished += Connected;
+        RCAS_Peer.Instance.OnConnectionLost += Disconnected;
     }
 
     private void OnDestroy()
     {
-        RCAS_Peer.Instance.UDP.OnReceivedPairingOffer -= OnPairingOfferReceived;
-        RCAS_Peer.Instance.TCP.OnConnectionEstablished -= OnConnected;
-        RCAS_Peer.Instance.TCP.OnConnectionLost -= OnDisconnected;
+        RCAS_Peer.Instance.OnReceivedPairingOffer -= PairingOfferReceived;
+        RCAS_Peer.Instance.OnConnectionEstablished -= Connected;
+        RCAS_Peer.Instance.OnConnectionLost -= Disconnected;
     }
 
-    void OnPairingOfferReceived(RCAS_UDPMessage msg)
+    void PairingOfferReceived(string ip_address, int port, string deviceInfo)
     {
         if (RCAS_Peer.Instance.isConnected) return;
 
-        (string ip_address, int port, string info) = RCAS_UDPMessage.DecodePairingOffer(msg);
-
         PairingOfferPanel.gameObject.SetActive(true);
-        IP_Text.text = $"IP: {ip_address}\nPORT: {port}\n{info}";
+        IP_Text.text = $"IP: {ip_address}\nPORT: {port}\n{deviceInfo}";
 
         ip = ip_address;
         this.port = port;
     }
 
-    void OnDisconnected()
+    void Disconnected()
     {
         PairingOfferPanel.gameObject.SetActive(false);
     }
 
-    void OnConnected(System.Net.EndPoint EP)
+    void Connected(System.Net.EndPoint EP)
     {
         PairingOfferPanel.gameObject.SetActive(false);
     }

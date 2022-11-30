@@ -16,10 +16,10 @@ namespace RCAS
 {
     public sealed class RCAS_TCP_Connection : System.IDisposable
     {
-        public int LocalPort => Peer.LocalPort;
+        internal int LocalPort => Peer.LocalPort;
 
-        public bool isConnected => Client is not null && Client.Connected;
-        public bool isAwaitingConnection => ListenerTask != null && ListenerTask.Status != TaskStatus.Running;
+        internal bool isConnected => Client is not null && Client.Connected;
+        internal bool isAwaitingConnection => ListenerTask != null && ListenerTask.Status != TaskStatus.Running;
 
         TcpClient Client;
         TcpListener Listener;
@@ -37,6 +37,9 @@ namespace RCAS
 
         public delegate void dOnConnectionEstablished(EndPoint endpoint);
         public dOnConnectionEstablished OnConnectionEstablished = delegate { };
+
+        public delegate void dOnReceivedMessage(RCAS_TCPMessage msg);
+        public dOnReceivedMessage OnReceivedMessage = delegate { };
 
         public delegate void dOnConnectionLost();
         public dOnConnectionLost OnConnectionLost = delegate { };
@@ -124,7 +127,7 @@ namespace RCAS
         }
 
         private bool prev_Connected = false;
-        public void Update()
+        internal void Update()
         {
             if (!prev_Connected && isConnected)
             {
@@ -143,19 +146,24 @@ namespace RCAS
             }
         }
 
-        public void ProcessData(byte[] receiveData)
+        private void ProcessData(byte[] receiveData)
         {
             RCAS_TCPMessage msg = new RCAS_TCPMessage(receiveData);
             Debug.Log("Received Message over channel " +msg.GetChannel());
 
-            if (msg.GetChannel() == RCAS_TCP_CHANNEL.REMOTE_EVENT)
-            {
+            OnReceivedMessage.Invoke(msg);
 
-                TriggerEvent(msg);
+            switch(msg.GetChannel())
+            {
+                case RCAS_TCP_CHANNEL.RESERVED_REMOTE_EVENT:
+                    {
+                        TriggerEvent(msg);
+                        break;
+                    }
             }
         }
 
-        public void TriggerEvent(string eventName, string[] args)
+        private void TriggerEvent(string eventName, string[] args)
         {
             if (RemoteEvents.ContainsKey(eventName))
             {
@@ -167,16 +175,15 @@ namespace RCAS
             }
         }
 
-        public void TriggerEvent(RCAS_TCPMessage msg)
+        private void TriggerEvent(RCAS_TCPMessage msg)
         {
             (string eventName, string[] args) = RCAS_TCPMessage.DecodeRemoteEvent(msg);
             TriggerEvent(eventName, args);
         }
 
-        //TODO: change to internal
-        public bool OpenConnection()
+        internal bool OpenConnection()
         {
-            if (isConnected || isAwaitingConnection)
+            if (isConnected || isAwaitingConnection || !RCAS_Peer.Instance.isHost)
             {
                 Debug.LogError("Tried to connect to a TCP EndPoint whilst awaiting a client or already connected!");
                 return false;
@@ -200,11 +207,10 @@ namespace RCAS
             }
         }
 
-        //TODO: change to internal
-        public bool ConnectTo(string ipAddress, int port)
+        internal bool ConnectTo(string ipAddress, int port)
         {
             // Ensure we are not awaiting connection already
-            if(isConnected || isAwaitingConnection)
+            if(isConnected || isAwaitingConnection || RCAS_Peer.Instance.isHost)
             {
                 Debug.LogError("Tried to connect to a TCP EndPoint whilst awaiting a client or already connected!");
                 return false;
@@ -256,43 +262,55 @@ namespace RCAS
                 Listener.Stop();
                 Debug.Log("RCAS: Client connected to Server!");
             }
-            catch(System.Exception)
+            finally
             {
-                Debug.Log("TCP Listener failed");
+                Debug.Log("Listener stopped");
             }
         }
 
         private void TaskFunc_Receiver()
         {
-            Debug.Log("Receiver started");
-            while (isConnected)
+            try
             {
-                System.Span<byte> buffer = new byte[Client.ReceiveBufferSize];
-
-                int bytesRead = Client.GetStream().Read(buffer);
-
-                if (bytesRead == 0)
+                Debug.Log("Receiver started");
+                while (isConnected)
                 {
-                    CloseConnection();
-                    Debug.Log("Receiver ended");
-                    return;
-                }
+                    System.Span<byte> buffer = new byte[Client.ReceiveBufferSize];
 
-                ReceiveQueue.Enqueue(buffer.Slice(0, bytesRead).ToArray());
+                    int bytesRead = Client.GetStream().Read(buffer);
+
+                    if (bytesRead == 0)
+                    {
+                        CloseConnection();
+                        Debug.Log("Receiver ended");
+                        return;
+                    }
+
+                    ReceiveQueue.Enqueue(buffer.Slice(0, bytesRead).ToArray());
+                }
             }
-            Debug.Log("Receiver ended");
+            finally
+            {
+                Debug.Log("Receiver ended");
+            }
         }
 
         private void TaskFunc_Sender()
         {
-            Debug.Log("Sender started");
-            while (SendQueue.TryDequeue(out byte[] sendData))
+            try
             {
-                if (!Client.Connected) continue;
+                Debug.Log("Sender started");
+                while (SendQueue.TryDequeue(out byte[] sendData))
+                {
+                    if (!Client.Connected) continue;
 
-                Client.GetStream().Write(sendData);
+                    Client.GetStream().Write(sendData);
+                }
             }
-            Debug.Log("Sender ended");
+            finally
+            {
+                Debug.Log("Sender ended");
+            }
         }
 
         public void Dispose()
