@@ -101,6 +101,11 @@ namespace RCAS
             RemoteEvents[eventName].Add(action);
         }
 
+        public void SendMessage(string message, RCAS_TCP_CHANNEL channel)
+        {
+            SendMessage(new RCAS_TCPMessage(message, channel));
+        }
+
         public void SendMessage(RCAS_TCPMessage message)
         {
             SendQueue.Enqueue(message.raw_data.ToArray());
