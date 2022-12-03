@@ -47,7 +47,9 @@ class ReliableVariableReceiver : Monobehaviour {
 
 }
 ```
+
 </td><td>
+
 ```csharp
 using RCAS;
 
@@ -62,5 +64,6 @@ class ReliableVariableSender : Monobehaviour {
 
 }
 ```
+
 </td></tr>
 </table>
