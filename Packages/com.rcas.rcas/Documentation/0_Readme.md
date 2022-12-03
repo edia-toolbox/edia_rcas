@@ -25,57 +25,30 @@ The Headsets's local port should be the Manager's remote port and vice-versa.
 
 NOTE: You *can* set both the local and remote port to be the same value, but this will prevent you from running both host and client on the same machine (for local testing).
 
+# RCAS_Peer
+
 <table><tr>
 <th>VR Headset Peer</th>
 <th>Manager App Peer</th>
 </tr><tr><td>
-    
-![img](https://i.imgur.com/CEmH0Vj.png)
+
+![img](https://i.imgur.com/RwM98dD.png)    
 </td><td>
-![img](https://i.imgur.com/RwM98dD.png)
+![img](https://i.imgur.com/CEmH0Vj.png)
 </td></tr>
 </table>
 
+Each Peer is a singleton object that has a TCP and UDP connection. These are used depending on the underlying use-case: TCP messages are used for reliable messages like RPCs/remote events, whilst UDP is used for live-streaming data, like the VR view.
 
+Both connections have a series of channels, some of which are reserved for existing featrues, whilst other (channels named `CUSOM_X`) can be customized for your own use.
 
+![img](https://i.imgur.com/j1Mn1MJ.png)
 
+Each RCAS_Peers has several callback delegates you can use, including `Peer.OnEstablishedConnection` and `Peer.OnLostConnection`.
 
+For details on each specific feature, consult the indicidual documenation:
 
-
-
-
-Callbacks:
-
-Peer.OnEstablishedConnection()
-Peer.OnLostConnection()
-
-
-
-Setting up video-Stream:
-
-Always unreliable
-VideoReceiver & VideoSender
-
-
-
-Events:
-
-Always reliable (TCP)
-RCAS_Peer.TriggerRemoteEvent(...)
-and [RemoteEvent(...)]
-
-
-
-
-Additional Custom Messages:
-
-Peer.TCP.SendMessage(...)
-Peer.UDP.SendMessage(...)
-Peer.UDP.BroadCastMessage(...)
-
-Peer.TCP.OnReceiveMessage(...)
-Peer.UDP.OnReceiveMessage(...)
-
-
-
-Example: Setting up additional video stream:
+- [Device-Pairing](https://gitlab.gwdg.de/3dia/edia_manager/-/blob/main/Packages/com.rcas.rcas/Documentation/1_DevicePairing.md)
+- [Video-Streaming](https://gitlab.gwdg.de/3dia/edia_manager/-/blob/main/Packages/com.rcas.rcas/Documentation/2_VideoStream.md)
+- [Remote-Events](https://gitlab.gwdg.de/3dia/edia_manager/-/blob/main/Packages/com.rcas.rcas/Documentation/3_RemoteEvents.md)
+- [Custom-Messages](https://gitlab.gwdg.de/3dia/edia_manager/-/blob/main/Packages/com.rcas.rcas/Documentation/4_CustomMessages.md)

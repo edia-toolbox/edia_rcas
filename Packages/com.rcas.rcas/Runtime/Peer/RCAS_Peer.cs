@@ -52,6 +52,13 @@ namespace RCAS
         #region MONOBEHAVIOUR
         private void Awake()
         {
+            if(Instance)
+            {
+                Debug.LogError("A new RCAS_Peer object was instantiated whilst another already exists!. RCAS_Peer is a singleton object.");
+                Destroy(this);
+                return;
+            }
+
             Instance ??= this;
 
             LocalEndPoint = new IPEndPoint(IPAddress.Parse(localIPAddress), LocalPort);
