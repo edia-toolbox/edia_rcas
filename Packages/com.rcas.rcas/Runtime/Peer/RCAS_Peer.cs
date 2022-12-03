@@ -28,6 +28,7 @@ namespace RCAS
 
         public bool startPairingFunctionOnStart = true;
         public bool startPairingFunctionOnDisconnect = false;
+        public bool isPairing { get; private set; }
 
         public int LocalPort = 27015;
         public int RemotePort = 27016;
@@ -122,6 +123,13 @@ namespace RCAS
         #region PAIRING
         public void BeginPairing()
         {
+            if(isPairing)
+            {
+                Debug.LogWarning("Tried to start pairing-process on RCAS_Peer whilst it already is running.");
+                return;
+            }
+
+            isPairing = true;
             if(isHost)
             {
                 TCP.CloseConnection();
@@ -150,6 +158,8 @@ namespace RCAS
                     deviceName)
                 );
             }
+
+            isPairing=false;
         }
 
 
@@ -159,6 +169,8 @@ namespace RCAS
             UDP.StartReceiver();
 
             yield return new WaitUntil(() => isConnected);
+
+            isPairing = false;
         }
         #endregion
 

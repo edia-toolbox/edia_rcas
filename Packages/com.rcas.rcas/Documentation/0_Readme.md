@@ -25,8 +25,6 @@ The Headsets's local port should be the Manager's remote port and vice-versa.
 
 NOTE: You *can* set both the local and remote port to be the same value, but this will prevent you from running both host and client on the same machine (for local testing).
 
-# RCAS_Peer
-
 <table><tr>
 <th>VR Headset Peer</th>
 <th>Manager App Peer</th>
@@ -37,6 +35,8 @@ NOTE: You *can* set both the local and remote port to be the same value, but thi
 ![img](https://i.imgur.com/CEmH0Vj.png)
 </td></tr>
 </table>
+
+# RCAS_Peer
 
 Each Peer is a singleton object that has a TCP and UDP connection. These are used depending on the underlying use-case: TCP messages are used for reliable messages like RPCs/remote events, whilst UDP is used for live-streaming data, like the VR view.
 

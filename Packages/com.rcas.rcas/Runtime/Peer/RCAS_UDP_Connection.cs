@@ -60,6 +60,11 @@ namespace RCAS
             SendQueue.Enqueue((msg.raw_data.ToArray(), new IPEndPoint(System.Net.IPAddress.Broadcast, Peer.RemotePort)));
         }
 
+        public void BroadcastMessage(string message, RCAS_UDP_CHANNEL channel)
+        {
+            BroadcastMessage(new RCAS_UDPMessage(message, channel));
+        }
+
         public RCAS_UDP_Connection(RCAS_Peer peer)
         {
             this.Peer = peer;

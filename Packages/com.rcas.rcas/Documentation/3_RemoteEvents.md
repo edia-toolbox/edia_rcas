@@ -1,18 +1,25 @@
+# Remote Events
 
+Remote events let you run functions remotely to trigger certain actions.
+RemoteEvents are triggered over TCP and are thus reliable.
 
+To designate a remote event, simply mark a function with the `RCAS.RCAS_RemoteEvent` attribute:
 
+```csharp
+[RCAS_RemoteEvent("some_custom_event")]
+static void MyCustomEventFunction() {
+    // Run something locally
+}
+```
 
-Events:
+You can now run the marked function remotely by calling `RCAS_Peer.Instance.TriggerRemoteEvent("some_custom_event");`.
 
-Always reliable (TCP)
-RCAS_Peer.TriggerRemoteEvent(...)
-and [RemoteEvent(...)]
-
+Remote Events can also take arguments in the form of a string, or an array of strings. Here are a few examples:
 
 
 <table><tr>
-<th>Peer 1</th>
-<th>Peer 2</th>
+<th>Headset</th>
+<th>Manager</th>
 </tr><tr><td>
     
 ```csharp
