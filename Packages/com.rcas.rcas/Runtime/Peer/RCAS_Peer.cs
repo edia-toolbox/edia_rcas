@@ -146,8 +146,6 @@ namespace RCAS
         {
             yield return new WaitForSeconds(1);
 
-            UDP.StartSender();
-
             while (!isConnected)
             {
                 yield return new WaitForSeconds(1);
@@ -166,7 +164,7 @@ namespace RCAS
         IEnumerator StartDevicePairingSearch()
         {
             yield return new WaitForSeconds(1);
-            UDP.StartReceiver();
+            //UDP.StartReceiver();
 
             yield return new WaitUntil(() => isConnected);
 

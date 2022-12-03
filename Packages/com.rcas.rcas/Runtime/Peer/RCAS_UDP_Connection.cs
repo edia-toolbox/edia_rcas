@@ -36,30 +36,57 @@ namespace RCAS
 
         CancellationTokenSource CTS;
 
-        ConcurrentQueue<(byte[], IPEndPoint EP)> SendQueue = new ConcurrentQueue<(byte[], IPEndPoint EP)>();
+        ConcurrentQueue<(byte[], IPEndPoint EP)> _SendQueue = null;
+        ConcurrentQueue<(byte[], IPEndPoint EP)> SendQueue
+        {
+            get
+            {
+                if(_SendQueue is null)
+                {
+                    _SendQueue = new ConcurrentQueue<(byte[], IPEndPoint EP)>();
+                    StartSender();
+                }
+                return _SendQueue;
+            }
+        }
 
         ConcurrentQueue<byte[]> ReceiveQueue = new ConcurrentQueue<byte[]>();
 
+        /// <summary>
+        /// Sends a UDP message to a remote peer if currently connected to one
+        /// </summary>
         public void SendMessage(RCAS_UDPMessage msg)
         {
             SendQueue.Enqueue((msg.raw_data.ToArray(), null));
         }
 
+        /// <summary>
+        /// Sends a UDP message to a remote peer if currently connected to one
+        /// </summary>
+        public void SendMessage(string msg, RCAS_UDP_CHANNEL channel)
+        {
+            SendMessage(new RCAS_UDPMessage(msg, channel));
+        }
+
+        /// <summary>
+        /// Sends a JPEG image to a remote peer if currently connected to one
+        /// </summary>
         public void SendImage(byte[] ImageData)
         {
             SendMessage(RCAS_UDPMessage.EncodeImage(ImageData));
         }
 
-        public void SendMessageToEndpoint(RCAS_UDPMessage msg, IPEndPoint EP)
-        {
-            SendQueue.Enqueue((msg.raw_data.ToArray(), EP));
-        }
-
+        /// <summary>
+        /// Send a message to all devices on a local network to Peer.RemotePort
+        /// </summary>
         public void BroadcastMessage(RCAS_UDPMessage msg)
         {
             SendQueue.Enqueue((msg.raw_data.ToArray(), new IPEndPoint(System.Net.IPAddress.Broadcast, Peer.RemotePort)));
         }
 
+        /// <summary>
+        /// Send a message to all devices on a local network to Peer.RemotePort
+        /// </summary>
         public void BroadcastMessage(string message, RCAS_UDP_CHANNEL channel)
         {
             BroadcastMessage(new RCAS_UDPMessage(message, channel));
@@ -82,9 +109,12 @@ namespace RCAS
                 Client.Client.Bind(Peer.LocalEndPoint);
             }
             Client.EnableBroadcast = true;
+
+            // Automatically start receiver. TODO: Do we want this?
+            StartReceiver();
         }
 
-        public void StartSender()
+        private void StartSender()
         {
             if (SenderTask == null || SenderTask.Status != TaskStatus.Running)
             {
@@ -92,7 +122,7 @@ namespace RCAS
             }
         }
 
-        public void StartReceiver()
+        private void StartReceiver()
         {
             if (ReceiverTask == null || ReceiverTask.Status != TaskStatus.Running)
             {
@@ -134,7 +164,7 @@ namespace RCAS
             }
         }
 
-        public void Update()
+        internal void Update()
         {
             if (ReceiveQueue.TryDequeue(out var data))
             {
