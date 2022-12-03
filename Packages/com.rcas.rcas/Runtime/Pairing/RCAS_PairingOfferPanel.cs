@@ -14,7 +14,7 @@ namespace RCAS.Samples
         private string ip = "";
         private int port = 0;
 
-        public void ConnectPressedd()
+        public void ConnectPressed()
         {
             RCAS_Peer.Instance.ConnectTo(ip, port);
         }
