@@ -145,9 +145,11 @@ namespace RCAS
             
             PAIRING.Connect(new IPEndPoint(IPAddress.Any, PairingPort));
 
+            UDP.CloseConnection();
+            TCP.CloseConnection();
+
             if (isHost)
             {
-                TCP.CloseConnection();
                 TCP.OpenConnection(LocalEndPoint_init);
                 StartCoroutine(StartDevicePairingBroadcast());
             }
@@ -162,7 +164,7 @@ namespace RCAS
             if (!isPairing) return;
 
             isPairing = false;
-            // TODO: Stop PAIRING object
+            PAIRING.CloseConnection();
         }
 
         IEnumerator StartDevicePairingBroadcast()
@@ -212,6 +214,7 @@ namespace RCAS
         void ConnectionLost(IPEndPoint EP)
         {
             Debug.Log($"Connection to {EP.Address}:{EP.Port} lost.");
+            UDP.CloseConnection();
 
             if (startPairingFunctionOnDisconnect)
             {

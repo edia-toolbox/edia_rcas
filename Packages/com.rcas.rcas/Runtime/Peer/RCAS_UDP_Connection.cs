@@ -16,7 +16,7 @@ namespace RCAS
 {
     public sealed class RCAS_UDP_Connection : System.IDisposable
     {
-        // TODO: isConnected bool
+        public bool isConnected => Client != null;
 
         internal delegate void dOnReceivedMessage(RCAS_UDPMessage msg);
         internal dOnReceivedMessage OnReceivedMessage = delegate { };
@@ -25,8 +25,6 @@ namespace RCAS
         Task SenderTask;
 
         UdpClient Client;
-
-        CancellationTokenSource CTS;
 
         ConcurrentQueue<(byte[], IPEndPoint EP)> _SendQueue = null;
         ConcurrentQueue<(byte[], IPEndPoint EP)> SendQueue
@@ -49,7 +47,7 @@ namespace RCAS
         /// </summary>
         public void SendMessage(RCAS_UDPMessage msg, IPEndPoint EP)
         {
-            if (Client == null) return;
+            if (!isConnected) return;
 
             SendQueue.Enqueue((msg.raw_data.ToArray(), EP));
         }
@@ -75,6 +73,8 @@ namespace RCAS
         /// </summary>
         public void BroadcastMessage(RCAS_UDPMessage msg, int port)
         {
+            if (!isConnected) return;
+
             SendQueue.Enqueue((msg.raw_data.ToArray(), new IPEndPoint(System.Net.IPAddress.Broadcast, port)));
         }
 
@@ -94,11 +94,9 @@ namespace RCAS
 
         public void Connect(IPEndPoint LocalEndPoint)
         {
-            if (Client != null) return; // already connected
+            if (isConnected) return; // already connected
 
             Debug.Log($"New UDP Connection on {LocalEndPoint.Address}:{LocalEndPoint.Port}");
-
-            CTS = new CancellationTokenSource();
 
             // Need internet access on android
             Debug.Assert(Permission.HasUserAuthorizedPermission("android.permission.INTERNET"));
@@ -120,7 +118,7 @@ namespace RCAS
         {
             if (SenderTask == null || SenderTask.Status != TaskStatus.Running)
             {
-                SenderTask = Task.Run(() => TaskFunc_Sender(CTS.Token));
+                SenderTask = Task.Run(() => TaskFunc_Sender());
             }
         }
 
@@ -128,11 +126,11 @@ namespace RCAS
         {
             if (ReceiverTask == null || ReceiverTask.Status != TaskStatus.Running)
             {
-                ReceiverTask = Task.Run(() => TaskFunc_Receiver(CTS.Token));
+                ReceiverTask = Task.Run(() => TaskFunc_Receiver());
             }
         }
 
-        private async Task TaskFunc_Sender(CancellationToken CT)
+        private async Task TaskFunc_Sender()
         {
             try
             {
@@ -140,18 +138,12 @@ namespace RCAS
                 {
                     try
                     {
-                        if (CT.IsCancellationRequested) throw new TaskCanceledException();
-
                         await Task.Delay(10);
 
-                        if (SendQueue.TryDequeue(out var item))
+                        if (SendQueue.TryDequeue(out var item) && item.Item2 != null)
                         {
-                            Client.Send(item.Item1, item.Item1.Length, item.Item2 != null ? item.Item2 : RCAS_Peer.Instance.TCP.RemoteEndPoint);
+                            Client.Send(item.Item1, item.Item1.Length, item.Item2);
                         }
-                    }
-                    catch (TaskCanceledException)
-                    {
-                        return;
                     }
                     catch (System.Exception e)
                     {
@@ -168,13 +160,15 @@ namespace RCAS
 
         internal void Update()
         {
+            if (!isConnected) return;
+
             if (ReceiveQueue.TryDequeue(out var data))
             {
                 ProcessData(data);
             }
         }
 
-        private async Task TaskFunc_Receiver(CancellationToken CT)
+        private async Task TaskFunc_Receiver()
         {
             IPEndPoint EP = (IPEndPoint)Client.Client.LocalEndPoint;
             Debug.Log($"Receiving on: {EP.Address}:{EP.Port}");
@@ -182,13 +176,7 @@ namespace RCAS
             {
                 while (true)
                 {
-                    if(CT.IsCancellationRequested)
-                    {
-                        throw new TaskCanceledException();
-                    }
-
                     // Non-asymc variant:
-                    //IPEndPoint EP = Peer.LocalEndPoint;
                     //byte[] receiveData = Client.Receive(ref EP);
 
                     // async variant:
@@ -203,11 +191,16 @@ namespace RCAS
             }
         }
 
+        public void CloseConnection()
+        {
+            SendQueue.Clear();
+            Client?.Close();
+            Client = null;
+        }
+
         public void Dispose()
         {
-            CTS?.Cancel();
-            CTS?.Dispose();
-            Client?.Close();
+            CloseConnection();
         }
 
         private void ProcessData(byte[] data)

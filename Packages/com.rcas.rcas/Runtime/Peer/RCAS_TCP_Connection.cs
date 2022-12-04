@@ -177,6 +177,7 @@ namespace RCAS
 
         internal void CloseConnection()
         {
+            SendQueue.Clear();
             Debug.Log("Connection closed");
             try
             {
