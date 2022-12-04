@@ -130,7 +130,7 @@ namespace RCAS
                 return false;
             }
 
-            Debug.Log("Opening TCP Connection");
+            Debug.Log($"Listening for new TCP Clients on {LocalEndPoint.Address}:{LocalEndPoint.Port}");
 
             try
             {
@@ -171,7 +171,7 @@ namespace RCAS
             catch (System.Exception e)
             {
                 CloseConnection();
-                Debug.Log("Could not connect!");
+                Debug.Log($"Could not connect to TCP server {ipAddress}:{port} with local endpoint {LocalEndPoint.Address}:{LocalEndPoint.Port}");
                 Debug.LogException(e);
                 return false;
             }
@@ -180,12 +180,11 @@ namespace RCAS
         internal void CloseConnection()
         {
             SendQueue.Clear();
-            Debug.Log("Connection closed");
+            if(Client!=null) Debug.Log("TCP Connection Closed");
             try
             {
                 Listener?.Stop();
                 Client?.GetStream()?.Close();
-                //Client?.Client?.Close();
                 Client?.Close();
             }
             catch { }
@@ -199,17 +198,18 @@ namespace RCAS
         {
             try
             {
-                Debug.Log("Listener started");
+                //Debug.Log("Listener started");
                 Listener.Start();
                 Client = Listener.AcceptTcpClient();
                 ReceiverTask = new Task(TaskFunc_Receiver);
                 ReceiverTask.Start();
                 Listener.Stop();
-                Debug.Log("RCAS: Client connected to Server!");
+                //Debug.Log("RCAS: Client connected to Server!");
             }
             finally
             {
-                Debug.Log("Listener stopped");
+                //Debug.Log("Listener stopped");
+                Listener = null;
                 ListenerTask = null;
             }
         }
@@ -218,7 +218,7 @@ namespace RCAS
         {
             try
             {
-                Debug.Log("Receiver started");
+                //Debug.Log("Receiver started");
                 while (isConnected)
                 {
                     System.Span<byte> buffer = new byte[Client.ReceiveBufferSize];
@@ -228,7 +228,6 @@ namespace RCAS
                     if (bytesRead == 0)
                     {
                         CloseConnection();
-                        Debug.Log("Receiver ended");
                         return;
                     }
 
@@ -237,7 +236,7 @@ namespace RCAS
             }
             finally
             {
-                Debug.Log("Receiver ended");
+                //Debug.Log("Receiver ended");
             }
         }
 
@@ -245,7 +244,7 @@ namespace RCAS
         {
             try
             {
-                Debug.Log("Sender started");
+                //Debug.Log("Sender started");
                 while (SendQueue.TryDequeue(out byte[] sendData))
                 {
                     if (!Client.Connected) continue;
@@ -255,7 +254,7 @@ namespace RCAS
             }
             finally
             {
-                Debug.Log("Sender ended");
+                //Debug.Log("Sender ended");
             }
         }
         #endregion

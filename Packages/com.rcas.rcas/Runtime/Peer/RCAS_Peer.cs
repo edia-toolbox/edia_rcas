@@ -156,9 +156,10 @@ namespace RCAS
         {
             if(isPairing)
             {
-                Debug.LogWarning("Tried to start pairing-process on RCAS_Peer whilst it already is running.");
+                Debug.LogWarning("Tried to start pairing-process on RCAS_Peer whilst it already is running. Aborting...");
                 return;
             }
+            Debug.Log("Commencing Device-Pairing.");
 
             isPairing = true;
             
@@ -225,14 +226,14 @@ namespace RCAS
         {
             IPEndPoint EP = (IPEndPoint)endpoint;
             Debug.Log($"Connection established with: {EP.Address}:{EP.Port}");
-            //RemoteEndpoint = EP;
+            
             UDP.Connect(GetCurrentLocalEndpoint());
             this.OnConnectionEstablished.Invoke(EP);
         }
 
         void ConnectionLost(IPEndPoint EP)
         {
-            Debug.Log($"Connection to {EP.Address}:{EP.Port} lost.");
+            Debug.Log($"Connection with {EP.Address}:{EP.Port} lost.");
             UDP.CloseConnection();
 
             if (startPairingFunctionOnDisconnect)
@@ -348,7 +349,7 @@ namespace RCAS
             }
             else
             {
-                Debug.LogError("Event does not exist!");
+                Debug.LogError($"Tried to execute event {eventName}, but it does not exist on this machine!");
             }
         }
         #endregion

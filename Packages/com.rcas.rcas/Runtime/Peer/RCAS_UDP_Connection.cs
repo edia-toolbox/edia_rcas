@@ -147,7 +147,7 @@ namespace RCAS
                     }
                     catch (System.Exception e)
                     {
-                        Debug.Log("Something went wrong!");
+                        Debug.Log("Failed to send out UDP package!");
                         Debug.Log(e.Message);
                     }
                 }
@@ -170,8 +170,6 @@ namespace RCAS
 
         private async Task TaskFunc_Receiver()
         {
-            IPEndPoint EP = (IPEndPoint)Client.Client.LocalEndPoint;
-            Debug.Log($"Receiving on: {EP.Address}:{EP.Port}");
             try
             {
                 while (true)
@@ -187,12 +185,14 @@ namespace RCAS
             }
             catch (SocketException e)
             {
+                Debug.LogError("SocketException whilst Receiving UDP data!");
                 Debug.LogException(e);
             }
         }
 
         public void CloseConnection()
         {
+            if (Client != null) Debug.Log("UDP Connection Closed.");
             SendQueue.Clear();
             Client?.Close();
             Client = null;
