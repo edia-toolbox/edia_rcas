@@ -128,7 +128,6 @@ namespace RCAS
         public delegate void dOnReceivedUDPMessage(RCAS_UDPMessage msg);
         public dOnReceivedUDPMessage OnReceivedUDPMessage = delegate { };
 
-
         public void SendImage(byte[] raw_img_data) => UDP.SendImage(raw_img_data, TCP.RemoteEndPoint);
         #endregion
 

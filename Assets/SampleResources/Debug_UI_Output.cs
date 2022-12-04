@@ -16,28 +16,11 @@ public class Debug_UI_Output : MonoBehaviour
 
     private void Awake()
     {
+        text = GetComponent<TMPro.TMP_Text>();
+
         Application.logMessageReceivedThreaded += HandleLog;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        text = GetComponent<TMPro.TMP_Text>();
-
-        string localIP;
-        using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
-        {
-            socket.Connect("8.8.8.8", 65530);
-            IPEndPoint endPoint = socket.LocalEndPoint as IPEndPoint;
-            localIP = endPoint.Address.ToString();
-        }
-
-        text.text = localIP;
-        Debug.Log("Local IP-Address: " + localIP);
-        Debug.Log(RCAS_Peer.Instance);
-    }
-
-    // Update is called once per frame
     void Update()
     {
         text.text = output;
@@ -50,6 +33,6 @@ public class Debug_UI_Output : MonoBehaviour
         {
             output += stackTrace + "\n" + output;
         }
-        if (output.Length > 2000) output = "";
+        if (output.Length > 5000) output = "";
     }
 }

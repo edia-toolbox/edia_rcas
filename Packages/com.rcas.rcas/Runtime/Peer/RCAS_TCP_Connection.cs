@@ -18,7 +18,7 @@ namespace RCAS
     {
         #region MEMBERS
         internal bool isConnected => Client is not null && Client.Connected;
-        internal bool isAwaitingConnection => ListenerTask != null && ListenerTask.Status != TaskStatus.Running;
+        internal bool isAwaitingConnection => ListenerTask is not null && ListenerTask.Status != TaskStatus.Running;
 
         TcpClient Client;
         TcpListener Listener;
@@ -124,6 +124,8 @@ namespace RCAS
         {
             if (isConnected || isAwaitingConnection)
             {
+                Debug.LogError(isConnected);
+                Debug.LogError(isAwaitingConnection);
                 Debug.LogError("Tried to connect to a TCP EndPoint whilst awaiting a client or already connected!");
                 return false;
             }
@@ -188,6 +190,7 @@ namespace RCAS
             }
             catch { }
             Client = null;
+            Listener = null;
         }
         #endregion
 
@@ -207,6 +210,7 @@ namespace RCAS
             finally
             {
                 Debug.Log("Listener stopped");
+                ListenerTask = null;
             }
         }
 
