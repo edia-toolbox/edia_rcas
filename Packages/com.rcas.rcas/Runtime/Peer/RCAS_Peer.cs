@@ -10,6 +10,7 @@ using UnityEngine.UI;
 using Unity.Collections;
 using UnityEngine.Android;
 using System.Collections.Concurrent;
+using System.Linq;
 
 namespace RCAS
 {
@@ -50,6 +51,8 @@ namespace RCAS
         public IPEndPoint LocalEndPoint_init => new IPEndPoint(IPAddress.Parse(localIPAddress), 0);
 
         //public IPEndPoint RemoteEndpoint => TCP.RemoteEndPoint;
+
+        public Dictionary<string, List<System.Action<string[]>>> RemoteEvents = new Dictionary<string, List<System.Action<string[]>>>();
         #endregion
 
         #region MONOBEHAVIOUR
@@ -64,27 +67,13 @@ namespace RCAS
 
             Instance ??= this;
 
-            /*
-            if (!AutoSetLocalPort)
-            {
-                LocalEndPoint = new IPEndPoint(IPAddress.Parse(localIPAddress), LocalPort);
-            }
-            else
-            {
-                LocalEndPoint = new IPEndPoint(IPAddress.Parse(localIPAddress), 0);
-                LocalPort = LocalEndPoint.Port;
-            }
-            */
-
-
             TCP = new RCAS_TCP_Connection();
             UDP = new RCAS_UDP_Connection();
             PAIRING = new RCAS_UDP_Connection();
 
             TCP.OnConnectionEstablished += ConnectionEstablished;
-            TCP.OnConnectionEstablished += (m) => this.OnConnectionEstablished.Invoke(m);
             TCP.OnConnectionLost += ConnectionLost;
-            TCP.OnConnectionLost += (m) => this.OnConnectionLost.Invoke(m);
+            TCP.OnReceivedMessage += ReceiveTCPMessage;
         }
 
         private void Start()
@@ -114,9 +103,9 @@ namespace RCAS
 
         public void CloseConnection() => TCP.CloseConnection();
 
-        public void TriggerRemoteEvent(string EventName, string[] args) => TCP.SendRemoteEvent(EventName, args);
-        public void TriggerRemoteEvent(string EventName, string args) => TCP.SendRemoteEvent(EventName, args);
-        public void TriggerRemoteEvent(string EventName) => TCP.SendRemoteEvent(EventName);
+        public void TriggerRemoteEvent(string EventName, string[] args) => TCP.SendMessage(RCAS_TCPMessage.EncodeRemoteEvent(EventName, args));
+        public void TriggerRemoteEvent(string EventName, string args) => TriggerRemoteEvent(EventName, new string[] { args });
+        public void TriggerRemoteEvent(string EventName) => TriggerRemoteEvent(EventName, "");
 
         public delegate void dOnReceivedPairingOffer(string IPAddress, int Port, string DeviceInfo);
         public dOnReceivedPairingOffer OnReceivedPairingOffer = delegate { };
@@ -212,6 +201,7 @@ namespace RCAS
             Debug.Log($"Connection established with: {EP.Address}:{EP.Port}");
             //RemoteEndpoint = EP;
             UDP.Connect(TCP.LocalEndPoint);
+            this.OnConnectionEstablished.Invoke(EP);
         }
 
         void ConnectionLost(IPEndPoint EP)
@@ -221,6 +211,90 @@ namespace RCAS
             if (startPairingFunctionOnDisconnect)
             {
                 BeginPairing();
+            }
+            this.OnConnectionLost.Invoke(EP);
+        }
+
+        void ReceiveTCPMessage(RCAS_TCPMessage msg)
+        {
+            switch (msg.GetChannel())
+            {
+                case RCAS_TCP_CHANNEL.RESERVED_REMOTE_EVENT:
+                    {
+                        ExecuteRemoteEventLocally(msg);
+                        break;
+                    }
+            }
+        }
+        #endregion
+
+        #region REMOTEEVENTS
+        private void RegisterAllRemoteEvents()
+        {
+            // Find any and all methods marked as "RemoteEvent" in all assemplies:
+            var methodsMarked =
+                from a in System.AppDomain.CurrentDomain.GetAssemblies()
+                from t in a.GetTypes()
+                from m in t.GetMethods(System.Reflection.BindingFlags.Static | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic))
+                let attributes = m.GetCustomAttributes(typeof(RCAS_RemoteEvent), true)
+                where attributes != null && attributes.Length > 0
+                select new { method = m, attributes = attributes.Cast<RCAS_RemoteEvent>() };
+
+            foreach (var method in methodsMarked)
+            {
+                foreach (var att in method.attributes)
+                {
+                    try
+                    {
+                        string eventName = att.getEventName();
+
+                        // Single string function   static void func(string arg)
+                        if (method.method.GetParameters().Count() == 1 && method.method.GetParameters()[0].ParameterType == typeof(System.String))
+                        {
+                            System.Action<string> action = (System.Action<string>)System.Delegate.CreateDelegate(typeof(System.Action<string>), method.method);
+                            RegisterRemoteEvent(eventName, (args) => action(args[0]));
+                        }
+                        // String-array function   static void func(string[] args)
+                        else if (method.method.GetParameters().Count() > 0)
+                        {
+                            System.Action<string[]> action = (System.Action<string[]>)System.Delegate.CreateDelegate(typeof(System.Action<string[]>), method.method);
+                            RegisterRemoteEvent(eventName, action);
+                        }
+                        // No-parameter function   static void func()
+                        else
+                        {
+                            System.Action action = (System.Action)System.Delegate.CreateDelegate(typeof(System.Action), method.method);
+                            RegisterRemoteEvent(eventName, (args) => action());
+                        }
+                    }
+                    catch (System.Exception)
+                    {
+                        Debug.LogError("Following method is marked as RemoteEvent, but doesnt follow the necessary requirements.");
+                    }
+                }
+            }
+        }
+
+        private void RegisterRemoteEvent(string eventName, System.Action<string[]> action)
+        {
+            if (!RemoteEvents.ContainsKey(eventName))
+            {
+                RemoteEvents.Add(eventName, new List<System.Action<string[]>>());
+            }
+            RemoteEvents[eventName].Add(action);
+        }
+
+        private void ExecuteRemoteEventLocally(RCAS_TCPMessage msg)
+        {
+            (string eventName, string[] args) = RCAS_TCPMessage.DecodeRemoteEvent(msg);
+
+            if (RemoteEvents.ContainsKey(eventName))
+            {
+                foreach (var m in RemoteEvents[eventName]) m.Invoke(args);
+            }
+            else
+            {
+                Debug.LogError("Event does not exist!");
             }
         }
         #endregion
