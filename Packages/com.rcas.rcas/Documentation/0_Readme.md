@@ -21,9 +21,8 @@ Do *not* use multiple Peers simultaneously within one game-instance. If you have
 `DontDestroyOnLoad(...)`.
 
 The VR Headset should have its peer's `isHost` set to true, whilst the Manager set to false.
-The Headsets's local port should be the Manager's remote port and vice-versa.
-
-NOTE: You *can* set both the local and remote port to be the same value, but this will prevent you from running both host and client on the same machine (for local testing).
+The `PairingPort` property will be used for automatic device-pairing.
+You can also set a dedicated `LocalPort` through which all non-pairing network traffic will flow. Using the same LocalPort for both headset and manager will prevent you from being able to run (i.e. test) both applications locally on a single machine. It is recommended to enable `AutoSetLocalPort`, which will automatically select an available networking port for you.
 
 <table><tr>
 <th>VR Headset Peer</th>
