@@ -12,7 +12,7 @@ You can manually connect the VR app (i.e. the host) and the manager (i.e. the cl
 RCAS_Peer.Instance.BeginHost();
 ```
 
-on the headset, and then 
+on the headset, and then
 
 ```
 RCAS_Peer.Instance.ConnectTo("192.168.178.42", 27016);
@@ -89,7 +89,7 @@ public class PairingUI : MonoBehaviour
         this.port = port;
     }
 
-    void Disconnected()
+    void Disconnected(System.Net.EndPoint EP)
     {
         PairingOfferPanel.gameObject.SetActive(false);
     }
