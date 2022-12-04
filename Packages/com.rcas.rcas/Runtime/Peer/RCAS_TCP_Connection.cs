@@ -120,7 +120,7 @@ namespace RCAS
         #endregion
 
         #region NETWORKING
-        internal bool OpenConnection(IPEndPoint LocalEndPoint)
+        internal bool OpenConnection(IPEndPoint OnLocalEndPoint)
         {
             if (isConnected || isAwaitingConnection)
             {
@@ -130,11 +130,10 @@ namespace RCAS
                 return false;
             }
 
-            Debug.Log($"Listening for new TCP Clients on {LocalEndPoint.Address}:{LocalEndPoint.Port}");
-
             try
             {
-                Listener = new TcpListener(LocalEndPoint);
+                Listener = new TcpListener(OnLocalEndPoint);
+                Debug.Log($"Listening for new TCP Clients on {LocalEndPoint.Address}:{LocalEndPoint.Port}");
 
                 ListenerTask = new Task(TaskFunc_Listener);
                 ListenerTask.Start();
