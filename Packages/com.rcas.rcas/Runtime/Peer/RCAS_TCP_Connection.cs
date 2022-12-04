@@ -30,14 +30,14 @@ namespace RCAS
         ConcurrentQueue<byte[]> SendQueue = new ConcurrentQueue<byte[]>();
         ConcurrentQueue<byte[]> ReceiveQueue = new ConcurrentQueue<byte[]>();
 
-        public delegate void dOnConnectionEstablished(IPEndPoint EP);
-        public dOnConnectionEstablished OnConnectionEstablished = delegate { };
+        internal delegate void dOnConnectionEstablished(IPEndPoint EP);
+        internal dOnConnectionEstablished OnConnectionEstablished = delegate { };
 
-        public delegate void dOnReceivedMessage(RCAS_TCPMessage msg);
-        public dOnReceivedMessage OnReceivedMessage = delegate { };
+        internal delegate void dOnReceivedMessage(RCAS_TCPMessage msg);
+        internal dOnReceivedMessage OnReceivedMessage = delegate { };
 
-        public delegate void dOnConnectionLost(IPEndPoint EP);
-        public dOnConnectionLost OnConnectionLost = delegate { };
+        internal delegate void dOnConnectionLost(IPEndPoint EP);
+        internal dOnConnectionLost OnConnectionLost = delegate { };
 
         public IPEndPoint LocalEndPoint
         {
@@ -182,7 +182,7 @@ namespace RCAS
             {
                 Listener?.Stop();
                 Client?.GetStream()?.Close();
-                Client?.Client?.Close();
+                //Client?.Client?.Close();
                 Client?.Close();
             }
             catch { }

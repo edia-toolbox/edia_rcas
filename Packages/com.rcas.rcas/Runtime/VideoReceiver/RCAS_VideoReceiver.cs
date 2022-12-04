@@ -15,12 +15,12 @@ namespace RCAS
                 Debug.LogWarning("RCAS_VideoReceiver has no DisplayTexture set!");
             }
 
-            RCAS_Peer.Instance.UDP.OnReceivedImage += OnReceiveNewFrame;
+            RCAS_Peer.Instance.OnReceivedImage += OnReceiveNewFrame;
         }
 
         private void OnDestroy()
         {
-            RCAS_Peer.Instance.UDP.OnReceivedImage -= OnReceiveNewFrame;
+            RCAS_Peer.Instance.OnReceivedImage -= OnReceiveNewFrame;
         }
 
         public void OnReceiveNewFrame(RCAS_UDPMessage msg)

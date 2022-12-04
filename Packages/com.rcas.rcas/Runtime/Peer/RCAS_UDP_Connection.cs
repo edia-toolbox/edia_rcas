@@ -18,14 +18,8 @@ namespace RCAS
     {
         // TODO: isConnected bool
 
-        public delegate void dOnReceivedMessage(RCAS_UDPMessage msg);
-        public dOnReceivedMessage OnReceivedMessage = delegate { };
-
-        public delegate void dOnReceivedPairingOffer(RCAS_UDPMessage msg);
-        public dOnReceivedPairingOffer OnReceivedPairingOffer = delegate { };
-
-        public delegate void dOnReceivedImage(RCAS_UDPMessage msg);
-        public dOnReceivedImage OnReceivedImage = delegate { };
+        internal delegate void dOnReceivedMessage(RCAS_UDPMessage msg);
+        internal dOnReceivedMessage OnReceivedMessage = delegate { };
 
         Task ReceiverTask;
         Task SenderTask;
@@ -220,20 +214,6 @@ namespace RCAS
         {
             RCAS_UDPMessage msg = new RCAS_UDPMessage(data);
             OnReceivedMessage.Invoke(msg);
-
-            switch (msg.GetChannel())
-            {
-                case RCAS_UDP_CHANNEL.RESERVED_PAIRING:
-                    {
-                        OnReceivedPairingOffer(msg);
-                        break;
-                    }
-                case RCAS_UDP_CHANNEL.RESERVED_JPEG_STREAM:
-                    {
-                        OnReceivedImage(msg);
-                        break;
-                    }
-            }
         }
     }
 }

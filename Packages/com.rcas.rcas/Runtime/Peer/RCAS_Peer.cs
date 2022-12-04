@@ -74,6 +74,9 @@ namespace RCAS
             TCP.OnConnectionEstablished += ConnectionEstablished;
             TCP.OnConnectionLost += ConnectionLost;
             TCP.OnReceivedMessage += ReceiveTCPMessage;
+            UDP.OnReceivedMessage += ReceiveUDPMessage;
+
+            RegisterAllRemoteEvents();
         }
 
         private void Start()
@@ -116,10 +119,17 @@ namespace RCAS
         public delegate void dOnConnectionLost(IPEndPoint EP);
         public dOnConnectionLost OnConnectionLost = delegate { };
 
+        public delegate void dOnReceivedImage(RCAS_UDPMessage msg);
+        public dOnReceivedImage OnReceivedImage = delegate { };
+
+        public delegate void dOnReceivedTCPMessage(RCAS_TCPMessage msg);
+        public dOnReceivedTCPMessage OnReceivedTCPMessage = delegate { };
+
+        public delegate void dOnReceivedUDPMessage(RCAS_UDPMessage msg);
+        public dOnReceivedUDPMessage OnReceivedUDPMessage = delegate { };
+
 
         public void SendImage(byte[] raw_img_data) => UDP.SendImage(raw_img_data, TCP.RemoteEndPoint);
-
-
         #endregion
 
         #region PAIRING
@@ -178,17 +188,12 @@ namespace RCAS
         IEnumerator StartDevicePairingSearch()
         {
             yield return new WaitForSeconds(1);
-            RCAS_UDP_Connection.dOnReceivedPairingOffer callback = (m) =>
-            {
-                (var ip, var port, var info) = RCAS.RCAS_UDPMessage.DecodePairingOffer(m);
-                this.OnReceivedPairingOffer.Invoke(ip, port, info);
-            };
 
-            PAIRING.OnReceivedPairingOffer += callback;
+            PAIRING.OnReceivedMessage += ReceivePairingOffer;
 
             yield return new WaitUntil(() => isConnected);
 
-            PAIRING.OnReceivedPairingOffer -= callback;
+            PAIRING.OnReceivedMessage -= ReceivePairingOffer;
 
             EndPairing();
         }
@@ -225,6 +230,33 @@ namespace RCAS
                         break;
                     }
             }
+            OnReceivedTCPMessage(msg);
+        }
+
+        void ReceiveUDPMessage(RCAS_UDPMessage msg)
+        {
+            switch (msg.GetChannel())
+            {
+                case RCAS_UDP_CHANNEL.RESERVED_PAIRING:
+                    {
+                        ReceivePairingOffer(msg);
+                        break;
+                    }
+                case RCAS_UDP_CHANNEL.RESERVED_JPEG_STREAM:
+                    {
+                        OnReceivedImage(msg);
+                        break;
+                    }
+            }
+            OnReceivedUDPMessage(msg);
+        }
+
+        void ReceivePairingOffer(RCAS_UDPMessage msg)
+        {
+            if (msg.GetChannel() != RCAS_UDP_CHANNEL.RESERVED_PAIRING) return;
+
+            (var v1, var v2, var v3) = RCAS_UDPMessage.DecodePairingOffer(msg);
+            OnReceivedPairingOffer(v1, v2, v3);
         }
         #endregion
 
