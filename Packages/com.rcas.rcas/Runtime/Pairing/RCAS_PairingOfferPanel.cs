@@ -44,7 +44,7 @@ namespace RCAS.Samples
             this.port = port;
         }
 
-        void Disconnected()
+        void Disconnected(System.Net.EndPoint EP)
         {
             PairingOfferPanel.gameObject.SetActive(false);
         }

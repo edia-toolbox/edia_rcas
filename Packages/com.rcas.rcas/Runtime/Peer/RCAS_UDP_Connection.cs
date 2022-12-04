@@ -16,7 +16,7 @@ namespace RCAS
 {
     public sealed class RCAS_UDP_Connection : System.IDisposable
     {
-        public int LocalPort => Peer.LocalPort;
+        // TODO: isConnected bool
 
         public delegate void dOnReceivedMessage(RCAS_UDPMessage msg);
         public dOnReceivedMessage OnReceivedMessage = delegate { };
@@ -30,9 +30,7 @@ namespace RCAS
         Task ReceiverTask;
         Task SenderTask;
 
-        static UdpClient Client;
-
-        public RCAS_Peer Peer { get; private set; }
+        UdpClient Client;
 
         CancellationTokenSource CTS;
 
@@ -55,46 +53,56 @@ namespace RCAS
         /// <summary>
         /// Sends a UDP message to a remote peer if currently connected to one
         /// </summary>
-        public void SendMessage(RCAS_UDPMessage msg)
+        public void SendMessage(RCAS_UDPMessage msg, IPEndPoint EP)
         {
-            SendQueue.Enqueue((msg.raw_data.ToArray(), null));
+            if (Client == null) return;
+
+            SendQueue.Enqueue((msg.raw_data.ToArray(), EP));
         }
 
         /// <summary>
         /// Sends a UDP message to a remote peer if currently connected to one
         /// </summary>
-        public void SendMessage(string msg, RCAS_UDP_CHANNEL channel)
+        public void SendMessage(string msg, RCAS_UDP_CHANNEL channel, IPEndPoint EP)
         {
-            SendMessage(new RCAS_UDPMessage(msg, channel));
+            SendMessage(new RCAS_UDPMessage(msg, channel), EP);
         }
 
         /// <summary>
         /// Sends a JPEG image to a remote peer if currently connected to one
         /// </summary>
-        public void SendImage(byte[] ImageData)
+        public void SendImage(byte[] ImageData, IPEndPoint EP)
         {
-            SendMessage(RCAS_UDPMessage.EncodeImage(ImageData));
+            SendMessage(RCAS_UDPMessage.EncodeImage(ImageData), EP);
         }
 
         /// <summary>
         /// Send a message to all devices on a local network to Peer.RemotePort
         /// </summary>
-        public void BroadcastMessage(RCAS_UDPMessage msg)
+        public void BroadcastMessage(RCAS_UDPMessage msg, int port)
         {
-            SendQueue.Enqueue((msg.raw_data.ToArray(), new IPEndPoint(System.Net.IPAddress.Broadcast, Peer.RemotePort)));
+            SendQueue.Enqueue((msg.raw_data.ToArray(), new IPEndPoint(System.Net.IPAddress.Broadcast, port)));
         }
 
         /// <summary>
         /// Send a message to all devices on a local network to Peer.RemotePort
         /// </summary>
-        public void BroadcastMessage(string message, RCAS_UDP_CHANNEL channel)
+        public void BroadcastMessage(string message, RCAS_UDP_CHANNEL channel, int port)
         {
-            BroadcastMessage(new RCAS_UDPMessage(message, channel));
+            BroadcastMessage(new RCAS_UDPMessage(message, channel), port);
         }
 
-        public RCAS_UDP_Connection(RCAS_Peer peer)
+        public RCAS_UDP_Connection()
         {
-            this.Peer = peer;
+            // Need internet access on android
+            Debug.Assert(Permission.HasUserAuthorizedPermission("android.permission.INTERNET"));
+        }
+
+        public void Connect(IPEndPoint LocalEndPoint)
+        {
+            if (Client != null) return; // already connected
+
+            Debug.Log($"New UDP Connection on {LocalEndPoint.Address}:{LocalEndPoint.Port}");
 
             CTS = new CancellationTokenSource();
 
@@ -106,7 +114,7 @@ namespace RCAS
                 Client = new UdpClient();
                 Client.ExclusiveAddressUse = false;
                 Client.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-                Client.Client.Bind(Peer.LocalEndPoint);
+                Client.Client.Bind(LocalEndPoint);
             }
             Client.EnableBroadcast = true;
 
@@ -144,7 +152,7 @@ namespace RCAS
 
                         if (SendQueue.TryDequeue(out var item))
                         {
-                            Client.Send(item.Item1, item.Item1.Length, item.Item2 != null ? item.Item2 : Peer.RemoteEndpoint);
+                            Client.Send(item.Item1, item.Item1.Length, item.Item2 != null ? item.Item2 : RCAS_Peer.Instance.TCP.RemoteEndPoint);
                         }
                     }
                     catch (TaskCanceledException)
@@ -174,6 +182,8 @@ namespace RCAS
 
         private async Task TaskFunc_Receiver(CancellationToken CT)
         {
+            IPEndPoint EP = (IPEndPoint)Client.Client.LocalEndPoint;
+            Debug.Log($"Receiving on: {EP.Address}:{EP.Port}");
             try
             {
                 while (true)

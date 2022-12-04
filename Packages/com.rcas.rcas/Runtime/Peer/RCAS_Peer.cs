@@ -23,6 +23,7 @@ namespace RCAS
 
         public RCAS_TCP_Connection TCP;
         public RCAS_UDP_Connection UDP;
+        public RCAS_UDP_Connection PAIRING;
 
         public bool isHost = false;
 
@@ -30,8 +31,7 @@ namespace RCAS
         public bool startPairingFunctionOnDisconnect = false;
         public bool isPairing { get; private set; }
 
-        public int LocalPort = 27015;
-        public int RemotePort = 27016;
+        public int PairingPort = 27015;
 
         public string deviceName = "HTC Vive Focus 3";
 
@@ -45,9 +45,11 @@ namespace RCAS
             }
         }
 
-        public IPEndPoint LocalEndPoint { get; private set; } = null;
+        //public IPEndPoint LocalEndPoint => TCP.LocalEndPoint;
 
-        public IPEndPoint RemoteEndpoint { get; private set; } = null;
+        public IPEndPoint LocalEndPoint_init => new IPEndPoint(IPAddress.Parse(localIPAddress), 0);
+
+        //public IPEndPoint RemoteEndpoint => TCP.RemoteEndPoint;
         #endregion
 
         #region MONOBEHAVIOUR
@@ -62,21 +64,27 @@ namespace RCAS
 
             Instance ??= this;
 
-            LocalEndPoint = new IPEndPoint(IPAddress.Parse(localIPAddress), LocalPort);
+            /*
+            if (!AutoSetLocalPort)
+            {
+                LocalEndPoint = new IPEndPoint(IPAddress.Parse(localIPAddress), LocalPort);
+            }
+            else
+            {
+                LocalEndPoint = new IPEndPoint(IPAddress.Parse(localIPAddress), 0);
+                LocalPort = LocalEndPoint.Port;
+            }
+            */
 
 
-            TCP = new RCAS_TCP_Connection(this);
-            UDP = new RCAS_UDP_Connection(this);
+            TCP = new RCAS_TCP_Connection();
+            UDP = new RCAS_UDP_Connection();
+            PAIRING = new RCAS_UDP_Connection();
 
             TCP.OnConnectionEstablished += ConnectionEstablished;
             TCP.OnConnectionEstablished += (m) => this.OnConnectionEstablished.Invoke(m);
             TCP.OnConnectionLost += ConnectionLost;
-            TCP.OnConnectionLost += () => this.OnConnectionLost.Invoke();
-            UDP.OnReceivedPairingOffer += (m) =>
-            {
-                (var ip, var port, var info) = RCAS.RCAS_UDPMessage.DecodePairingOffer(m);
-                this.OnReceivedPairingOffer.Invoke(ip, port, info);
-            };
+            TCP.OnConnectionLost += (m) => this.OnConnectionLost.Invoke(m);
         }
 
         private void Start()
@@ -86,21 +94,23 @@ namespace RCAS
 
         private void Update()
         {
-            UDP.Update();
-            TCP.Update();
+            PAIRING?.Update();
+            UDP?.Update();
+            TCP?.Update();
         }
 
         private void OnDestroy()
         {
-            UDP.Dispose();
-            TCP.Dispose();
+            PAIRING?.Dispose();
+            UDP?.Dispose();
+            TCP?.Dispose();
         }
         #endregion
 
         #region NETWORKING
-        public void OpenConnection() => TCP.OpenConnection();
+        public void OpenConnection() => TCP.OpenConnection(LocalEndPoint_init);
 
-        public void ConnectTo(string IP, int port) => TCP.ConnectTo(IP, port);
+        public void ConnectTo(string IP, int port) => TCP.ConnectTo(IP, port, LocalEndPoint_init);
 
         public void CloseConnection() => TCP.CloseConnection();
 
@@ -111,11 +121,14 @@ namespace RCAS
         public delegate void dOnReceivedPairingOffer(string IPAddress, int Port, string DeviceInfo);
         public dOnReceivedPairingOffer OnReceivedPairingOffer = delegate { };
 
-        public delegate void dOnConnectionEstablished(EndPoint endpoint);
+        public delegate void dOnConnectionEstablished(IPEndPoint EP);
         public dOnConnectionEstablished OnConnectionEstablished = delegate { };
 
-        public delegate void dOnConnectionLost();
+        public delegate void dOnConnectionLost(IPEndPoint EP);
         public dOnConnectionLost OnConnectionLost = delegate { };
+
+
+        public void SendImage(byte[] raw_img_data) => UDP.SendImage(raw_img_data, TCP.RemoteEndPoint);
 
 
         #endregion
@@ -130,16 +143,27 @@ namespace RCAS
             }
 
             isPairing = true;
-            if(isHost)
+            
+            PAIRING.Connect(new IPEndPoint(IPAddress.Any, PairingPort));
+
+            if (isHost)
             {
                 TCP.CloseConnection();
-                TCP.OpenConnection();
+                TCP.OpenConnection(LocalEndPoint_init);
                 StartCoroutine(StartDevicePairingBroadcast());
             }
             else
             {
                 StartCoroutine(StartDevicePairingSearch());
             }
+        }
+
+        public void EndPairing()
+        {
+            if (!isPairing) return;
+
+            isPairing = false;
+            // TODO: Stop PAIRING object
         }
 
         IEnumerator StartDevicePairingBroadcast()
@@ -150,25 +174,34 @@ namespace RCAS
             {
                 yield return new WaitForSeconds(1);
 
-                UDP.BroadcastMessage(RCAS_UDPMessage.EncodePairingOffer(
+                PAIRING.BroadcastMessage(RCAS_UDPMessage.EncodePairingOffer(
                     localIPAddress,
-                    LocalPort,
-                    deviceName)
+                    TCP.LocalEndPoint.Port,
+                    deviceName),
+                    PairingPort
                 );
             }
 
-            isPairing=false;
+            EndPairing();
         }
 
 
         IEnumerator StartDevicePairingSearch()
         {
             yield return new WaitForSeconds(1);
-            //UDP.StartReceiver();
+            RCAS_UDP_Connection.dOnReceivedPairingOffer callback = (m) =>
+            {
+                (var ip, var port, var info) = RCAS.RCAS_UDPMessage.DecodePairingOffer(m);
+                this.OnReceivedPairingOffer.Invoke(ip, port, info);
+            };
+
+            PAIRING.OnReceivedPairingOffer += callback;
 
             yield return new WaitUntil(() => isConnected);
 
-            isPairing = false;
+            PAIRING.OnReceivedPairingOffer -= callback;
+
+            EndPairing();
         }
         #endregion
 
@@ -177,14 +210,13 @@ namespace RCAS
         {
             IPEndPoint EP = (IPEndPoint)endpoint;
             Debug.Log($"Connection established with: {EP.Address}:{EP.Port}");
-            RemoteEndpoint = EP;
+            //RemoteEndpoint = EP;
+            UDP.Connect(TCP.LocalEndPoint);
         }
 
-        void ConnectionLost()
+        void ConnectionLost(IPEndPoint EP)
         {
-            Debug.Log($"Connection to {RemoteEndpoint.Address}:{RemoteEndpoint.Port} lost.");
-
-            RemoteEndpoint = null;
+            Debug.Log($"Connection to {EP.Address}:{EP.Port} lost.");
 
             if (startPairingFunctionOnDisconnect)
             {

@@ -16,8 +16,7 @@ namespace RCAS
 {
     public sealed class RCAS_TCP_Connection : System.IDisposable
     {
-        internal int LocalPort => Peer.LocalPort;
-
+        #region MEMBERS
         internal bool isConnected => Client is not null && Client.Connected;
         internal bool isAwaitingConnection => ListenerTask != null && ListenerTask.Status != TaskStatus.Running;
 
@@ -31,23 +30,37 @@ namespace RCAS
         ConcurrentQueue<byte[]> SendQueue = new ConcurrentQueue<byte[]>();
         ConcurrentQueue<byte[]> ReceiveQueue = new ConcurrentQueue<byte[]>();
 
-        public RCAS_Peer Peer { get; private set; }
-
         public Dictionary<string, List<System.Action<string[]>>> RemoteEvents = new Dictionary<string, List<System.Action<string[]>>>();
 
-        public delegate void dOnConnectionEstablished(EndPoint endpoint);
+        public delegate void dOnConnectionEstablished(IPEndPoint EP);
         public dOnConnectionEstablished OnConnectionEstablished = delegate { };
 
         public delegate void dOnReceivedMessage(RCAS_TCPMessage msg);
         public dOnReceivedMessage OnReceivedMessage = delegate { };
 
-        public delegate void dOnConnectionLost();
+        public delegate void dOnConnectionLost(IPEndPoint EP);
         public dOnConnectionLost OnConnectionLost = delegate { };
 
-        public RCAS_TCP_Connection(RCAS_Peer peer)
+        public IPEndPoint LocalEndPoint
         {
-            this.Peer = peer;
+            get
+            {
+                return (IPEndPoint)(Listener != null ? Listener.LocalEndpoint : Client?.Client?.LocalEndPoint);
+            }
+        }
 
+        public IPEndPoint RemoteEndPoint
+        {
+            get
+            {
+                return (IPEndPoint)Client?.Client?.RemoteEndPoint;
+            }
+        }
+        #endregion
+
+        #region INIT
+        public RCAS_TCP_Connection()
+        {
             // Find any and all methods marked as "RemoteEvent" in all assemplies:
             var methodsMarked =
                 from a in System.AppDomain.CurrentDomain.GetAssemblies()
@@ -100,7 +113,9 @@ namespace RCAS
             }
             RemoteEvents[eventName].Add(action);
         }
+        #endregion
 
+        #region SENDMESSAGE
         public void SendMessage(string message, RCAS_TCP_CHANNEL channel)
         {
             SendMessage(new RCAS_TCPMessage(message, channel));
@@ -130,19 +145,23 @@ namespace RCAS
         {
             SendRemoteEvent(eventName, "");
         }
+        #endregion
 
+        #region UPDATE
         private bool prev_Connected = false;
+        IPEndPoint prev_RemoteEP = null;
         internal void Update()
         {
             if (!prev_Connected && isConnected)
             {
-                OnConnectionEstablished.Invoke(Client.Client.RemoteEndPoint);
+                OnConnectionEstablished.Invoke(RemoteEndPoint);
             }
             else if(prev_Connected && !isConnected)
             {
-                OnConnectionLost.Invoke();
+                OnConnectionLost.Invoke(prev_RemoteEP);
             }
             prev_Connected = isConnected;
+            prev_RemoteEP = RemoteEndPoint;
 
             if (ReceiveQueue.TryDequeue(out var item))
             {
@@ -150,7 +169,9 @@ namespace RCAS
                 ProcessData(data);
             }
         }
+        #endregion
 
+        #region MISC
         private void ProcessData(byte[] receiveData)
         {
             RCAS_TCPMessage msg = new RCAS_TCPMessage(receiveData);
@@ -185,10 +206,12 @@ namespace RCAS
             (string eventName, string[] args) = RCAS_TCPMessage.DecodeRemoteEvent(msg);
             TriggerEvent(eventName, args);
         }
+        #endregion
 
-        internal bool OpenConnection()
+        #region NETWORKING
+        internal bool OpenConnection(IPEndPoint LocalEndPoint)
         {
-            if (isConnected || isAwaitingConnection || !RCAS_Peer.Instance.isHost)
+            if (isConnected || isAwaitingConnection)
             {
                 Debug.LogError("Tried to connect to a TCP EndPoint whilst awaiting a client or already connected!");
                 return false;
@@ -198,7 +221,7 @@ namespace RCAS
 
             try
             {
-                Listener = new TcpListener(Peer.LocalEndPoint);
+                Listener = new TcpListener(LocalEndPoint);
 
                 ListenerTask = new Task(TaskFunc_Listener);
                 ListenerTask.Start();
@@ -212,10 +235,10 @@ namespace RCAS
             }
         }
 
-        internal bool ConnectTo(string ipAddress, int port)
+        internal bool ConnectTo(string ipAddress, int port, IPEndPoint LocalEndPoint)
         {
             // Ensure we are not awaiting connection already
-            if(isConnected || isAwaitingConnection || RCAS_Peer.Instance.isHost)
+            if(isConnected || isAwaitingConnection)
             {
                 Debug.LogError("Tried to connect to a TCP EndPoint whilst awaiting a client or already connected!");
                 return false;
@@ -224,7 +247,7 @@ namespace RCAS
             try
             {
                 Debug.Log($"Trying to connect to {ipAddress}:{port}");
-                Client = new TcpClient(Peer.LocalEndPoint);
+                Client = new TcpClient(LocalEndPoint);
                 Client.Connect(ipAddress, port);
 
                 ReceiverTask = new Task(TaskFunc_Receiver);
@@ -254,7 +277,9 @@ namespace RCAS
             catch { }
             Client = null;
         }
+        #endregion
 
+        #region TASKS
         private void TaskFunc_Listener()
         {
             try
@@ -317,6 +342,7 @@ namespace RCAS
                 Debug.Log("Sender ended");
             }
         }
+        #endregion
 
         public void Dispose()
         {

@@ -66,7 +66,7 @@ namespace RCAS
                 // Send tex_data
                 if (RCAS_Peer.Instance.isConnected)
                 {
-                    RCAS_Peer.Instance.UDP.SendImage(tex_data);
+                    RCAS_Peer.Instance.SendImage(tex_data);
                 }
             }
         }
