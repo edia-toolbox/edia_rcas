@@ -26,15 +26,19 @@ namespace RCAS
         public RCAS_UDP_Connection UDP;
         public RCAS_UDP_Connection PAIRING;
 
+        [Header("Device")]
         public bool isHost = false;
+        public string deviceName = "HTC Vive Focus 3";
 
+        [Header("Ports")]
+        public int PairingPort = 27015;
+        public bool AutoSetLocalPort = true;
+        public int LocalPort = 27016;
+
+        [Header("Pairing")]
         public bool startPairingFunctionOnStart = true;
         public bool startPairingFunctionOnDisconnect = false;
         public bool isPairing { get; private set; }
-
-        public int PairingPort = 27015;
-
-        public string deviceName = "HTC Vive Focus 3";
 
         private string _localIPAddress = "";
         public string localIPAddress
@@ -45,12 +49,19 @@ namespace RCAS
                 return _localIPAddress;
             }
         }
+        private IPEndPoint LocalEndPoint_init => new IPEndPoint(IPAddress.Parse(localIPAddress), AutoSetLocalPort ? 0 : LocalPort);
 
-        //public IPEndPoint LocalEndPoint => TCP.LocalEndPoint;
+        public IPEndPoint GetCurrentRemoteEndpoint()
+        {
+            // TODO: possible warning if not connected?
+            return TCP.RemoteEndPoint;
+        }
+        public IPEndPoint GetCurrentLocalEndpoint()
+        {
+            // TODO: possible warning if not connected?
+            return TCP.LocalEndPoint;
+        }
 
-        public IPEndPoint LocalEndPoint_init => new IPEndPoint(IPAddress.Parse(localIPAddress), 0);
-
-        //public IPEndPoint RemoteEndpoint => TCP.RemoteEndPoint;
 
         public Dictionary<string, List<System.Action<string[]>>> RemoteEvents = new Dictionary<string, List<System.Action<string[]>>>();
         #endregion
@@ -128,13 +139,13 @@ namespace RCAS
         public delegate void dOnReceivedUDPMessage(RCAS_UDPMessage msg);
         public dOnReceivedUDPMessage OnReceivedUDPMessage = delegate { };
 
-        public void SendImage(byte[] raw_img_data) => UDP.SendImage(raw_img_data, TCP.RemoteEndPoint);
+        public void SendImage(byte[] raw_img_data) => UDP.SendImage(raw_img_data, GetCurrentRemoteEndpoint());
 
         public void SendTCPMessage(RCAS_TCPMessage msg) => TCP.SendMessage(msg);
         public void SendTcpMessage(string msg, RCAS_TCP_CHANNEL channel) => TCP.SendMessage(msg, channel);
 
-        public void SendUDPMessage(RCAS_UDPMessage msg) => UDP.SendMessage(msg, TCP.RemoteEndPoint);
-        public void SendUDPMessage(string msg, RCAS_UDP_CHANNEL channel) => UDP.SendMessage(msg, channel, TCP.RemoteEndPoint);
+        public void SendUDPMessage(RCAS_UDPMessage msg) => UDP.SendMessage(msg, GetCurrentRemoteEndpoint());
+        public void SendUDPMessage(string msg, RCAS_UDP_CHANNEL channel) => UDP.SendMessage(msg, channel, GetCurrentRemoteEndpoint());
         public void BroadcastUDPMessage(RCAS_UDPMessage msg, int port) => UDP.BroadcastMessage(msg, port);
         public void BroadcastUDPMessage(string msg, RCAS_UDP_CHANNEL channel, int port) => UDP.BroadcastMessage(msg, channel, port);
 
@@ -185,7 +196,7 @@ namespace RCAS
 
                 PAIRING.BroadcastMessage(RCAS_UDPMessage.EncodePairingOffer(
                     localIPAddress,
-                    TCP.LocalEndPoint.Port,
+                    GetCurrentLocalEndpoint().Port,
                     deviceName),
                     PairingPort
                 );
@@ -215,7 +226,7 @@ namespace RCAS
             IPEndPoint EP = (IPEndPoint)endpoint;
             Debug.Log($"Connection established with: {EP.Address}:{EP.Port}");
             //RemoteEndpoint = EP;
-            UDP.Connect(TCP.LocalEndPoint);
+            UDP.Connect(GetCurrentLocalEndpoint());
             this.OnConnectionEstablished.Invoke(EP);
         }
 
