@@ -3,7 +3,7 @@
 Remote events let you run functions remotely to trigger certain actions.
 RemoteEvents are triggered over TCP and are thus reliable.
 
-To designate a remote event, simply mark a function with the `RCAS.RCAS_RemoteEvent` attribute:
+To designate a remote event, simply mark a function with the `RCAS.RCAS_RemoteEvent` attribute. The function needs to be static.
 
 ```csharp
 [RCAS_RemoteEvent("some_custom_event")]
