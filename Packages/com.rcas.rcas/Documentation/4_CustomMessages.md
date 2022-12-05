@@ -15,11 +15,11 @@ RCAS_Peer.Instance.BroadcastUDPMessage("MyMessage", RCAS_UDP_CHANNEL.CUSTOM_3, P
 ```
 
 Where the first parameter is the message, and the second the channel to send it over.
-`UDP.BroadcastMessage` sends the message to all devices on the network listening on the given port. The Pairing process uses `PairingPort` in this instance.
+`BroadcastUDPMessage` sends the message to all devices on the network listening on the given port. The Pairing process uses `PairingPort` in this instance.
 
 ## Receiving Messages
 
-Receiving and processing messages can be done through the `OnReceivedRCPMessage` and `OnReceivedUDPMessage` callbacks.
+Receiving and processing messages can be done through the `OnReceivedTCPMessage` and `OnReceivedUDPMessage` callbacks.
 
 Below is a simple example which continuously synchronizes a random float variable over the `CUSTOM_2` TCP channel:
 

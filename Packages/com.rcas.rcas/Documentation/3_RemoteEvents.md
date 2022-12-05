@@ -21,7 +21,7 @@ Remote Events can also take arguments in the form of a string, or an array of st
 <th>Headset</th>
 <th>Manager</th>
 </tr><tr><td>
-    
+
 ```csharp
 using RCAS;
 
@@ -40,7 +40,9 @@ static void SetParams(string [] args) {
     Debug.Log($"Parameters received: {args[0]}, {args[1]}, {args[2]}");
 }
 ```
+
 </td><td>
+
 ```csharp
 using RCAS;
 
@@ -56,5 +58,6 @@ void SetParamsOnRemotePeer() {
     RCAS_Peer.Instance.TriggerRemoteEvent("set_params", new string[] { "12", "eleven", "Paris" });
 }
 ```
+
 </td></tr>
 </table>

@@ -363,11 +363,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isHost: 0
+  deviceName: PC Client
+  PairingPort: 27015
+  AutoSetLocalPort: 1
+  LocalPort: 27016
   startPairingFunctionOnStart: 1
   startPairingFunctionOnDisconnect: 1
-  LocalPort: 27015
-  RemotePort: 27016
-  deviceName: PC Client
 --- !u!1 &138199820
 GameObject:
   m_ObjectHideFlags: 0

@@ -29,9 +29,9 @@ You can also set a dedicated `LocalPort` through which all non-pairing network t
 <th>Manager App Peer</th>
 </tr><tr><td>
 
-![img](https://i.imgur.com/RwM98dD.png)    
+![img](https://i.imgur.com/AMhHwCu.png)    
 </td><td>
-![img](https://i.imgur.com/CEmH0Vj.png)
+![img](https://i.imgur.com/PBe4925.png)
 </td></tr>
 </table>
 
