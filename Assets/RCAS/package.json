@@ -16,5 +16,12 @@
     "url": "https://benjamin.kahl.fi"
   },
   "type": "library",
+  "samples": [
+    {
+       "displayName": "Demoscenes",
+       "description": "Example PC and HMD client",
+       "path": "Samples/PC_HMD_Clients"
+    }
+  ],
   "hideInEditor": false
 }

@@ -11,21 +11,6 @@
       },
       "url": "https://npm-registry.vive.com"
     },
-    "com.htc.upm.wave.xrsdk": {
-      "version": "5.0.3-r.5",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.xr.management": "3.0.6"
-      },
-      "url": "https://npm-registry.vive.com"
-    },
-    "com.rcas.rcas": {
-      "version": "file:com.rcas.rcas",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {}
-    },
     "com.unity.collab-proxy": {
       "version": "1.17.6",
       "depth": 0,
@@ -89,7 +74,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.inputsystem": {
-      "version": "1.4.3",
+      "version": "1.4.2",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -112,7 +97,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.services.core": {
-      "version": "1.5.2",
+      "version": "1.4.0",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -224,7 +209,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.legacyinputhelpers": {
-      "version": "2.1.10",
+      "version": "2.1.9",
       "depth": 1,
       "source": "registry",
       "dependencies": {

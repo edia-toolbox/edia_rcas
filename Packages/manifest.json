@@ -1,7 +1,6 @@
 {
   "dependencies": {
     "com.htc.upm.wave.openxr": "1.0.3",
-    "com.htc.upm.wave.xrsdk": "5.0.3-r.5",
     "com.unity.collab-proxy": "1.17.6",
     "com.unity.feature.development": "1.0.1",
     "com.unity.ide.rider": "3.0.15",
