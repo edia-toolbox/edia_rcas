@@ -1,11 +1,9 @@
 {
   "name": "com.rcas.rcas",
-  "version": "0.1.0",
   "displayName": "RCAS",
-  "description": "Package for remotely controling and streaming to another device.",
+  "version": "0.1.0",
   "unity": "2021.3",
-  "unityRelease": "13f1",
-  "dependencies": {},
+  "description": "Package for remotely controling and streaming to another device.",
   "keywords": [
     "vr"
   ],
@@ -14,6 +12,7 @@
     "email": "benjamin@kahl.fi",
     "url": "https://benjamin.kahl.fi"
   },
+  "dependencies": {},
   "samples": [
     {
       "displayName": "Demoscenes",
