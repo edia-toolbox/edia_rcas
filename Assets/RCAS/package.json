@@ -5,8 +5,7 @@
   "description": "Package for remotely controling and streaming to another device.",
   "unity": "2021.3",
   "unityRelease": "13f1",
-  "dependencies": {
-  },
+  "dependencies": {},
   "keywords": [
     "vr"
   ],
@@ -15,12 +14,11 @@
     "email": "benjamin@kahl.fi",
     "url": "https://benjamin.kahl.fi"
   },
-  "type": "library",
   "samples": [
     {
-       "displayName": "Demoscenes",
-       "description": "Example PC and HMD client",
-       "path": "Samples/PC_HMD_Clients"
+      "displayName": "Demoscenes",
+      "description": "Example PC and HMD client",
+      "path": "Samples/PC_HMD_Clients"
     }
   ],
   "hideInEditor": false
