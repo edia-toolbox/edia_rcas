@@ -4,7 +4,7 @@ RCAS (Remote-Control-And-Streaming) is a Unity framework intended to enable remo
 
 To use RCAS in a Unity project, follow these steps:
 
-- Download the tarball-package from [here](https://gitlab.gwdg.de/3dia/edia_manager/-/raw/main/tarballs/com.rcas.rcas-0.1.0.tgz).
+- Download the tarball-package from [here](https://gitlab.gwdg.de/3dia/edia_rcas/-/raw/main/tarballs/com.rcas.rcas-0.1.0.tgz).
 OR
 - In the Unity Editor, navigate to `Window > Package Manager`.
 - Click on the "+" in the top-left and click on `Add package from git URL`.
@@ -48,7 +48,7 @@ Each RCAS_Peers has several callback delegates you can use, including `Peer.OnEs
 
 For details on each specific feature, consult the indicidual documenation:
 
-- [Device-Pairing](https://gitlab.gwdg.de/3dia/edia_manager/-/blob/main/Assets/RCAS/Documentation/1_DevicePairing.md)
-- [Video-Streaming](https://gitlab.gwdg.de/3dia/edia_manager/-/blob/main/Assets/RCAS/Documentation/2_VideoStream.md)
-- [Remote-Events](https://gitlab.gwdg.de/3dia/edia_manager/-/blob/main/Assets/RCAS/Documentation/3_RemoteEvents.md)
-- [Custom-Messages](https://gitlab.gwdg.de/3dia/edia_manager/-/blob/main/Assets/RCAS/Documentation/4_CustomMessages.md)
+- [Device-Pairing](https://gitlab.gwdg.de/3dia/edia_rcas/-/blob/main/Assets/RCAS/Documentation/1_DevicePairing.md)
+- [Video-Streaming](https://gitlab.gwdg.de/3dia/edia_rcas/-/blob/main/Assets/RCAS/Documentation/2_VideoStream.md)
+- [Remote-Events](https://gitlab.gwdg.de/3dia/edia_rcas/-/blob/main/Assets/RCAS/Documentation/3_RemoteEvents.md)
+- [Custom-Messages](https://gitlab.gwdg.de/3dia/edia_rcas/-/blob/main/Assets/RCAS/Documentation/4_CustomMessages.md)
