@@ -5,9 +5,10 @@ RCAS (Remote-Control-And-Streaming) is a Unity framework intended to enable remo
 To use RCAS in a Unity project, follow these steps:
 
 - Download the tarball-package from [here](https://gitlab.gwdg.de/3dia/edia_manager/-/raw/main/tarballs/com.rcas.rcas-0.1.0.tgz).
+OR
 - In the Unity Editor, navigate to `Window > Package Manager`.
-- Click on the "+" in the top-left and click on `Add package from tarball...`.
-- Select the downloaded package and wait for the import to complete.
+- Click on the "+" in the top-left and click on `Add package from git URL`.
+- Copy paste `https://gitlab.gwdg.de/3dia/edia_rcas.git?path=Assets/RCAS` in the field.
 
 Alternatively, you can also clone this repository and open it as a new Unity project.
 
