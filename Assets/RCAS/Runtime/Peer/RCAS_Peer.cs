@@ -17,13 +17,11 @@ namespace RCAS
     public sealed class RCAS_Peer : MonoBehaviour
     {
         #region MEMBERS
-        public static RCAS_Peer Instance {
-            get{
-                if(_Instance==null) _Instance = FindObjectOfType<RCAS_Peer>();
-                return _Instance;
-            }
-            private set{
-                _Instance = value;
+        public static RCAS_Peer Instance
+        {
+            get
+            {
+                return _Instance ?? Initialize();
             }
         }
 
@@ -79,14 +77,15 @@ namespace RCAS
         #region MONOBEHAVIOUR
         private void Awake()
         {
-            if(Instance)
+            if (!_Instance || _Instance == this)
             {
-                Debug.LogError("A new RCAS_Peer object was instantiated whilst another already exists!. RCAS_Peer is a singleton object.");
-                Destroy(this);
-                return;
+                _Instance = this;
             }
-
-            _Instance ??= this;
+            else
+            {
+                Debug.LogWarning("RCAS_Peer is a Singleton but another instance was created! Destroying...");
+                Destroy(gameObject);
+            }
 
             TCP = new RCAS_TCP_Connection();
             UDP = new RCAS_UDP_Connection();
@@ -98,6 +97,19 @@ namespace RCAS
             UDP.OnReceivedMessage += ReceiveUDPMessage;
 
             RegisterAllRemoteEvents();
+        }
+
+        private static RCAS_Peer Initialize()
+        {
+            _Instance = FindObjectOfType<RCAS_Peer>();
+            if (_Instance == null)
+            {
+                Debug.LogWarning("Singleton object has no instance! - Creating one...");
+                GameObject obj = new GameObject();
+                obj.name = typeof(RCAS_Peer).Name;
+                _Instance = obj.AddComponent<RCAS_Peer>();
+            }
+            return _Instance;
         }
 
         private void Start()
@@ -167,7 +179,7 @@ namespace RCAS
         #region PAIRING
         public void BeginPairing()
         {
-            if(isPairing)
+            if (isPairing)
             {
                 Debug.LogWarning("Tried to start pairing-process on RCAS_Peer whilst it already is running. Aborting...");
                 return;
@@ -240,7 +252,7 @@ namespace RCAS
         {
             IPEndPoint EP = (IPEndPoint)endpoint;
             Debug.Log($"Connection established with: {EP.Address}:{EP.Port}");
-            
+
             UDP.Connect(GetCurrentLocalEndpoint());
             this.OnConnectionEstablished.Invoke(EP);
         }
