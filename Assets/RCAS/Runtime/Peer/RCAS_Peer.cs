@@ -17,7 +17,17 @@ namespace RCAS
     public sealed class RCAS_Peer : MonoBehaviour
     {
         #region MEMBERS
-        public static RCAS_Peer Instance;
+        public static RCAS_Peer Instance {
+            get{
+                if(_Instance==null) _Instance = FindObjectOfType<RCAS_Peer>();
+                return _Instance;
+            }
+            private set{
+                _Instance = value;
+            }
+        }
+
+        private static RCAS_Peer _Instance;
 
         public bool isConnected => TCP != null && TCP.isConnected;
         public bool isAwaitingConnection => TCP != null && TCP.isAwaitingConnection;
@@ -76,7 +86,7 @@ namespace RCAS
                 return;
             }
 
-            Instance ??= this;
+            _Instance ??= this;
 
             TCP = new RCAS_TCP_Connection();
             UDP = new RCAS_UDP_Connection();
@@ -139,6 +149,9 @@ namespace RCAS
         public delegate void dOnReceivedUDPMessage(RCAS_UDPMessage msg);
         public dOnReceivedUDPMessage OnReceivedUDPMessage = delegate { };
 
+        public delegate void dOnBeginPairing();
+        public dOnBeginPairing OnBeginPairing = delegate { };
+
         public void SendImage(byte[] raw_img_data) => UDP.SendImage(raw_img_data, GetCurrentRemoteEndpoint());
 
         public void SendTCPMessage(RCAS_TCPMessage msg) => TCP.SendMessage(msg);
@@ -162,7 +175,8 @@ namespace RCAS
             Debug.Log("Commencing Device-Pairing.");
 
             isPairing = true;
-            
+            OnBeginPairing.Invoke();
+
             PAIRING.Connect(new IPEndPoint(IPAddress.Any, PairingPort));
 
             UDP.CloseConnection();
