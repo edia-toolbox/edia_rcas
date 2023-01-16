@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.edia.core": "https://gitlab.gwdg.de/3dia/edia_framework.git?path=Assets/eDIA#Control",
     "com.htc.upm.wave.openxr": "1.0.3",
     "com.unity.collab-proxy": "1.17.6",
     "com.unity.feature.development": "1.0.1",

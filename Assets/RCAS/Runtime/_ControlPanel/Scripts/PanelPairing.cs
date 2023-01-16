@@ -1,0 +1,84 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using System.Linq;
+using RCAS; 
+using TMPro;
+
+namespace eDIA.Manager
+{
+	/// <summary>Panel for setting up config files, for now choosing them from pre-set versions</summary>
+	/// 
+	public class PanelPairing : ExperimenterPanel
+	{
+		[System.Serializable]
+		public struct HMD {
+			public string type;
+			public Sprite icon; 
+		}
+
+		public List<HMD> HMDs = new List<HMD>();
+
+		public Image icon;
+		public TextMeshProUGUI Output_Info;
+
+		private string ip = "";
+		private int port = 0;
+
+		public void BtnTSubmitPressed()
+		{
+			RCAS_Peer.Instance.ConnectTo(ip, port);
+		}
+
+		public override void Awake() {
+			base.Awake();
+
+			RCAS_Peer.Instance.OnReceivedPairingOffer += PairingOfferReceived;
+			RCAS_Peer.Instance.OnConnectionEstablished += Connected;
+			RCAS_Peer.Instance.OnConnectionLost += Disconnected;
+
+			HidePanel();
+		}
+
+		private void Start()
+		{
+		}
+
+		private void OnDestroy()
+		{
+			RCAS_Peer.Instance.OnReceivedPairingOffer -= PairingOfferReceived;
+			RCAS_Peer.Instance.OnConnectionEstablished -= Connected;
+			RCAS_Peer.Instance.OnConnectionLost -= Disconnected;
+		}
+
+		void PairingOfferReceived(string ip_address, int port, string deviceInfo)
+		{
+			Output_Info.text = $"{deviceInfo}";
+
+			int index = HMDs.FindIndex(x => x.type == deviceInfo);
+			if (index is not -1)
+				icon.sprite = HMDs[index].icon;
+
+			ip = ip_address;
+			this.port = port;
+
+			ShowPanel();
+
+			ControlPanel.Instance.Add2Console("Pairing recieved");
+		}
+
+		void Disconnected(System.Net.EndPoint EP)
+		{
+			ControlPanel.Instance.Add2Console("Disconnected");
+			HidePanel();
+		}
+
+		void Connected(System.Net.EndPoint EP)
+		{
+			ControlPanel.Instance.Add2Console("Connected");
+			HidePanel();
+		}
+
+	}
+}

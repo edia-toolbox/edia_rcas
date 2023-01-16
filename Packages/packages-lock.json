@@ -1,5 +1,17 @@
 {
   "dependencies": {
+    "com.edia.core": {
+      "version": "https://gitlab.gwdg.de/3dia/edia_framework.git?path=Assets/eDIA#Control",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.inputsystem": "1.3.0",
+        "com.unity.xr.interaction.toolkit": "2.0.0",
+        "com.unity.xr.management": "4.2.0",
+        "com.unity.render-pipelines.universal": "12.1.7"
+      },
+      "hash": "5eda74836fa1783bd58f007c93029d1feca2f9e7"
+    },
     "com.htc.upm.wave.openxr": {
       "version": "1.0.3",
       "depth": 0,
@@ -10,6 +22,15 @@
         "com.unity.xr.openxr": "1.3.1"
       },
       "url": "https://npm-registry.vive.com"
+    },
+    "com.unity.burst": {
+      "version": "1.6.6",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.mathematics": "1.2.1"
+      },
+      "url": "https://packages.unity.com"
     },
     "com.unity.collab-proxy": {
       "version": "1.17.6",
@@ -82,6 +103,13 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.unity.mathematics": {
+      "version": "1.2.6",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
     "com.unity.nuget.newtonsoft-json": {
       "version": "3.0.2",
       "depth": 2,
@@ -92,6 +120,34 @@
     "com.unity.performance.profile-analyzer": {
       "version": "1.1.1",
       "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.render-pipelines.core": {
+      "version": "12.1.7",
+      "depth": 2,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0",
+        "com.unity.modules.physics": "1.0.0",
+        "com.unity.modules.jsonserialize": "1.0.0"
+      }
+    },
+    "com.unity.render-pipelines.universal": {
+      "version": "12.1.7",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.mathematics": "1.2.1",
+        "com.unity.burst": "1.5.0",
+        "com.unity.render-pipelines.core": "12.1.7",
+        "com.unity.shadergraph": "12.1.7"
+      }
+    },
+    "com.unity.searcher": {
+      "version": "4.9.1",
+      "depth": 3,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
@@ -113,6 +169,15 @@
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
+    },
+    "com.unity.shadergraph": {
+      "version": "12.1.7",
+      "depth": 2,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.render-pipelines.core": "12.1.7",
+        "com.unity.searcher": "4.9.1"
+      }
     },
     "com.unity.subsystemregistration": {
       "version": "1.1.0",
