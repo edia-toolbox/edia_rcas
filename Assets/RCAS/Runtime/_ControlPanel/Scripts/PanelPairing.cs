@@ -65,18 +65,18 @@ namespace eDIA.Manager
 
 			ShowPanel();
 
-			ControlPanel.Instance.Add2Console("Pairing recieved");
+			Debug.Log("Pairing recieved");
 		}
 
 		void Disconnected(System.Net.EndPoint EP)
 		{
-			ControlPanel.Instance.Add2Console("Disconnected");
+			Debug.Log("Disconnected");
 			HidePanel();
 		}
 
 		void Connected(System.Net.EndPoint EP)
 		{
-			ControlPanel.Instance.Add2Console("Connected");
+			Debug.Log("Connected");
 			HidePanel();
 		}
 
