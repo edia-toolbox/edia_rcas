@@ -91,6 +91,7 @@ namespace eDIA.Manager
 		[RCAS_RemoteEvent(eDIA.Events.Network.NwEvReadyToGo)]
 		static void NwEvReadyToGo()
 		{
+			Debug.Log("Received NwEvReadyToGo");
 			EventManager.TriggerEvent(eDIA.Events.Config.EvReadyToGo);
 		}
 

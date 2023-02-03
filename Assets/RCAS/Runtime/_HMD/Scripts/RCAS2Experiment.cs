@@ -140,6 +140,7 @@ namespace eDIA {
 
 		private void NwEvReadyToGo(eParam obj)
 		{
+			Debug.Log("Sending NwEvReadyToGo");
 			RCAS_Peer.Instance.TriggerRemoteEvent(eDIA.Events.Network.NwEvReadyToGo);
 		}
 
