@@ -1494,11 +1494,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1052527749}
   m_CullTransparentMesh: 1
---- !u!224 &1066800178 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 8703197840686735684, guid: 555c3aec1b98f0c4db924b79bd61d2b5, type: 3}
-  m_PrefabInstance: {fileID: 1523654958}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1129113144
 GameObject:
   m_ObjectHideFlags: 0
@@ -2058,6 +2053,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1237355995}
   m_CullTransparentMesh: 1
+--- !u!224 &1259405411 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 152133683164029121, guid: 555c3aec1b98f0c4db924b79bd61d2b5, type: 3}
+  m_PrefabInstance: {fileID: 1523654958}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1304878024
 GameObject:
   m_ObjectHideFlags: 0
@@ -2740,7 +2740,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 1066800178}
+    m_TransformParent: {fileID: 1259405411}
     m_Modifications:
     - target: {fileID: 661689578981174566, guid: 802dc5f1c25222149bdea04d0179637e, type: 3}
       propertyPath: m_Pivot.x
@@ -2752,7 +2752,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 661689578981174566, guid: 802dc5f1c25222149bdea04d0179637e, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 661689578981174566, guid: 802dc5f1c25222149bdea04d0179637e, type: 3}
       propertyPath: m_AnchorMax.x

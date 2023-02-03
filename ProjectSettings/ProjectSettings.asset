@@ -12,7 +12,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
+  companyName: eDIA
   productName: RCAS_v0
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -334,6 +334,14 @@ PlayerSettings:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: -7297762297757448264, guid: 1f697127a9e97ea40b304eb9f63579cf, type: 2}
+  - {fileID: -953494063532954093, guid: 7c60f0cf64541dc4c99b67a4725ea462, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -354,7 +362,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.DefaultCompany.RCAS_v0
-    Standalone: com.DefaultCompany.RCAS-v0
+    Standalone: com.eDIA.RCAS-v0
   buildNumber:
     Standalone: 0
     iPhone: 0
