@@ -95,7 +95,7 @@ namespace RCAS
             {
                 OnConnectionEstablished.Invoke(RemoteEndPoint);
             }
-            else if(prev_Connected && !isConnected)
+            else if (prev_Connected && !isConnected)
             {
                 OnConnectionLost.Invoke(prev_RemoteEP);
             }
@@ -150,7 +150,7 @@ namespace RCAS
         internal bool ConnectTo(string ipAddress, int port, IPEndPoint LocalEndPoint)
         {
             // Ensure we are not awaiting connection already
-            if(isConnected || isAwaitingConnection)
+            if (isConnected || isAwaitingConnection)
             {
                 Debug.LogError("Tried to connect to a TCP EndPoint whilst awaiting a client or already connected!");
                 return false;
@@ -179,7 +179,7 @@ namespace RCAS
         internal void CloseConnection()
         {
             SendQueue.Clear();
-            if(Client!=null) Debug.Log("TCP Connection Closed");
+            if (Client != null) Debug.Log("TCP Connection Closed");
             try
             {
                 Listener?.Stop();
@@ -230,12 +230,40 @@ namespace RCAS
                         return;
                     }
 
-                    ReceiveQueue.Enqueue(buffer.Slice(0, bytesRead).ToArray());
+                    ProcessReceivedBytes(bytesRead, buffer);
                 }
             }
             finally
             {
                 //Debug.Log("Receiver ended");
+            }
+        }
+
+        // Called by TaskFunc_Receiver!
+        private void ProcessReceivedBytes(int bytesRead, System.ReadOnlySpan<byte> buffer)
+        {
+            bool messageIsValid = RCAS_TCPMessage.TryMessageLengthFromReceivedBytes(buffer, out uint msg_len);
+            msg_len += RCAS_TCPMessage.HEADERSIZE; // convert message-only length to total length of the packet
+
+            // Something is wrong with this message
+            if (!messageIsValid)
+            {
+                Debug.LogWarning("Received an invalid message.");
+            }
+            // There are more than just one message in the buffer!
+            else if (msg_len < bytesRead)
+            {
+                //Debug.Log("Received multi-message.");
+                ReceiveQueue.Enqueue(buffer.Slice(0, (int)msg_len).ToArray());
+
+                // Process the next message
+                ProcessReceivedBytes(bytesRead - (int)msg_len, buffer.Slice((int)msg_len));
+            }
+            // Just one message in the buffer
+            else
+            {
+                //Debug.Log("Received single-message.");
+                ReceiveQueue.Enqueue(buffer.Slice(0, bytesRead).ToArray());
             }
         }
 
