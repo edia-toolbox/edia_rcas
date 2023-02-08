@@ -28,18 +28,24 @@ namespace eDIA.Manager {
 
 		Image connectionIcon = null;
 
-
 		private void Start()
 		{
 			connectionIcon = GetComponent<Image>();
 			
+			if (ControlPanel.Instance.Settings.ControlMode == ControlMode.Remote)
+				RegisterEventListeners();
+		}
+
+		private void RegisterEventListeners () {
 			RCAS_Peer.Instance.OnConnectionEstablished += Connected;
 			RCAS_Peer.Instance.OnConnectionLost += Disconnected;
-
 		}
 
 		private void OnDestroy()
 		{
+			if (ControlPanel.Instance.Settings.ControlMode != ControlMode.Remote)
+				return;
+
 			RCAS_Peer.Instance.OnConnectionEstablished -= Connected;
 			RCAS_Peer.Instance.OnConnectionLost -= Disconnected;
 		}
