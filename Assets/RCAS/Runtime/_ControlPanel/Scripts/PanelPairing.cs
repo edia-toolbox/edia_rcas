@@ -77,6 +77,7 @@ namespace eDIA.Manager
 		void Connected(System.Net.EndPoint EP)
 		{
 			Debug.Log("Connected");
+			EventManager.TriggerEvent(eDIA.Events.ControlPanel.EvConnectionEstablished, null);
 			HidePanel();
 		}
 
