@@ -12,13 +12,6 @@ namespace eDIA.Manager
 	/// 
 	public class PanelPairing : ExperimenterPanel
 	{
-		[System.Serializable]
-		public struct HMD {
-			public string type;
-			public Sprite icon; 
-		}
-
-		public List<HMD> HMDs = new List<HMD>();
 
 		public Image icon;
 		public TextMeshProUGUI Output_Info;
@@ -56,9 +49,10 @@ namespace eDIA.Manager
 		{
 			Output_Info.text = $"{deviceInfo}";
 
-			int index = HMDs.FindIndex(x => x.type == deviceInfo);
+			int index = XRManager.Instance.GetXRDeviceIndex(deviceInfo);
+
 			if (index is not -1)
-				icon.sprite = HMDs[index].icon;
+				icon.sprite = XRManager.Instance.GetXRDeviceIcon(index);
 
 			ip = ip_address;
 			this.port = port;
