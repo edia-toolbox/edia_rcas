@@ -50,7 +50,7 @@ namespace eDIA.Manager
 		{
 			Output_Info.text = $"{deviceInfo}";
 
-			int deviceIndex = ControlPanel.Instance.GetXRDeviceIndex(deviceInfo);
+			deviceIndex = ControlPanel.Instance.GetXRDeviceIndex(deviceInfo);
 
 			if (deviceIndex is not -1)
 				icon.sprite = ControlPanel.Instance.GetXRDeviceIcon(deviceIndex);
