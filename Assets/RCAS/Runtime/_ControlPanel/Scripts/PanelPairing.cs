@@ -50,10 +50,10 @@ namespace eDIA.Manager
 		{
 			Output_Info.text = $"{deviceInfo}";
 
-			int deviceIndex = XRManager.Instance.GetXRDeviceIndex(deviceInfo);
+			int deviceIndex = ControlPanel.Instance.GetXRDeviceIndex(deviceInfo);
 
 			if (deviceIndex is not -1)
-				icon.sprite = XRManager.Instance.GetXRDeviceIcon(deviceIndex);
+				icon.sprite = ControlPanel.Instance.GetXRDeviceIcon(deviceIndex);
 
 			ip = ip_address;
 			this.port = port;
