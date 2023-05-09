@@ -10,7 +10,7 @@
         "com.unity.xr.management": "4.2.0",
         "com.unity.render-pipelines.universal": "12.1.7"
       },
-      "hash": "28e91f9f68ec4aeba040697e8cfbe00bfc1f381b"
+      "hash": "6c84a050eb2fecdcedfb6c016a3550db590baa36"
     },
     "com.htc.upm.wave.openxr": {
       "version": "1.0.3",

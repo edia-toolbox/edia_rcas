@@ -18,6 +18,7 @@ namespace eDIA.Manager
 
 		private string ip = "";
 		private int port = 0;
+		private int deviceIndex = -1;
 
 		public void BtnTSubmitPressed()
 		{
@@ -49,10 +50,10 @@ namespace eDIA.Manager
 		{
 			Output_Info.text = $"{deviceInfo}";
 
-			int index = XRManager.Instance.GetXRDeviceIndex(deviceInfo);
+			int deviceIndex = XRManager.Instance.GetXRDeviceIndex(deviceInfo);
 
-			if (index is not -1)
-				icon.sprite = XRManager.Instance.GetXRDeviceIcon(index);
+			if (deviceIndex is not -1)
+				icon.sprite = XRManager.Instance.GetXRDeviceIcon(deviceIndex);
 
 			ip = ip_address;
 			this.port = port;
@@ -71,7 +72,7 @@ namespace eDIA.Manager
 		void Connected(System.Net.EndPoint EP)
 		{
 			Debug.Log("Connected");
-			EventManager.TriggerEvent(eDIA.Events.ControlPanel.EvConnectionEstablished, new eParam(Output_Info.text));
+			EventManager.TriggerEvent(eDIA.Events.ControlPanel.EvConnectionEstablished, new eParam(deviceIndex));
 			HidePanel();
 		}
 
