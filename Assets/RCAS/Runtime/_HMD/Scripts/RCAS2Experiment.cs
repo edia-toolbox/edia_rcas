@@ -72,10 +72,10 @@ namespace eDIA
 			}
 
 			[RCAS_RemoteEvent(eDIA.Events.Network.NwEvToggleCasting)]
-			static void NwEvEnableCasting(bool onOff)
+			static void NwEvToggleCasting()
 			{
-				  AddToLog("NwEvEnableCasting");
-				  EventManager.TriggerEvent(eDIA.Events.Casting.EvToggleCasting, new eParam(onOff));
+				  AddToLog("NwEvToggleCasting");
+				  EventManager.TriggerEvent(eDIA.Events.Casting.EvToggleCasting, null);
 			}
 
 
