@@ -27,7 +27,7 @@ namespace eDIA.Manager
 			EventManager.StartListening(eDIA.Events.StateMachine.EvProceed, 		NwEvProceed);
 
 			// Features
-			EventManager.StartListening(eDIA.Events.Casting.EvEnableCasting, 		NwEvEnableCasting);
+			EventManager.StartListening(eDIA.Events.Casting.EvToggleCasting, 		NwEvToggleCasting);
 
 			// Configs
 			EventManager.StartListening(eDIA.Events.Config.EvSetTaskConfig, 		NwEvSetTaskConfig);
@@ -53,9 +53,9 @@ namespace eDIA.Manager
 			RCAS_Peer.Instance.TriggerRemoteEvent(eDIA.Events.Network.NwEvProceed);
 		}
 
-		private void NwEvEnableCasting(eParam obj)
+		private void NwEvToggleCasting(eParam obj)
 		{
-			RCAS_Peer.Instance.TriggerRemoteEvent(eDIA.Events.Network.NwEvEnableCasting, obj.GetBool().ToString());
+			RCAS_Peer.Instance.TriggerRemoteEvent(eDIA.Events.Network.NwEvToggleCasting, obj.GetBool().ToString());
 		}
 
 		private void NwEvSetExperimentConfig(eParam obj)

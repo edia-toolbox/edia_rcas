@@ -51,7 +51,7 @@ namespace eDIA.Manager {
 		}
 
 		public void BtnPressed () {
-			Debug.Log("Nothing yet");
+				  EventManager.TriggerEvent(eDIA.Events.Casting.EvToggleCasting, null);
 		}
 
 	}
