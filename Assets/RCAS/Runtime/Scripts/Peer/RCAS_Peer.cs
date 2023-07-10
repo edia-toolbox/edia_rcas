@@ -50,7 +50,7 @@ namespace RCAS
         {
             get
             {
-                if (_localIPAddress == "") _localIPAddress = RCAS_NetworkUtils.GetLocalIPAddress();
+                _localIPAddress = RCAS_NetworkUtils.CheckOrGetLocalIPAddress(_localIPAddress);
                 return _localIPAddress;
             }
         }
