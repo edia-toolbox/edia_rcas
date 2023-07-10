@@ -49,7 +49,7 @@ namespace RCAS
 			
 			void OnEvEnableCasting(eParam param)
 			{
-				  IsAllowed = param.GetBool();
+				  IsAllowed = !IsAllowed;
 			}
 
 			private IEnumerator CaptureAndSendScreen()
