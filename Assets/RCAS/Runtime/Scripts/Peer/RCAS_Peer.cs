@@ -43,11 +43,8 @@ namespace RCAS
         public bool AutoSetLocalPort = true;
         public int LocalPort = 27016;
 
-        [Header("Pairing")]
-        public bool startPairingFunctionOnStart = true;
-        public bool startPairingFunctionOnDisconnect = false;
-        public bool isPairing { get; private set; }
-
+        [Tooltip("If empty, will be automatically set to the first found local IPv4 address of this device.")]
+        [SerializeField]
         private string _localIPAddress = "";
         public string localIPAddress
         {
@@ -57,6 +54,12 @@ namespace RCAS
                 return _localIPAddress;
             }
         }
+
+        [Header("Pairing")]
+        public bool startPairingFunctionOnStart = true;
+        public bool startPairingFunctionOnDisconnect = false;
+        public bool isPairing { get; private set; }
+
         private IPEndPoint LocalEndPoint_init => new IPEndPoint(IPAddress.Parse(localIPAddress), AutoSetLocalPort ? 0 : LocalPort);
 
         public IPEndPoint GetCurrentRemoteEndpoint()
