@@ -55,7 +55,7 @@ namespace eDIA.Manager
 
 		private void NwEvToggleCasting(eParam obj)
 		{
-			RCAS_Peer.Instance.TriggerRemoteEvent(eDIA.Events.Network.NwEvToggleCasting, obj.GetBool().ToString());
+			RCAS_Peer.Instance.TriggerRemoteEvent(eDIA.Events.Network.NwEvToggleCasting);
 		}
 
 		private void NwEvSetExperimentConfig(eParam obj)
