@@ -43,7 +43,7 @@ namespace RCAS
         public bool AutoSetLocalPort = true;
         public int LocalPort = 27016;
 
-        [Tooltip("If empty, will be automatically set to the first found local IPv4 address of this device.")]
+        [Tooltip("Can also just be a part of the relevant IP range (e.g., 192.168.). If empty, will be automatically set to the first found local IPv4 address of this device.")]
         [SerializeField]
         private string _localIPAddress = "";
         public string localIPAddress
