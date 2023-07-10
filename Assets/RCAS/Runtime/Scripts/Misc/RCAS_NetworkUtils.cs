@@ -30,7 +30,7 @@ namespace RCAS
 
             if (IPv4CandidatesList.Count > 0)
             {
-                return IPv4CandidatesList[0].ToString();
+                return IPv4CandidatesList[IPv4CandidatesList.Count - 1].ToString();
             }
 
             throw new System.Exception("No network adapters with an IPv4 address in the system!");
