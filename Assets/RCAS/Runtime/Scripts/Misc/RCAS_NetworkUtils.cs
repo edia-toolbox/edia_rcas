@@ -10,6 +10,8 @@ namespace RCAS
     {
         public static string CheckOrGetLocalIPAddress(string ipRange)
         {
+            if (ipRange == "") ipRange = "no-valid-ip";
+
             var host = Dns.GetHostEntry(Dns.GetHostName());
             List<IPAddress> IPv4CandidatesList = new List<IPAddress>();
 
