@@ -12,14 +12,19 @@ namespace RCAS
 			public TextureFormat mTextureFormat = TextureFormat.ARGB32;
 
 			private Texture2D mSendTexture;
+			private Camera RTcam = null;
 
 			public float fps = 25f;
 
 			[Range(1, 100)]
 			public int quality = 70;
 
-			public bool IsAllowed = true;
+			private bool IsAllowed = true;
 
+			private void Awake()
+			{
+				  RTcam = this.transform.GetChild(0).GetComponent<Camera>();
+			}
 
 			void Start()
 			{
@@ -50,6 +55,7 @@ namespace RCAS
 			void OnEvEnableCasting(eParam param)
 			{
 				  IsAllowed = !IsAllowed;
+				  RTcam.enabled = IsAllowed;
 			}
 
 			private IEnumerator CaptureAndSendScreen()
