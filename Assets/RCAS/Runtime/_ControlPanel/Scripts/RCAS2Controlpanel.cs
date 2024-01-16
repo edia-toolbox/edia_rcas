@@ -131,7 +131,7 @@ namespace eDIA.Manager
 		[RCAS_RemoteEvent(eDIA.Events.Network.NwEvUpdateProgressInfo)]
 		static void NwEvUpdateProgressInfo(string arg)
 		{
-			EventManager.TriggerEvent(eDIA.Events.ControlPanel.EvUpdateProgressInfo, new eParam(arg));
+			//EventManager.TriggerEvent(eDIA.Events.ControlPanel.EvUpdateProgressInfo, new eParam(arg));
 		}
 
 		[RCAS_RemoteEvent(eDIA.Events.Network.NwEvEnableEyeCalibrationTrigger)]
