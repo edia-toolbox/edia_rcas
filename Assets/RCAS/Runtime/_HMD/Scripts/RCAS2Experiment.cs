@@ -136,7 +136,7 @@ namespace eDIA
 				  EventManager.StartListening(eDIA.Events.ControlPanel.EvUpdateTrialProgress, NwEvUpdateTrialProgress);
 				  EventManager.StartListening(eDIA.Events.ControlPanel.EvUpdateBlockProgress, NwEvUpdateBlockProgress);
 				  EventManager.StartListening(eDIA.Events.ControlPanel.EvUpdateSessionSummary, NwEvUpdateSessionSummary);
-				  EventManager.StartListening(eDIA.Events.ControlPanel.EvUpdateProgressInfo, NwEvUpdateProgressInfo);
+				  //EventManager.StartListening(eDIA.Events.ControlPanel.EvUpdateProgressInfo, NwEvUpdateProgressInfo);
 				  EventManager.StartListening(eDIA.Events.ControlPanel.EvStartTimer, NwEvStartTimer);
 				  EventManager.StartListening(eDIA.Events.ControlPanel.EvStopTimer, NwEvStopTimer);
 
