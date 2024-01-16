@@ -47,14 +47,14 @@ namespace eDIA
 			static void NwEvSetTaskConfig(string tConfig)
 			{
 				  AddToLog("NwEvSetTaskConfig:" + tConfig);
-				  EventManager.TriggerEvent(eDIA.Events.Config.EvSetTaskConfig, new eParam(tConfig));
+				  //EventManager.TriggerEvent(eDIA.Events.Config.EvSetTaskConfig, new eParam(tConfig));
 			}
 
 			[RCAS_RemoteEvent(eDIA.Events.Network.NwEvSetExpConfig)]
 			static void NwEvSetExpConfig(string eConfig)
 			{
 				  AddToLog("NwEvSetExpConfig" + eConfig);
-				  EventManager.TriggerEvent(eDIA.Events.Config.EvSetExperimentConfig, new eParam(eConfig));
+				  //EventManager.TriggerEvent(eDIA.Events.Config.EvSetExperimentConfig, new eParam(eConfig));
 			}
 
 			[RCAS_RemoteEvent(eDIA.Events.Network.NwEvStartExperiment)]
@@ -126,8 +126,8 @@ namespace eDIA
 			{
 
 				  // Configs
-				  EventManager.StartListening(eDIA.Events.Config.EvTaskConfigSet, NwEvTaskConfigSet);
-				  EventManager.StartListening(eDIA.Events.Config.EvExperimentConfigSet, NwEvExperimentConfigSet);
+				  //EventManager.StartListening(eDIA.Events.Config.EvTaskConfigSet, NwEvTaskConfigSet);
+				  //EventManager.StartListening(eDIA.Events.Config.EvExperimentConfigSet, NwEvExperimentConfigSet);
 				  EventManager.StartListening(eDIA.Events.Config.EvReadyToGo, NwEvReadyToGo);
 
 				  // Control panel

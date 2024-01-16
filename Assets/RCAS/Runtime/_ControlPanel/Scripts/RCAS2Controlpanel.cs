@@ -30,8 +30,8 @@ namespace eDIA.Manager
 			EventManager.StartListening(eDIA.Events.Casting.EvToggleCasting, 		NwEvToggleCasting);
 
 			// Configs
-			EventManager.StartListening(eDIA.Events.Config.EvSetTaskConfig, 		NwEvSetTaskConfig);
-			EventManager.StartListening(eDIA.Events.Config.EvSetExperimentConfig, 	NwEvSetExperimentConfig);
+			//EventManager.StartListening(eDIA.Events.Config.EvSetTaskConfig, 		NwEvSetTaskConfig);
+			//EventManager.StartListening(eDIA.Events.Config.EvSetExperimentConfig, 	NwEvSetExperimentConfig);
 		}
 
 
@@ -85,7 +85,7 @@ namespace eDIA.Manager
 		[RCAS_RemoteEvent(eDIA.Events.Network.NwEvExperimentConfigSet)]
 		static void NwEvExperimentConfigSet()
 		{
-			EventManager.TriggerEvent(eDIA.Events.Config.EvExperimentConfigSet);
+			//EventManager.TriggerEvent(eDIA.Events.Config.EvExperimentConfigSet);
 		}
 
 		[RCAS_RemoteEvent(eDIA.Events.Network.NwEvReadyToGo)]

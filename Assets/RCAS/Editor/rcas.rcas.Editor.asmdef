@@ -1,5 +1,5 @@
 {
-    "name": "rcas.rcas.Editor",
+    "name": "RCAS_Editor",
     "rootNamespace": "",
     "references": [
         "GUID:21892dec363ae5e4390174bb746210fb"
