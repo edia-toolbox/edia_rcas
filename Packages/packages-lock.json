@@ -11,7 +11,7 @@
         "com.unity.render-pipelines.universal": "12.1.7",
         "com.unity.nuget.newtonsoft-json": "3.2.1"
       },
-      "hash": "d807d76337897d5c2278746775c61b4859bbd072"
+      "hash": "31c14f8e7046dbbbabad7c1541644398076a9206"
     },
     "com.htc.upm.wave.openxr": {
       "version": "1.0.3",

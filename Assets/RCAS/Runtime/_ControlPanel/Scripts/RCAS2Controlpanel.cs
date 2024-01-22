@@ -61,7 +61,6 @@ namespace eDIA.Manager
 
 		private void NwEvSetSessionInfo(eParam obj)
 		{
-                  //RCAS_Peer.Instance.TriggerRemoteEvent("set_params", new string[] { "12", "eleven", "Paris" });
                   RCAS_Peer.Instance.TriggerRemoteEvent(eDIA.Events.Network.NwEvSetSessionInfo, obj.GetStrings());
 		}
 
@@ -71,11 +70,11 @@ namespace eDIA.Manager
 		}
 
             private void NwEvSetBlockDefinitions(eParam obj) {
-                  RCAS_Peer.Instance.TriggerRemoteEvent(eDIA.Events.Network.NwEvSetEBlockDefinitions, obj.GetString());
+                  RCAS_Peer.Instance.TriggerRemoteEvent(eDIA.Events.Network.NwEvSetEBlockDefinitions, obj.GetStrings());
             }
 
             private void NwEvSetTaskDefinitions(eParam obj) {
-                  RCAS_Peer.Instance.TriggerRemoteEvent(eDIA.Events.Network.NwEvSetTaskDefinitions, obj.GetString());
+                  RCAS_Peer.Instance.TriggerRemoteEvent(eDIA.Events.Network.NwEvSetTaskDefinitions, obj.GetStrings());
             }
 
 #endregion // -------------------------------------------------------------------------------------------------------------------------------

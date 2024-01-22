@@ -26,7 +26,7 @@ namespace eDIA {
 
             [RCAS_RemoteEvent(eDIA.Events.Network.NwEvSetSessionInfo)]
             static void NwEvSetSessionInfo(string[] sessionInfoJSONstrings) {
-// TODO is is possible to send a string[] ? 
+                  // We are sending a array of data
                   AddToLog("NwEvSetSessionInfo:" + sessionInfoJSONstrings[0]);
                   EventManager.TriggerEvent(eDIA.Events.Config.EvSetSessionInfo, new eParam(sessionInfoJSONstrings));
             }
@@ -38,15 +38,15 @@ namespace eDIA {
             }
 
             [RCAS_RemoteEvent(eDIA.Events.Network.NwEvSetEBlockDefinitions)]
-            static void NwEvSetEBlockDefinitions(string blockDefintionsJSONstring) {
-                  AddToLog("NwEvSetEBlockDefinitions" + blockDefintionsJSONstring);
-                  EventManager.TriggerEvent(eDIA.Events.Config.EvSetEBlockDefinitions, new eParam(blockDefintionsJSONstring));
+            static void NwEvSetEBlockDefinitions(string[] blockDefintionsJSONstrings) {
+                  AddToLog("NwEvSetEBlockDefinitions" + blockDefintionsJSONstrings.Length);
+                  EventManager.TriggerEvent(eDIA.Events.Config.EvSetEBlockDefinitions, new eParam(blockDefintionsJSONstrings));
             }
 
             [RCAS_RemoteEvent(eDIA.Events.Network.NwEvSetTaskDefinitions)]
-            static void NwEvSetTaskDefinitions(string taskSequenceJSONstring) {
-                  AddToLog("NwEvSetTaskDefinitions" + taskSequenceJSONstring);
-                  EventManager.TriggerEvent(eDIA.Events.Config.EvSetTaskDefinitions, new eParam(taskSequenceJSONstring));
+            static void NwEvSetTaskDefinitions(string[] taskDefinitionsJSONstrings) {
+                  AddToLog("NwEvSetTaskDefinitions" + taskDefinitionsJSONstrings.Length);
+                  EventManager.TriggerEvent(eDIA.Events.Config.EvSetTaskDefinitions, new eParam(taskDefinitionsJSONstrings));
             }
 
             [RCAS_RemoteEvent(eDIA.Events.Network.NwEvStartExperiment)]
