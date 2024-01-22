@@ -61,7 +61,8 @@ namespace eDIA.Manager
 
 		private void NwEvSetSessionInfo(eParam obj)
 		{
-			RCAS_Peer.Instance.TriggerRemoteEvent(eDIA.Events.Network.NwEvSetSessionInfo, obj.GetString());
+                  //RCAS_Peer.Instance.TriggerRemoteEvent("set_params", new string[] { "12", "eleven", "Paris" });
+                  RCAS_Peer.Instance.TriggerRemoteEvent(eDIA.Events.Network.NwEvSetSessionInfo, obj.GetStrings());
 		}
 
 		private void NwEvSetEBlockSequence(eParam obj)

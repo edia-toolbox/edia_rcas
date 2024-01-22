@@ -25,9 +25,10 @@ namespace eDIA {
             // * FROM MANAGER <<
 
             [RCAS_RemoteEvent(eDIA.Events.Network.NwEvSetSessionInfo)]
-            static void NwEvSetSessionInfo(string sessionInfoJSONstring) {
-                  AddToLog("NwEvSetSessionInfo:" + sessionInfoJSONstring);
-                  EventManager.TriggerEvent(eDIA.Events.Config.EvSetSessionInfo, new eParam(sessionInfoJSONstring));
+            static void NwEvSetSessionInfo(string[] sessionInfoJSONstrings) {
+// TODO is is possible to send a string[] ? 
+                  AddToLog("NwEvSetSessionInfo:" + sessionInfoJSONstrings[0]);
+                  EventManager.TriggerEvent(eDIA.Events.Config.EvSetSessionInfo, new eParam(sessionInfoJSONstrings));
             }
 
             [RCAS_RemoteEvent(eDIA.Events.Network.NwEvSetEBlockSequence)]
