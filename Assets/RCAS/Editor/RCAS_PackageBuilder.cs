@@ -11,7 +11,7 @@ namespace RCAS_Editor
     {
         static PackRequest Request;
 
-        [MenuItem("RCAS/Build Tarballs", false, -10)]
+        [MenuItem("eDIA/RCAS/Build Tarballs", false, -10)]
         public static void BuildPackage()
         {
             BuildTarball("com.rcas.rcas");

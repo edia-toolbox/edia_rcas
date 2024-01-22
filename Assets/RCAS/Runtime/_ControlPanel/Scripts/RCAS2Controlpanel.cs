@@ -9,13 +9,11 @@ using UnityEngine.UI;
 
 namespace eDIA.Manager
 {
-
 	/// <summary> In project version of the connector to a remote interface </summary>
 	public class RCAS2Controlpanel : MonoBehaviour
 	{
 
-
-		#region TO APP >>
+#region TO APP >>
 
 		private void Awake()
 		{
@@ -30,15 +28,18 @@ namespace eDIA.Manager
 			EventManager.StartListening(eDIA.Events.Casting.EvToggleCasting, 		NwEvToggleCasting);
 
 			// Configs
-			//EventManager.StartListening(eDIA.Events.Config.EvSetTaskConfig, 		NwEvSetTaskConfig);
-			//EventManager.StartListening(eDIA.Events.Config.EvSetExperimentConfig, 	NwEvSetExperimentConfig);
-		}
+			EventManager.StartListening(eDIA.Events.Config.EvSetSessionInfo,		NwEvSetSessionInfo);
+			EventManager.StartListening(eDIA.Events.Config.EvSetEBlockSequence,	NwEvSetEBlockSequence);
+                  EventManager.StartListening(eDIA.Events.Config.EvSetEBlockDefinitions,	NwEvSetBlockDefinitions);
+                  EventManager.StartListening(eDIA.Events.Config.EvSetTaskDefinitions,	NwEvSetTaskDefinitions);
+
+            }
 
 
-		// * TO APP >>
+            // * TO APP >>
 
 
-		private void NwEvStartExperiment(eParam obj)
+            private void NwEvStartExperiment(eParam obj)
 		{
 			RCAS_Peer.Instance.TriggerRemoteEvent(eDIA.Events.Network.NwEvStartExperiment);
 		}
@@ -58,37 +59,33 @@ namespace eDIA.Manager
 			RCAS_Peer.Instance.TriggerRemoteEvent(eDIA.Events.Network.NwEvToggleCasting);
 		}
 
-		private void NwEvSetExperimentConfig(eParam obj)
+		private void NwEvSetSessionInfo(eParam obj)
 		{
-			RCAS_Peer.Instance.TriggerRemoteEvent(eDIA.Events.Network.NwEvSetExpConfig, obj.GetString());
+			RCAS_Peer.Instance.TriggerRemoteEvent(eDIA.Events.Network.NwEvSetSessionInfo, obj.GetString());
 		}
 
-		private void NwEvSetTaskConfig(eParam obj)
+		private void NwEvSetEBlockSequence(eParam obj)
 		{
-			RCAS_Peer.Instance.TriggerRemoteEvent(eDIA.Events.Network.NwEvSetTaskConfig, obj.GetString());
+			RCAS_Peer.Instance.TriggerRemoteEvent(eDIA.Events.Network.NwEvSetEBlockSequence, obj.GetString());
 		}
 
+            private void NwEvSetBlockDefinitions(eParam obj) {
+                  RCAS_Peer.Instance.TriggerRemoteEvent(eDIA.Events.Network.NwEvSetEBlockDefinitions, obj.GetString());
+            }
 
-		#endregion // -------------------------------------------------------------------------------------------------------------------------------
-		#region FROM APP <<
+            private void NwEvSetTaskDefinitions(eParam obj) {
+                  RCAS_Peer.Instance.TriggerRemoteEvent(eDIA.Events.Network.NwEvSetTaskDefinitions, obj.GetString());
+            }
 
-		// * FROM APP <<
+#endregion // -------------------------------------------------------------------------------------------------------------------------------
+#region FROM APP <<
 
-		// Configs
+            // * FROM APP <<
 
-		[RCAS_RemoteEvent(eDIA.Events.Network.NwEvTaskConfigSet)]
-		static void NwEvTaskConfigSet()
-		{
-			EventManager.TriggerEvent(eDIA.Events.Config.EvTaskConfigSet);
-		}
+            // Configs
 
-		[RCAS_RemoteEvent(eDIA.Events.Network.NwEvExperimentConfigSet)]
-		static void NwEvExperimentConfigSet()
-		{
-			//EventManager.TriggerEvent(eDIA.Events.Config.EvExperimentConfigSet);
-		}
 
-		[RCAS_RemoteEvent(eDIA.Events.Network.NwEvReadyToGo)]
+            [RCAS_RemoteEvent(eDIA.Events.Network.NwEvReadyToGo)]
 		static void NwEvReadyToGo()
 		{
 			Debug.Log("Received NwEvReadyToGo");
@@ -153,68 +150,6 @@ namespace eDIA.Manager
 		}
 
 
-
-		#endregion // -------------------------------------------------------------------------------------------------------------------------------
-
+#endregion // -------------------------------------------------------------------------------------------------------------------------------
 	}
 }
-
-
-/*
-
-start experiment
-proceed
-inject pause
-
-supply session config
-supply task config
-
-stream control: on / off / change cam
-
-custom controls [ event ( param ) ]  -> i.e. settableheight  (probably always need to be an event)
-
-public void TriggerEvent(string eventName)
-{
-RCAS_Peer.Instance.TriggerRemoteEvent(eventName);
-}
-
-public void TriggerEvent(string eventName, string arg)
-{
-RCAS_Peer.Instance.TriggerRemoteEvent(eventName, arg);
-}
-
-public void TriggerEvent(string eventName, string[] args)
-{
-RCAS_Peer.Instance.TriggerRemoteEvent(eventName, args);
-}
-
-public void TriggerEvent_Color_To_Custom(TMPro.TMP_InputField color_input)
-{
-RCAS_Peer.Instance.TriggerRemoteEvent("change_color_to_custom", color_input.text);
-}
-
-*/
-
-
-
-/*
-
-/*
-
-progress update
-session summary
-OK
-
-starts timer
-stop timer
-
-logdata (trackers, other, session, etc)
-trial results
-
-
-custom controls [ event ( param ) ] 
-
-video stream
-
-
-*/

@@ -25,8 +25,8 @@ public class DebugExperimentDummy : MonoBehaviour
 	{
 		private void Awake() {
 
-			EventManager.StartListening(eDIA.Events.Config.EvSetExperimentConfig, OnSetExpConfig);
-			EventManager.StartListening(eDIA.Events.Config.EvSetTaskConfig, OnSetExpConfig);
+			//EventManager.StartListening(eDIA.Events.Config.EvSetExperimentConfig, OnSetExpConfig);
+			//EventManager.StartListening(eDIA.Events.Config.EvSetTaskConfig, OnSetExpConfig);
 
 		}
 
