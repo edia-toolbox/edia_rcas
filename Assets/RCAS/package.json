@@ -2,11 +2,14 @@
   "name": "com.rcas.rcas",
   "displayName": "RCAS",
   "version": "0.1.0",
-  "unity": "2021.3",
+  "unity": "2022.3",
   "description": "Package for remotely controling and streaming to another device.",
   "keywords": [
     "vr"
-  ],
+  ],  
+  "author": {
+    "name": "eDIA"
+  },
   "dependencies": {},
   "hideInEditor": false
 }
