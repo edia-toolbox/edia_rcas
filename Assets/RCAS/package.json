@@ -7,6 +7,9 @@
   "keywords": [
     "vr"
   ],
+  "author": {
+    "name": "eDIA"
+  },
   "dependencies": {},
   "hideInEditor": false
 }
