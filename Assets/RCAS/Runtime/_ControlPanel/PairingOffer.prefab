@@ -31,7 +31,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5800164885950014526}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
@@ -66,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 29bc7f8e081442749981a8555f8d50fc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: dfb19c6412379aa43bbe85ac1f6ddc64, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -107,7 +106,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5800164885950014526}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -246,7 +244,6 @@ RectTransform:
   m_Children:
   - {fileID: 6861316789510734887}
   m_Father: {fileID: 4066143580257519476}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -383,7 +380,6 @@ RectTransform:
   - {fileID: 5800164885950014526}
   - {fileID: 4621430315931469221}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -481,25 +477,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   children: []
-  HMDs:
-  - type: htcviveflow
-    icon: {fileID: 21300000, guid: 02f9746eee0dbd54cbbfc9186e1d2c03, type: 3}
-  - type: htcvivefocus3
-    icon: {fileID: 21300000, guid: 226dba49fb8b8304781e261bdf5f19e5, type: 3}
-  - type: htcviveproeye
-    icon: {fileID: 21300000, guid: 68d9d3b766ac5c04c85826788e5d8dcf, type: 3}
-  - type: htcviveflow
-    icon: {fileID: 21300000, guid: 02f9746eee0dbd54cbbfc9186e1d2c03, type: 3}
-  - type: metaquestpro
-    icon: {fileID: 21300000, guid: 6347669347cac7543af75be42025a3c3, type: 3}
-  - type: oculusquest2
-    icon: {fileID: 21300000, guid: 2e516ce2dcd900c4aa2c76beda79db89, type: 3}
-  - type: pico4
-    icon: {fileID: 21300000, guid: d7456aa6e2dbb664187931e3f5049ab3, type: 3}
-  - type: piconeo3link
-    icon: {fileID: 21300000, guid: eed15ed4ca3a85947ad9c64b0880f88f, type: 3}
-  - type: fakehmd
-    icon: {fileID: 21300000, guid: f4510d23bc907d84894d6acd09c73fd1, type: 3}
+  myParent: {fileID: 0}
   icon: {fileID: 2018668421041765963}
   Output_Info: {fileID: 7167851751225651144}
 --- !u!1 &7538368716245686883
@@ -535,7 +513,6 @@ RectTransform:
   - {fileID: 4951950930218545063}
   - {fileID: 5604134751784605568}
   m_Father: {fileID: 4066143580257519476}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -611,7 +588,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4621430315931469221}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}

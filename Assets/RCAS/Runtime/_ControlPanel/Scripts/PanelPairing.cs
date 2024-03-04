@@ -12,7 +12,6 @@ namespace eDIA.Manager
 	/// 
 	public class PanelPairing : ExperimenterPanel
 	{
-
 		public Image icon;
 		public TextMeshProUGUI Output_Info;
 
@@ -50,10 +49,10 @@ namespace eDIA.Manager
 		{
 			Output_Info.text = $"{deviceInfo}";
 
-			deviceIndex = ControlPanel.Instance.GetXRDeviceIndex(deviceInfo);
+			//deviceIndex = ControlPanel.Instance.GetXRDeviceIndex(deviceInfo);
 
-			if (deviceIndex is not -1)
-				icon.sprite = ControlPanel.Instance.GetXRDeviceIcon(deviceIndex);
+			//if (deviceIndex is not -1)
+			//	icon.sprite = ControlPanel.Instance.GetXRDeviceIcon(deviceIndex);
 
 			ip = ip_address;
 			this.port = port;
