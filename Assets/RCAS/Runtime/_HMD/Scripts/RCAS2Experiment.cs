@@ -34,13 +34,13 @@ namespace eDIA {
             [RCAS_RemoteEvent(eDIA.Events.Network.NwEvSetXBlockSequence)]
             static void NwEvSetEBlockSequence(string blockSequenceJSONstring) {
                   AddToLog("NwEvSetEBlockSequence" + blockSequenceJSONstring);
-                  EventManager.TriggerEvent(eDIA.Events.Config.EvSetEBlockSequence, new eParam(blockSequenceJSONstring));
+                  EventManager.TriggerEvent(eDIA.Events.Config.EvSetXBlockSequence, new eParam(blockSequenceJSONstring));
             }
 
             [RCAS_RemoteEvent(eDIA.Events.Network.NwEvSetXBlockDefinitions)]
             static void NwEvSetEBlockDefinitions(string[] blockDefintionsJSONstrings) {
                   AddToLog("NwEvSetEBlockDefinitions" + blockDefintionsJSONstrings.Length);
-                  EventManager.TriggerEvent(eDIA.Events.Config.EvSetEBlockDefinitions, new eParam(blockDefintionsJSONstrings));
+                  EventManager.TriggerEvent(eDIA.Events.Config.EvSetXBlockDefinitions, new eParam(blockDefintionsJSONstrings));
             }
 
             [RCAS_RemoteEvent(eDIA.Events.Network.NwEvSetTaskDefinitions)]

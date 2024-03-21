@@ -29,8 +29,8 @@ namespace eDIA.Manager
 
 			// Configs
 			EventManager.StartListening(eDIA.Events.Config.EvSetSessionInfo,		NwEvSetSessionInfo);
-			EventManager.StartListening(eDIA.Events.Config.EvSetEBlockSequence,	NwEvSetEBlockSequence);
-                  EventManager.StartListening(eDIA.Events.Config.EvSetEBlockDefinitions,	NwEvSetBlockDefinitions);
+			EventManager.StartListening(eDIA.Events.Config.EvSetXBlockSequence,	NwEvSetXBlockSequence);
+                  EventManager.StartListening(eDIA.Events.Config.EvSetXBlockDefinitions,	NwEvSetXBlockDefinitions);
                   EventManager.StartListening(eDIA.Events.Config.EvSetTaskDefinitions,	NwEvSetTaskDefinitions);
 
             }
@@ -64,12 +64,12 @@ namespace eDIA.Manager
                   RCAS_Peer.Instance.TriggerRemoteEvent(eDIA.Events.Network.NwEvSetSessionInfo, obj.GetStrings());
 		}
 
-		private void NwEvSetEBlockSequence(eParam obj)
+		private void NwEvSetXBlockSequence(eParam obj)
 		{
 			RCAS_Peer.Instance.TriggerRemoteEvent(eDIA.Events.Network.NwEvSetXBlockSequence, obj.GetString());
 		}
 
-            private void NwEvSetBlockDefinitions(eParam obj) {
+            private void NwEvSetXBlockDefinitions(eParam obj) {
                   RCAS_Peer.Instance.TriggerRemoteEvent(eDIA.Events.Network.NwEvSetXBlockDefinitions, obj.GetStrings());
             }
 
