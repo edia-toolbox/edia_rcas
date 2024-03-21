@@ -66,11 +66,11 @@ namespace eDIA.Manager
 
 		private void NwEvSetEBlockSequence(eParam obj)
 		{
-			RCAS_Peer.Instance.TriggerRemoteEvent(eDIA.Events.Network.NwEvSetEBlockSequence, obj.GetString());
+			RCAS_Peer.Instance.TriggerRemoteEvent(eDIA.Events.Network.NwEvSetXBlockSequence, obj.GetString());
 		}
 
             private void NwEvSetBlockDefinitions(eParam obj) {
-                  RCAS_Peer.Instance.TriggerRemoteEvent(eDIA.Events.Network.NwEvSetEBlockDefinitions, obj.GetStrings());
+                  RCAS_Peer.Instance.TriggerRemoteEvent(eDIA.Events.Network.NwEvSetXBlockDefinitions, obj.GetStrings());
             }
 
             private void NwEvSetTaskDefinitions(eParam obj) {
