@@ -10,7 +10,6 @@ namespace RCAS.Samples
         public RectTransform PairingOfferPanel;
         public Text Output_Info;
 
-
         private string ip = "";
         private int port = 0;
 

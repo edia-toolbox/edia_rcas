@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 3957061824435178958}
   - component: {fileID: 6321942814501037393}
   m_Layer: 0
-  m_Name: '[ eDIA CameraCaptureStreamer ]'
+  m_Name: '[ Edia CameraCaptureStreamer ]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

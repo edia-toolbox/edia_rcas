@@ -6,7 +6,7 @@ using System.Linq;
 using RCAS; 
 using TMPro;
 
-namespace eDIA.Manager
+namespace Edia.Manager
 {
 	/// <summary>Panel for setting up config files, for now choosing them from pre-set versions</summary>
 	/// 
@@ -34,9 +34,6 @@ namespace eDIA.Manager
 			HidePanel();
 		}
 
-		private void Start()
-		{
-		}
 
 		private void OnDestroy()
 		{
@@ -71,9 +68,8 @@ namespace eDIA.Manager
 		void Connected(System.Net.EndPoint EP)
 		{
 			Debug.Log("Connected");
-			EventManager.TriggerEvent(eDIA.Events.ControlPanel.EvConnectionEstablished, new eParam(deviceIndex));
+			EventManager.TriggerEvent(Edia.Events.ControlPanel.EvConnectionEstablished, new eParam(deviceIndex));
 			HidePanel();
 		}
-
 	}
 }

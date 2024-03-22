@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using eDIA;
+using Edia;
 using System;
 
 namespace RCAS
@@ -44,12 +44,12 @@ namespace RCAS
 
 			private void OnEnable()
 			{
-				  EventManager.StartListening(eDIA.Events.Casting.EvToggleCasting, OnEvEnableCasting);
+				  EventManager.StartListening(Edia.Events.Casting.EvToggleCasting, OnEvEnableCasting);
 			}
 
 			private void OnDisable()
 			{
-				  EventManager.StopListening(eDIA.Events.Casting.EvToggleCasting, OnEvEnableCasting);
+				  EventManager.StopListening(Edia.Events.Casting.EvToggleCasting, OnEvEnableCasting);
 			}
 			
 			void OnEvEnableCasting(eParam param)
@@ -62,7 +62,6 @@ namespace RCAS
 			{
 				  while (true)
 				  {
-
 						yield return new WaitForSeconds(1.0f / fps);
 						yield return new WaitForEndOfFrame();
 
@@ -97,8 +96,6 @@ namespace RCAS
 							  {
 									RCAS_Peer.Instance.SendImage(tex_data);
 							  }
-
-
 						}
 				  }
 			}

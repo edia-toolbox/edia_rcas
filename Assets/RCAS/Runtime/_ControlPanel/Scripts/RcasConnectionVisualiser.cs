@@ -2,26 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using RCAS;
-using eDIA;
+using Edia;
 using UnityEngine.UI;
 using System.Net;
 
-// Ms C# Coding Conventions
-//
-// * PascalCasing
-// class, record, or struct, enums
-// public members of types, such as fields, properties, events, methods, and local functions
-//
-// * camelCasing
-// private or internal fields, and prefix them with _
-//
-// Use implicit typing for local variables when the type of the variable is obvious from 
-// the right side of the assignment, or when the precise type is not important.
-// var var1 = "This is clearly a string.";
-// var var2 = 27;
-//
-
-namespace eDIA.Manager {
+namespace Edia.Manager {
 
 	public class RcasConnectionVisualiser : MonoBehaviour
 	{

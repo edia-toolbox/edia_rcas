@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace eDIA.Manager {
+namespace Edia.Manager {
 
 	public class VideoStreamDisplay : ExperimenterPanel {
 		
@@ -51,7 +51,7 @@ namespace eDIA.Manager {
 		}
 
 		public void BtnPressed () {
-				  EventManager.TriggerEvent(eDIA.Events.Casting.EvToggleCasting, null);
+				  EventManager.TriggerEvent(Edia.Events.Casting.EvToggleCasting, null);
 		}
 
 	}

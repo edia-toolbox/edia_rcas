@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 8089772705190328355}
   - component: {fileID: 8424997792447339222}
   m_Layer: 0
-  m_Name: '[ eDIA Control Remote ]'
+  m_Name: '[ Edia Control Remote ]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

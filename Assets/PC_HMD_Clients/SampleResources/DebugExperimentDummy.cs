@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using eDIA;
+using Edia;
 using System;
 
 
@@ -33,7 +33,7 @@ public class DebugExperimentDummy : MonoBehaviour
 	private void OnSetExpConfig(eParam obj)
 	{
 		Debug.Log("trigger EvReadyToGo");
-		EventManager.TriggerEvent(eDIA.Events.Config.EvReadyToGo, null);
+		EventManager.TriggerEvent(Edia.Events.Config.EvReadyToGo, null);
 	}
 }
 	

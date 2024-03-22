@@ -62,7 +62,7 @@ GameObject:
   - component: {fileID: 4935420409082715216}
   - component: {fileID: 7696792457245714177}
   m_Layer: 0
-  m_Name: '[ eDIA HMD Remote ]'
+  m_Name: '[ Edia HMD Remote ]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
