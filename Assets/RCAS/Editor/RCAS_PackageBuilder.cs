@@ -8,7 +8,7 @@ using UnityEditor;
 namespace RCAS_Editor
 {
     public class RCAS_PackageBuilder
-    {
+    {/*
         static PackRequest Request;
 
         [MenuItem("eDIA/RCAS/Build Tarballs", false, -10)]
@@ -39,5 +39,6 @@ namespace RCAS_Editor
                 EditorApplication.update -= Progress;
             }
         }
+        */
     }
 }
