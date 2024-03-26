@@ -4,7 +4,7 @@ using UnityEngine;
 using Edia;
 using System;
 
-namespace RCAS
+namespace Edia.RCAS
 {
 	  public class RCAS_VideoSender : MonoBehaviour
 	  {

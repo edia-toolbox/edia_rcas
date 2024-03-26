@@ -12,7 +12,7 @@ using UnityEngine.Android;
 using System.Collections.Concurrent;
 using System.Linq;
 
-namespace RCAS
+namespace Edia.RCAS
 {
     public sealed class RCAS_Peer : MonoBehaviour
     {

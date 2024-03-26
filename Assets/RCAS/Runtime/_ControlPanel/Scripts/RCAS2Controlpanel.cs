@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Edia;
 using Edia.Utilities;
-using RCAS;
+using Edia.RCAS;
 using UnityEngine;
 using UnityEngine.UI;
 

@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using System.Text;
 
-namespace RCAS
+namespace Edia.RCAS
 {
     public enum RCAS_UDP_CHANNEL
     {

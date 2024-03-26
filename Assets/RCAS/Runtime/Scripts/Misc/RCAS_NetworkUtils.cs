@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Net.Sockets;
 using System.Net;
 
-namespace RCAS
+namespace Edia.RCAS
 {
     public static class RCAS_NetworkUtils
     {

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine.UI;
 using Unity.Collections;
-using RCAS;
+using Edia.RCAS;
 
 public class Debug_UI_Output : MonoBehaviour
 {

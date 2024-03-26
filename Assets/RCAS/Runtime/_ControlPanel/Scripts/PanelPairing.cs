@@ -3,25 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
-using RCAS; 
+using Edia.RCAS; 
 using TMPro;
 
 namespace Edia.Manager
 {
-	/// <summary>Panel for setting up config files, for now choosing them from pre-set versions</summary>
-	/// 
 	public class PanelPairing : ExperimenterPanel
 	{
 		public Image icon;
 		public TextMeshProUGUI Output_Info;
 
-		private string ip = "";
-		private int port = 0;
-		private int deviceIndex = -1;
+		string _ip = "";
+		int _port = 0;
+		string _deviceInfo = "None";
 
 		public void BtnTSubmitPressed()
 		{
-			RCAS_Peer.Instance.ConnectTo(ip, port);
+			RCAS_Peer.Instance.ConnectTo(_ip, _port);
 		}
 
 		public override void Awake() {
@@ -45,14 +43,10 @@ namespace Edia.Manager
 		void PairingOfferReceived(string ip_address, int port, string deviceInfo)
 		{
 			Output_Info.text = $"{deviceInfo}";
+			_deviceInfo = deviceInfo;
 
-			//deviceIndex = ControlPanel.Instance.GetXRDeviceIndex(deviceInfo);
-
-			//if (deviceIndex is not -1)
-			//	icon.sprite = ControlPanel.Instance.GetXRDeviceIcon(deviceIndex);
-
-			ip = ip_address;
-			this.port = port;
+			_ip = ip_address;
+			this._port = port;
 
 			ShowPanel();
 
@@ -68,7 +62,7 @@ namespace Edia.Manager
 		void Connected(System.Net.EndPoint EP)
 		{
 			Debug.Log("Connected");
-			EventManager.TriggerEvent(Edia.Events.ControlPanel.EvConnectionEstablished, new eParam(deviceIndex));
+			EventManager.TriggerEvent(Edia.Events.ControlPanel.EvConnectionEstablished, new eParam(_deviceInfo));
 			HidePanel();
 		}
 	}

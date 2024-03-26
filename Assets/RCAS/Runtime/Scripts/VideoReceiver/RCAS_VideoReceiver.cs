@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RCAS
+namespace Edia.RCAS
 {
 	  sealed class RCAS_VideoReceiver : MonoBehaviour
 	  {

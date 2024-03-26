@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using RCAS;
+using Edia.RCAS;
 using Edia.Utilities;
 
 // Communication manager interface. Translates internal commands into network packages and viseversa

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using RCAS;
+using Edia.RCAS;
 
 namespace RCAS_Editor
 {

@@ -12,7 +12,7 @@ using UnityEngine.Android;
 using System.Collections.Concurrent;
 using UnityEngine.Events;
 
-namespace RCAS
+namespace Edia.RCAS
 {
     public sealed class RCAS_UDP_Connection : System.IDisposable
     {
