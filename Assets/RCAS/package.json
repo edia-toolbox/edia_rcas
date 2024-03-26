@@ -11,5 +11,12 @@
     "name": "eDIA"
   },
   "dependencies": {},
+  "samples": [
+    {
+      "displayName": "Networked Controller & Executer scenes",
+      "description": "Two scenes set up to connect over the network for remote control. Does NOT include functioning experiment!",
+      "path": "Samples~/ControllerExecuter"
+    }
+  ],
   "hideInEditor": false
 }
