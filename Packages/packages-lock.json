@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.edia.core": {
-      "version": "https://gitlab.gwdg.de/3dia/edia_framework.git?path=Assets/eDIA",
+      "version": "https://gitlab.gwdg.de/3dia/edia_framework.git?path=Assets/eDIA#feat/fadetoblack",
       "depth": 0,
       "source": "git",
       "dependencies": {
@@ -12,7 +12,7 @@
         "com.unity.nuget.newtonsoft-json": "3.2.1",
         "com.unity.textmeshpro": "3.0.8"
       },
-      "hash": "518bd80f215013c070886caeeb1023c2083d579a"
+      "hash": "98a6bf952a57ddf4e2b93ae80d7e2a8a48ca2eb8"
     },
     "com.htc.upm.wave.openxr": {
       "version": "1.0.3",

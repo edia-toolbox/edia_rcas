@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Edia.Manager {
+namespace Edia.Controller {
 
 	public class VideoStreamDisplay : ExperimenterPanel {
 		

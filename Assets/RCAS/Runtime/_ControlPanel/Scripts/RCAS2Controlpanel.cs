@@ -7,7 +7,7 @@ using Edia.RCAS;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Edia.Manager {
+namespace Edia.Controller {
 	/// <summary> In project version of the connector to a remote interface </summary>
 	public class RCAS2Controlpanel : MonoBehaviour {
 

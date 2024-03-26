@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
-using Edia.RCAS; 
+using Edia.RCAS;
+using Edia;
 using TMPro;
 
-namespace Edia.Manager
+namespace Edia.Controller
 {
 	public class PanelPairing : ExperimenterPanel
 	{

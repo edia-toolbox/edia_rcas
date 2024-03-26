@@ -6,17 +6,12 @@ using Edia;
 using UnityEngine.UI;
 using System.Net;
 
-namespace Edia.Manager {
+namespace Edia.Controller {
 
-	public class RcasConnectionVisualiser : MonoBehaviour
+	public class ConnectionStatusBroadcaster : MonoBehaviour
 	{
-
-		Image connectionIcon = null;
-
 		private void Start()
 		{
-			connectionIcon = GetComponent<Image>();
-			
 			if (ControlPanel.Instance.Settings.ControlMode == ControlMode.Remote)
 				RegisterEventListeners();
 		}
@@ -37,12 +32,12 @@ namespace Edia.Manager {
 
 		private void Disconnected(IPEndPoint EP)
 		{
-			connectionIcon.color = Color.red;
+			EventManager.TriggerEvent(Edia.Events.ControlPanel.EvConnectionEstablished, new eParam(false));
 		}
 
 		private void Connected(IPEndPoint EP)
 		{
-			connectionIcon.color = Color.green;
+			EventManager.TriggerEvent(Edia.Events.ControlPanel.EvConnectionEstablished, new eParam(true));
 		}
 
 
