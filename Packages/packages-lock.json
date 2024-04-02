@@ -12,7 +12,7 @@
         "com.unity.nuget.newtonsoft-json": "3.2.1",
         "com.unity.textmeshpro": "3.0.8"
       },
-      "hash": "0062375e213d55e9a1d08f0c005938401e7316dc"
+      "hash": "3efb12c359e9fc77adbe130bd78da9290534936c"
     },
     "com.htc.upm.wave.openxr": {
       "version": "1.0.3",
