@@ -4,7 +4,7 @@
 "Manager" application for remote interaction with and streaming from a mobile headset.
 
 ## Cloning
-This repository uses symbolic links (e.g., for [`Asstes\Samples`](Asstes\Samples)). Make sure that your local git supports them:   
+This repository uses symbolic links (e.g., for [`Asstes\Samples`](Assets/Samples)). Make sure that your local git supports them:   
 ```git config --get core.symlinks```  
 should return `true` when running it from somewhere within the repository. If it does not, please run:  
 ```git config core.symlinks true```
