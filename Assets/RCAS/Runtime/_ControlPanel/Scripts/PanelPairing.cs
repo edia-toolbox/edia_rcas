@@ -18,7 +18,7 @@ namespace Edia.Controller
 		int _port = 0;
 		string _deviceInfo = "None";
 
-		public void BtnTSubmitPressed()
+		public void BtnSubmitPressed()
 		{
 			RCAS_Peer.Instance.ConnectTo(_ip, _port);
 		}

@@ -334,7 +334,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6777941683323102549}
         m_TargetAssemblyTypeName: 
-        m_MethodName: BtnTSubmitPressed
+        m_MethodName: BtnSubmitPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
