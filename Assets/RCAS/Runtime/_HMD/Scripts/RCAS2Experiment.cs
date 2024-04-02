@@ -55,6 +55,12 @@ namespace Edia {
 			EventManager.TriggerEvent(Edia.Events.StateMachine.EvStartExperiment, null);
 		}
 
+		//[RCAS_RemoteEvent(Edia.Events.Network.NwEvFinalizeSession)]
+		//static void NwEvFinaliseExperiment() {
+		//	AddToLog("NwEvFinaliseExperiment");
+		//	EventManager.TriggerEvent(Edia.Events.StateMachine.EvFinalizeSession, null);
+		//}
+
 		[RCAS_RemoteEvent(Edia.Events.Network.NwEvProceed)]
 		static void NwEvProceed() {
 			AddToLog("NwEvProceed");
@@ -110,6 +116,7 @@ namespace Edia {
 			EventManager.StartListening(Edia.Events.ControlPanel.EvUpdateSessionSummary, NwEvUpdateSessionSummary);
 			EventManager.StartListening(Edia.Events.ControlPanel.EvStartTimer, NwEvStartTimer);
 			EventManager.StartListening(Edia.Events.ControlPanel.EvStopTimer, NwEvStopTimer);
+			EventManager.StartListening(Edia.Events.StateMachine.EvSessionEnded, NwEvSessionEnded);
 
 			// Eye
 			EventManager.StartListening(Edia.Events.Eye.EvEnableEyeCalibrationTrigger, NwEvEnableEyeCalibrationTrigger);
@@ -160,6 +167,9 @@ namespace Edia {
 			RCAS_Peer.Instance.TriggerRemoteEvent(Edia.Events.Network.NwEvStopTimer);
 		}
 
+		private void NwEvSessionEnded(eParam obj) {
+			RCAS_Peer.Instance.TriggerRemoteEvent(Edia.Events.Network.NwEvSessionEnded);
+		}
 
 		// Eye
 

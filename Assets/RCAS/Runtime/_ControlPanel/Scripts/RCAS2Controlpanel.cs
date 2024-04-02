@@ -35,7 +35,6 @@ namespace Edia.Controller {
 
 		// * TO APP >>
 
-
 		private void NwEvStartExperiment(eParam obj) {
 			RCAS_Peer.Instance.TriggerRemoteEvent(Edia.Events.Network.NwEvStartExperiment);
 		}
@@ -113,6 +112,11 @@ namespace Edia.Controller {
 		[RCAS_RemoteEvent(Edia.Events.Network.NwEvUpdateProgressInfo)]
 		static void NwEvUpdateProgressInfo(string arg) {
 			//EventManager.TriggerEvent(eDIA.Events.ControlPanel.EvUpdateProgressInfo, new eParam(arg));
+		}
+
+		[RCAS_RemoteEvent(Edia.Events.Network.NwEvSessionEnded)]
+		static void NwEvSessionEnded(string arg) {
+			EventManager.TriggerEvent(Edia.Events.StateMachine.EvSessionEnded, new eParam(arg));
 		}
 
 		[RCAS_RemoteEvent(Edia.Events.Network.NwEvEnableEyeCalibrationTrigger)]
