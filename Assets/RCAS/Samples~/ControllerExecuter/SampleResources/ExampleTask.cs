@@ -6,16 +6,17 @@ using UXF;
 
 public class ExampleTask : XBlock
 {
-	float UserResponseTime = 0f;
-	float StepStartTime = 0;
 	public List<string> taskColors = new();
 
 	[Header("Refs")]
 	public GameObject Cube;
 	public GameObject Sphere;
 
+    float _userResponseTime = 0f;
+    float _stepStartTime = 0;
+	GameObject _activeObject;
 
-	private void Awake() {
+    private void Awake() {
 
 		/*
 			Each trial exists out of a sequence of steps. 
@@ -37,15 +38,19 @@ public class ExampleTask : XBlock
 	/// <summary>Present Cube</summary>
 	void TaskStep1() {
 
-		switch(Session.instance.CurrentTrial.settings.GetString("active_object")) {
+		switch(Session.instance.CurrentTrial.settings.GetString("active_object").ToLower()) {
 			case "cube":
-				Cube.SetActive(true);
+				_activeObject = Cube;
 				break;
 			case "sphere":
-				Sphere.SetActive(true);
+				_activeObject = Sphere;
 				break;
-
+			default:
+			Debug.LogError("No active object set in trial settings");
+                break;
 		}
+
+		_activeObject.SetActive(true);
 
 		// Tell the system to wait on proceed
 		Experiment.Instance.WaitOnProceed();
@@ -56,7 +61,7 @@ public class ExampleTask : XBlock
 	/// <summary>Move cube, wait on user input</summary>
 	void TaskStep2() {
 
-		StepStartTime = Time.time;
+		_stepStartTime = Time.time;
 
 		// Show message to user and allow proceeding to NextStep by pressing the button.
 		MessagePanelInVR.Instance.ShowMessage("Click the object", 2f);
@@ -72,13 +77,13 @@ public class ExampleTask : XBlock
 	void TaskStep3() {
 
 		// Change color
-		Cube.GetComponent<Renderer>().material.color = PickColor();
+		_activeObject.GetComponent<Renderer>().material.color = PickColor();
 
 		// calculate response time
-		UserResponseTime = Time.time - StepStartTime;
+		_userResponseTime = Time.time - _stepStartTime;
 
 		// Add result to log
-		Experiment.Instance.AddToTrialResults("UserResponseTime", UserResponseTime.ToString());
+		Experiment.Instance.AddToTrialResults("UserResponseTime", _userResponseTime.ToString());
 
 		Experiment.Instance.WaitOnProceed();
 		Experiment.Instance.ShowMessageToUser("Wait on experimenter button click.", false);
