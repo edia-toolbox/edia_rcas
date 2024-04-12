@@ -11,7 +11,8 @@
     "keys": ["active_object"],
     "valueList": [
       { "values": ["cube"] },
-      { "values": ["sphere"] }
+      { "values": ["sphere"] }, 
+	  { "values": ["cube"] },
     ]
   }
 }
