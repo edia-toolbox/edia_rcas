@@ -12,7 +12,7 @@
     "valueList": [
       { "values": ["cube"] },
       { "values": ["sphere"] }, 
-	  { "values": ["cube"] },
+	  { "values": ["cube"] }
     ]
   }
 }

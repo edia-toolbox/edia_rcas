@@ -4,19 +4,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UXF;
 
-public class ExampleTask : XBlock
-{
-	public List<string> taskColors = new();
+public class ExampleTask : XBlock {
+	List<string> taskColors = new();
 
 	[Header("Refs")]
 	public GameObject Cube;
 	public GameObject Sphere;
 
-    float _userResponseTime = 0f;
-    float _stepStartTime = 0;
+	float _userResponseTime = 0f;
+	float _stepStartTime = 0;
 	GameObject _activeObject;
 
-    private void Awake() {
+	private void Awake() {
 
 		/*
 			Each trial exists out of a sequence of steps. 
@@ -38,7 +37,7 @@ public class ExampleTask : XBlock
 	/// <summary>Present Cube</summary>
 	void TaskStep1() {
 
-		switch(Session.instance.CurrentTrial.settings.GetString("active_object").ToLower()) {
+		switch (Session.instance.CurrentTrial.settings.GetString("active_object").ToLower()) {
 			case "cube":
 				_activeObject = Cube;
 				break;
@@ -46,8 +45,8 @@ public class ExampleTask : XBlock
 				_activeObject = Sphere;
 				break;
 			default:
-			Debug.LogError("No active object set in trial settings");
-                break;
+				Debug.LogError("No active object set in trial settings");
+				break;
 		}
 
 		_activeObject.SetActive(true);
@@ -66,9 +65,9 @@ public class ExampleTask : XBlock
 		// Show message to user and allow proceeding to NextStep by pressing the button.
 		MessagePanelInVR.Instance.ShowMessage("Click the object", 2f);
 
-		// Enable interaction from the user. The system will automaticly enable the Ray Interaction for the active hands set in the settings.
+		// Enable interaction from the user. The system will automatically enable the Ray Interaction for the active hands set in the settings.
 		XRManager.Instance.EnableXRRayInteraction(true);
-		
+
 		// Tell the system to wait on proceed
 		Experiment.Instance.WaitOnProceed();
 	}
@@ -98,16 +97,16 @@ public class ExampleTask : XBlock
 		Experiment.Instance.Proceed();
 	}
 
-#endregion // -------------------------------------------------------------------------------------------------------------------------------
-#region TASK HELPERS
+	#endregion // -------------------------------------------------------------------------------------------------------------------------------
+	#region TASK HELPERS
 
 	Color PickColor() {
-		string pickedColorString = taskColors[Random.Range(0,taskColors.Count)];
+		string pickedColorString = taskColors[Random.Range(0, taskColors.Count)];
 		ColorUtility.TryParseHtmlString(pickedColorString, out Color color);
 		return color;
 	}
-	
-	public void UserClicked () {
+
+	public void UserClicked() {
 		Debug.Log("UserClicked ");
 		XRManager.Instance.EnableXRRayInteraction(false);
 		Experiment.Instance.Proceed();
@@ -119,8 +118,8 @@ public class ExampleTask : XBlock
 		Sphere.SetActive(false);
 	}
 
-#endregion // -------------------------------------------------------------------------------------------------------------------------------
-#region STATEMACHINE OVERRIDES
+	#endregion // -------------------------------------------------------------------------------------------------------------------------------
+	#region STATEMACHINE OVERRIDES
 
 	public override void OnBlockStart() {
 		HideStimuli();
