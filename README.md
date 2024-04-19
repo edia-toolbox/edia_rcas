@@ -1,13 +1,12 @@
-# eDIA Manager
+# eDIA Remote Control And Streaming
 
 ## Description
-"Manager" application for remote interaction with and streaming from a mobile headset.
+Set of tools for remote interaction between the eDIA core components `Controller` and `Executer`.
 
-## Cloning
-This repository uses symbolic links (e.g., for [`Assets\Samples`](Assets/Samples)). Make sure that your local git supports them:   
-```git config --get core.symlinks```  
-should return `true` when running it from somewhere within the repository. If it does not, please run:  
-```git config core.symlinks true```
+Main features:
+- Interfacing internal eventmanager to networked events
+- Prefabs for pairing and videostreams
+- Camera capture and casting towards `Controller`
 
 ## Documentation
 For details when it comes to setup, installation and usage, refer to the following documentation:
@@ -21,4 +20,4 @@ For details when it comes to setup, installation and usage, refer to the followi
 ... still needs to be determined. For now it's private anyway.
 
 ## Project status
-to be started :) 
+In development
