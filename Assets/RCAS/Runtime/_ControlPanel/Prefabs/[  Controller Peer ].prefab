@@ -142,7 +142,7 @@ GameObject:
   - component: {fileID: 8424997792447339222}
   - component: {fileID: 5382520552077051870}
   m_Layer: 0
-  m_Name: '[ Edia Control Remote ]'
+  m_Name: '[  Controller Peer ]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
