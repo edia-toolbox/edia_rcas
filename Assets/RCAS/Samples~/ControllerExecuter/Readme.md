@@ -1,4 +1,4 @@
-RCAS (Remote-Control-And-Streaming) is a Unity framework intended to enable remote control of an application running on a remote mobile VR headset in addition to live-streaming the VR view.
+RCAS (Remote-Control-And-Streaming) is a Unity framework enabling remote control of an VR application on a HMD. 
 
 # Samples
 
