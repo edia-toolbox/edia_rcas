@@ -48,7 +48,7 @@ Each RCAS_Peers has several callback delegates you can use, including `Peer.OnEs
 
 For details on each specific feature, consult the indicidual documenation:
 
-- [Device-Pairing](https://gitlab.gwdg.de/3dia/edia_rcas/-/blob/main/Assets/RCAS/Documentation/1_DevicePairing.md)
-- [Video-Streaming](https://gitlab.gwdg.de/3dia/edia_rcas/-/blob/main/Assets/RCAS/Documentation/2_VideoStream.md)
-- [Remote-Events](https://gitlab.gwdg.de/3dia/edia_rcas/-/blob/main/Assets/RCAS/Documentation/3_RemoteEvents.md)
-- [Custom-Messages](https://gitlab.gwdg.de/3dia/edia_rcas/-/blob/main/Assets/RCAS/Documentation/4_CustomMessages.md)
+- [Device-Pairing](https://gitlab.gwdg.de/3dia/edia_rcas/-/blob/main/Assets/com.edia.rcas/Documentation/1_DevicePairing.md)
+- [Video-Streaming](https://gitlab.gwdg.de/3dia/edia_rcas/-/blob/main/Assets/com.edia.rcas/Documentation/2_VideoStream.md)
+- [Remote-Events](https://gitlab.gwdg.de/3dia/edia_rcas/-/blob/main/Assets/com.edia.rcas/Documentation/3_RemoteEvents.md)
+- [Custom-Messages](https://gitlab.gwdg.de/3dia/edia_rcas/-/blob/main/Assets/com.edia.rcas/Documentation/4_CustomMessages.md)

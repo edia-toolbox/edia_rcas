@@ -1,11 +1,12 @@
 {
-    "name": "RCAS_Runtime",
+    "name": "com.edia.rcas.editor",
     "rootNamespace": "",
     "references": [
-        "GUID:0460cc0aa903ae648b1655e8367669bf",
-        "GUID:6055be8ebefd69e48b49212b09b47b2f"
+        "GUID:21892dec363ae5e4390174bb746210fb"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
