@@ -14,5 +14,5 @@ For details when it comes to setup, installation and usage, refer to the followi
 - [Custom-Messages](https://gitlab.gwdg.de/3dia/edia_rcas/-/blob/main/Assets/RCAS/Documentation/4_CustomMessages.md)
 
 ## License
-TBD
+TBD.
 
