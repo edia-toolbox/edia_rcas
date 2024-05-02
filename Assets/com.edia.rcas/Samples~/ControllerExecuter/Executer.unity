@@ -615,6 +615,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6321942814501037393, guid: 55ee62f835613bb499c85afaadc7fb29, type: 3}
+      propertyPath: mTextureFormat
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 8450339240878796623, guid: 55ee62f835613bb499c85afaadc7fb29, type: 3}
       propertyPath: m_Name
       value: '[ Edia CameraCaptureStreamer ]'
