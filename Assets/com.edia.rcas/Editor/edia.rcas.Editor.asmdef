@@ -1,0 +1,18 @@
+{
+    "name": "com.edia.rcas.editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:21892dec363ae5e4390174bb746210fb"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,8 @@
+{
+	"experiment":"DEMO_REMOTE",
+	"experimenter":"Edia",
+	"participant_details":[
+		{"key":"Age","value":"65"},
+		{"key":"Name","value":"Sofia"}
+	]
+}

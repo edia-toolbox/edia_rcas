@@ -1,0 +1,22 @@
+{
+  "name": "com.edia.rcas",
+  "displayName": "com.edia.rcas",
+  "version": "0.2.0",
+  "unity": "2022.3",
+  "description": "Package for experiment remote control + HMD streaming.",
+  "keywords": [
+    "vr"
+  ],  
+  "author": {
+    "name": "eDIA"
+  },
+  "dependencies": {},
+  "samples": [
+    {
+      "displayName": "Networked Controller & Executer scenes",
+      "description": "Two scenes set up to connect over the network for remote control. Does NOT include functioning experiment!",
+      "path": "Samples~/ControllerExecuter/"
+    }
+  ],
+  "hideInEditor": false
+}
