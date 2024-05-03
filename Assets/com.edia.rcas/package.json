@@ -1,6 +1,6 @@
 {
   "name": "com.edia.rcas",
-  "displayName": "EDIA Rcas",
+  "displayName": "EDIA RCAS",
   "version": "0.2.0",
   "unity": "2022.3",
   "description": "Package for experiment remote control + HMD streaming.",
