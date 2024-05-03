@@ -40,6 +40,6 @@ It implements a few networked components:
 - Camera Capture streaming -> prefab: `[ CameraCaptureStreamer ]`
 
 It executes the experiment and and expects network events from the `Controller` side, which get converted via the RCAS HMD interface.
-On the other hand it sends a converted rendertexture from a dedicated streaming camera as bytes towards the `controller`.
-:warning: AT the moment, turning on video streaming (can be de-/activated from the `controller` side) is pretty resource intensive and will most likely cause loss of performance (e.g., frame drops).
+On the other hand it sends a converted rendertexture from a dedicated streaming camera as bytes towards the `controller`.  
+:warning: At the moment, turning on video streaming (can be de-/activated from the `controller` side) is pretty resource intensive and will most likely cause loss of performance (e.g., frame drops).
 
