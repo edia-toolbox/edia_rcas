@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Edia.RCAS.Samples
+namespace Edia.Rcas.Samples
 {
     public class RCAS_PairingOfferPanel : MonoBehaviour
     {

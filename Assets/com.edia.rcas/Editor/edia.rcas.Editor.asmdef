@@ -1,5 +1,5 @@
 {
-    "name": "com.edia.rcas.editor",
+    "name": "Edia.Rcas.Editor",
     "rootNamespace": "",
     "references": [
         "GUID:21892dec363ae5e4390174bb746210fb"
