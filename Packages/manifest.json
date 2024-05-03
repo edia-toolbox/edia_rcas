@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.edia.core": "https://gitlab.gwdg.de/3dia/edia_framework.git?path=Assets/eDIA#feat/fadetoblack",
+    "com.edia.core": "https://gitlab.gwdg.de/3dia/edia_core.git?path=Assets/com.edia.core#feat/fadetoblack",
     "com.htc.upm.wave.openxr": "1.0.3",
     "com.unity.collab-proxy": "2.2.0",
     "com.unity.feature.development": "1.0.2",
@@ -12,6 +12,7 @@
     "com.unity.ugui": "2.0.0",
     "com.unity.xr.interaction.toolkit": "2.5.1",
     "com.unity.xr.management": "4.4.0",
+    "com.unity.xr.oculus": "4.1.2",
     "com.unity.xr.openxr": "1.9.1",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
