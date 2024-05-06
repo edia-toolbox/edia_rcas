@@ -3,10 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using Edia;
 using Edia.Controller;
+<<<<<<< Updated upstream
 using Edia.Rcas;
 using UnityEngine.UI;
 using System.Net;
 
+=======
+using UnityEngine.UI;
+using System.Net;
+
+namespace Edia.RCAS {
+>>>>>>> Stashed changes
 
 public class ConnectionStatusBroadcaster : MonoBehaviour
 {
