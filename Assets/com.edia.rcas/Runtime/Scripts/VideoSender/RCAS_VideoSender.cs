@@ -4,7 +4,7 @@ using UnityEngine;
 using Edia;
 using System;
 
-namespace Edia.RCAS {
+namespace Edia.Rcas {
 	public class RCAS_VideoSender : MonoBehaviour {
 		public RenderTexture mRenderTexture;
 		public TextureFormat mTextureFormat = TextureFormat.ARGB32;

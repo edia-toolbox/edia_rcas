@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Edia.RCAS;
+using Edia.Rcas;
 using Edia;
 
 public class ColorChanger : MonoBehaviour
