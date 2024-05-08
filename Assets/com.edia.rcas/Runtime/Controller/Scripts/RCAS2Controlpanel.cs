@@ -1,41 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Edia;
 using Edia.Utilities;
 using Edia.Rcas;
 using UnityEngine;
-using UnityEngine.UI;
 
-<<<<<<< Updated upstream
 /// <summary> In project version of the connector to a remote interface </summary>
 public class RCAS2Controlpanel : MonoBehaviour {
-=======
-namespace Edia.RCAS {
-	/// <summary> In project version of the connector to a remote interface </summary>
-	public class RCAS2Controlpanel : MonoBehaviour {
-
-		#region TO APP >>
-
-		private void Awake() {
-			// * TO APP >>
-
-			// State machine
-			EventManager.StartListening(Edia.Events.StateMachine.EvStartExperiment, NwEvStartExperiment);
-			EventManager.StartListening(Edia.Events.StateMachine.EvPauseExperiment, NwEvPauseExperiment);
-			EventManager.StartListening(Edia.Events.StateMachine.EvProceed, NwEvProceed);
-
-			// Features
-			EventManager.StartListening(Edia.Events.Casting.EvToggleCasting, NwEvToggleCasting);
-
-			// Configs
-			EventManager.StartListening(Edia.Events.Config.EvSetSessionInfo, NwEvSetSessionInfo);
-			EventManager.StartListening(Edia.Events.Config.EvSetXBlockSequence, NwEvSetXBlockSequence);
-			EventManager.StartListening(Edia.Events.Config.EvSetXBlockDefinitions, NwEvSetXBlockDefinitions);
-			EventManager.StartListening(Edia.Events.Config.EvSetTaskDefinitions, NwEvSetTaskDefinitions);
-
-		}
->>>>>>> Stashed changes
 
 	#region TO APP >>
 
@@ -159,7 +128,6 @@ namespace Edia.RCAS {
 	static void NwEvStopTimer() {
 		EventManager.TriggerEvent(Edia.Events.ControlPanel.EvStopTimer);
 	}
-
 
 	#endregion // -------------------------------------------------------------------------------------------------------------------------------
 }
