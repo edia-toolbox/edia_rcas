@@ -1398,7 +1398,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5748721948532627485, guid: 2b0488415d1cc324cb09bd0ffdc2412f, type: 3}
       propertyPath: m_Name
-      value: '[ eDIA XR RIG ]'
+      value: Edia-XRRig
       objectReference: {fileID: 0}
     - target: {fileID: 5957423708071131101, guid: 2b0488415d1cc324cb09bd0ffdc2412f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1550,7 +1550,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8476789014131039586, guid: 75410ee8e2781b74ea189d613f11bf2e, type: 3}
       propertyPath: m_Name
-      value: '[ eDIA Executer ]'
+      value: Edia-Executer
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1680,7 +1680,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9039703453676348140, guid: e19332ba4746cc94b9235a461a47921b, type: 3}
       propertyPath: m_Name
-      value: '[ eDIA HMD Remote ]'
+      value: Rcas-ExecuterPeer
       objectReference: {fileID: 0}
     - target: {fileID: 9039703453676348140, guid: e19332ba4746cc94b9235a461a47921b, type: 3}
       propertyPath: m_IsActive

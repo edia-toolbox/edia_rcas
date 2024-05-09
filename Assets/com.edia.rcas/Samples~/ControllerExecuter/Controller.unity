@@ -2313,7 +2313,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 152133683164029181, guid: 555c3aec1b98f0c4db924b79bd61d2b5, type: 3}
       propertyPath: m_Name
-      value: '[ eDIA Controller ]'
+      value: Edia-Controller
       objectReference: {fileID: 0}
     - target: {fileID: 1228874869030473918, guid: 555c3aec1b98f0c4db924b79bd61d2b5, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3476,7 +3476,7 @@ PrefabInstance:
       objectReference: {fileID: 2800000, guid: 34b512f1419555a498f72a888294feca, type: 3}
     - target: {fileID: 9092653821738208010, guid: df57b25b70cd958428b7fa2d183a7210, type: 3}
       propertyPath: m_Name
-      value: '[ eDIA Control Remote ]'
+      value: Rcas-ControllerPeer
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
