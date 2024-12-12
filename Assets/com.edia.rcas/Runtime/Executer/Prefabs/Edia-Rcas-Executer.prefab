@@ -24,13 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4756834015869904694}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -224.7058, y: -1496.762, z: 2.9143608}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4935420409082715216}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4756834015869904701
 MonoBehaviour:
@@ -49,6 +49,7 @@ MonoBehaviour:
   PairingPort: 27015
   AutoSetLocalPort: 1
   LocalPort: 27016
+  _localIPAddress: 
   startPairingFunctionOnStart: 1
   startPairingFunctionOnDisconnect: 1
 --- !u!1 &9039703453676348140
@@ -62,7 +63,7 @@ GameObject:
   - component: {fileID: 4935420409082715216}
   - component: {fileID: 7696792457245714177}
   m_Layer: 0
-  m_Name: Rcas-ExecuterPeer
+  m_Name: Edia-Rcas-Executer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,6 +76,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9039703453676348140}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 226.98207, y: 1498.5288, z: 2.1664402}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -82,7 +84,6 @@ Transform:
   m_Children:
   - {fileID: 4756834015869904688}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7696792457245714177
 MonoBehaviour:
