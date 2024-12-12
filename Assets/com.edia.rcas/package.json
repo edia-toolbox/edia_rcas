@@ -3,7 +3,7 @@
   "displayName": "EDIA Rcas",
   "version": "0.2.0",
   "unity": "2022.3",
-  "description": "Package for experiment remote control + HMD streaming.",
+  "description": "Package for experiment remote control + simple HMD streaming.",
   "keywords": [
     "vr"
   ],  
