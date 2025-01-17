@@ -14,7 +14,7 @@ static void MyCustomEventFunction() {
 
 You can now run the marked function remotely by calling `RCAS_Peer.Instance.TriggerRemoteEvent("some_custom_event");`.
 
-Remote Events can also take arguments in the form of a string, or an array of strings. Here are a few examples:
+Remote Events can also take arguments in the form of a string, or an array of strings (see Caveat below). Here are a few examples:
 
 
 <table><tr>
@@ -58,6 +58,8 @@ void SetParamsOnRemotePeer() {
     RCAS_Peer.Instance.TriggerRemoteEvent("set_params", new string[] { "12", "eleven", "Paris" });
 }
 ```
+
+Caveat: Messages longer then 65kB are likely to produce problems. This also applies when sending arrays. Here the sum of the single elements' sizes should not exceed 65kB.
 
 </td></tr>
 </table>
