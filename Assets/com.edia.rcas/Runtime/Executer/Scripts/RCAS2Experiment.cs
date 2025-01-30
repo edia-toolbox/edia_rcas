@@ -69,6 +69,12 @@ namespace Edia.Rcas {
 			EventManager.TriggerEvent(Edia.Events.Casting.EvToggleCasting, null);
 		}
 
+		[RCAS_RemoteEvent(Edia.Events.Network.NwEvNextMessagepanelMsg)]
+		static void NwEvNextMessagpanelMsg() {
+			AddToLog("NwEvNextMessagpanelMsg");
+			EventManager.TriggerEvent(Edia.Events.ControlPanel.EvNextMessagePanelMsg, null);
+		}
+		
 		// Left over methods from development
 
 		[RCAS_RemoteEvent("poke")]
@@ -113,7 +119,7 @@ namespace Edia.Rcas {
 			EventManager.StartListening(Edia.Events.ControlPanel.EvStartTimer, NwEvStartTimer);
 			EventManager.StartListening(Edia.Events.ControlPanel.EvStopTimer, NwEvStopTimer);
 			EventManager.StartListening(Edia.Events.StateMachine.EvSessionEnded, NwEvSessionEnded);
-
+			
 			// Eye
 			EventManager.StartListening(Edia.Events.Eye.EvEnableEyeCalibrationTrigger, NwEvEnableEyeCalibrationTrigger);
 
