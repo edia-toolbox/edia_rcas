@@ -9,7 +9,7 @@ public class ConnectionStatusBroadcaster : MonoBehaviour
 {
 	private void Start()
 	{
-		if (ControlPanel.Instance.Settings.ControlMode == ControlMode.Remote)
+		if (ControlPanel.Instance.ControlMode == ControlMode.Remote)
 			RegisterEventListeners();
 	}
 
@@ -20,7 +20,7 @@ public class ConnectionStatusBroadcaster : MonoBehaviour
 
 	private void OnDestroy()
 	{
-		if (ControlPanel.Instance.Settings.ControlMode != ControlMode.Remote)
+		if (ControlPanel.Instance.ControlMode != ControlMode.Remote)
 			return;
 
 		RCAS_Peer.Instance.OnConnectionEstablished -= Connected;
