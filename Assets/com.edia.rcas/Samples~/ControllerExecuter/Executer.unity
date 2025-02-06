@@ -1731,18 +1731,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4756834015869904701, guid: e19332ba4746cc94b9235a461a47921b, type: 3}
-      propertyPath: deviceName
-      value: fakehmd
-      objectReference: {fileID: 0}
-    - target: {fileID: 4756834015869904701, guid: e19332ba4746cc94b9235a461a47921b, type: 3}
-      propertyPath: AutoSetLocalPort
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4935420409082715216, guid: e19332ba4746cc94b9235a461a47921b, type: 3}
-      propertyPath: m_RootOrder
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 4935420409082715216, guid: e19332ba4746cc94b9235a461a47921b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1786,10 +1774,6 @@ PrefabInstance:
     - target: {fileID: 9039703453676348140, guid: e19332ba4746cc94b9235a461a47921b, type: 3}
       propertyPath: m_Name
       value: Edia-Rcas-Executer
-      objectReference: {fileID: 0}
-    - target: {fileID: 9039703453676348140, guid: e19332ba4746cc94b9235a461a47921b, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
