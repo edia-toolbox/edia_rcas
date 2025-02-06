@@ -562,6 +562,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4777080836763272953, guid: 555c3aec1b98f0c4db924b79bd61d2b5, type: 3}
+      propertyPath: ControlMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4777080836763272953, guid: 555c3aec1b98f0c4db924b79bd61d2b5, type: 3}
       propertyPath: Settings.ControlMode
       value: 1
       objectReference: {fileID: 0}
