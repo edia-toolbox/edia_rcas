@@ -8,7 +8,7 @@ public class ConnectionStatusBroadcaster : MonoBehaviour
 {
 	private void Start()
 	{
-		if (ControlPanel.Instance.ControlMode == ControlMode.Remote)
+		if (ControlPanel.Instance.ControlMode == Edia.Constants.ControlModes.Remote)
 			RegisterEventListeners();
 	}
 
@@ -19,7 +19,7 @@ public class ConnectionStatusBroadcaster : MonoBehaviour
 
 	private void OnDestroy()
 	{
-		if (ControlPanel.Instance.ControlMode != ControlMode.Remote)
+		if (ControlPanel.Instance.ControlMode != Edia.Constants.ControlModes.Remote)
 			return;
 
 		RCAS_Peer.Instance.OnConnectionEstablished -= Connected;
