@@ -3,7 +3,6 @@ using Edia;
 using Edia.Controller;
 using Edia.Rcas;
 using System.Net;
-using static Edia.Constants;
 
 public class ConnectionStatusBroadcaster : MonoBehaviour
 {
