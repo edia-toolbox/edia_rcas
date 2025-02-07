@@ -82,9 +82,9 @@ public class RCAS2Controlpanel : MonoBehaviour {
 	// Settings
 	
 	[RCAS_RemoteEvent(Edia.Events.Network.NwEvProvideSystemSettings)]
-	static void NwEvProvideSystemSettings() {
+	static void NwEvProvideSystemSettings(string args) {
 		Debug.Log("Received NwEvProvideSystemSettings");
-		EventManager.TriggerEvent(Edia.Events.Settings.EvProvideSystemSettings);
+		EventManager.TriggerEvent(Edia.Events.Settings.EvProvideSystemSettings, new eParam(args));
 	}
 	
 	// Configs
