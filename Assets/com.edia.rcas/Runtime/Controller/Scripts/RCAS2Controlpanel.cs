@@ -9,9 +9,7 @@ public class RCAS2Controlpanel : MonoBehaviour {
 	#region TO EXECUTER >>
 
 	private void Awake() {
-		// As this is only in the scene when we are in remote
-		Edia.Controller.ControlPanel.Instance.ControlMode = Constants.ControlModes.Remote;
-		
+
 		// * TO EXECUTER >>
 		
 		// Settings
