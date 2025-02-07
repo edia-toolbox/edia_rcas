@@ -71,7 +71,7 @@ namespace Edia.Rcas {
 		[RCAS_RemoteEvent(Edia.Events.Network.NwEvRequestSystemSettings)]
 		static void NwEvRequestSystemSettings() {
 			AddToLog("NwEvRequestSystemSettings");
-			EventManager.TriggerEvent(Edia.Events.Settings.EvProvideSystemSettings, null);
+			EventManager.TriggerEvent(Edia.Events.Settings.EvRequestSystemSettings, null);
 		}
 		
 		// Left over methods from development
