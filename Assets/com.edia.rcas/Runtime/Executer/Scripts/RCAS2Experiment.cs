@@ -50,12 +50,6 @@ namespace Edia.Rcas {
 			EventManager.TriggerEvent(Edia.Events.StateMachine.EvStartExperiment, null);
 		}
 
-		//[RCAS_RemoteEvent(Edia.Events.Network.NwEvFinalizeSession)]
-		//static void NwEvFinaliseExperiment() {
-		//	AddToLog("NwEvFinaliseExperiment");
-		//	EventManager.TriggerEvent(Edia.Events.StateMachine.EvFinalizeSession, null);
-		//}
-
 		[RCAS_RemoteEvent(Edia.Events.Network.NwEvProceed)]
 		static void NwEvProceed() {
 			AddToLog("NwEvProceed");
@@ -111,6 +105,9 @@ namespace Edia.Rcas {
 
 		private void StartForwarder() {
 
+			// Settings
+			EventManager.StartListening(Edia.Events.Settings.EvProvideSystemSettings, NwEvProvideSystemSettings);
+			
 			// Configs
 			EventManager.StartListening(Edia.Events.Config.EvReadyToGo, NwEvReadyToGo);
 
@@ -129,6 +126,14 @@ namespace Edia.Rcas {
 
 		}
 
+		// Settings
+
+		private void NwEvProvideSystemSettings(eParam obj) {
+			Debug.Log("NwEvProvideSystemSettings");
+			RCAS_Peer.Instance.TriggerRemoteEvent(Edia.Events.Network.NwEvProvideSystemSettings);
+		}
+
+		
 		// Configs
 
 		private void NwEvReadyToGo(eParam obj) {

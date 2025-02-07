@@ -11,6 +11,7 @@ public class RCAS2Controlpanel : MonoBehaviour {
 	private void Awake() {
 		// * TO EXECUTER >>
 		
+		// Settings
 		EventManager.StartListening(Edia.Events.Settings.EvRequestSystemSettings, NwEvRequestSystemSettings); 
 
 		// State machine
@@ -78,6 +79,14 @@ public class RCAS2Controlpanel : MonoBehaviour {
 	#endregion // -------------------------------------------------------------------------------------------------------------------------------
 	#region FROM EXECUTER <<
 
+	// Settings
+	
+	[RCAS_RemoteEvent(Edia.Events.Network.NwEvProvideSystemSettings)]
+	static void NwEvProvideSystemSettings() {
+		Debug.Log("Received NwEvProvideSystemSettings");
+		EventManager.TriggerEvent(Edia.Events.Settings.EvProvideSystemSettings);
+	}
+	
 	// Configs
 
 	[RCAS_RemoteEvent(Edia.Events.Network.NwEvReadyToGo)]
