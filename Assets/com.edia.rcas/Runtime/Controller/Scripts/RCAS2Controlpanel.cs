@@ -34,8 +34,6 @@ public class RCAS2Controlpanel : MonoBehaviour {
 		
 	}
 
-
-
 	// * TO EXECUTER >>
 	private void NwEvUpdateSystemSettings(eParam obj) {
 		RCAS_Peer.Instance.TriggerRemoteEvent(Edia.Events.Network.NwEvUpdateSystemSettings, obj.GetString());

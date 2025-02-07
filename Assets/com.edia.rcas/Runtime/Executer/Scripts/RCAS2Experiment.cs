@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using Edia;
-using Edia.Rcas;
 using Edia.Utilities;
 
 // Communication manager interface. Translates internal commands into network packages and viseversa
