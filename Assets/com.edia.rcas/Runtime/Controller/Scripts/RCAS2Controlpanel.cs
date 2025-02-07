@@ -6,10 +6,12 @@ using UnityEngine;
 /// <summary> In project version of the connector to a remote interface </summary>
 public class RCAS2Controlpanel : MonoBehaviour {
 
-	#region TO APP >>
+	#region TO EXECUTER >>
 
 	private void Awake() {
-		// * TO APP >>
+		// * TO EXECUTER >>
+		
+		EventManager.StartListening(Edia.Events.Settings.EvRequestSystemSettings, NwEvRequestSystemSettings); 
 
 		// State machine
 		EventManager.StartListening(Edia.Events.StateMachine.EvStartExperiment, NwEvStartExperiment);
@@ -31,7 +33,11 @@ public class RCAS2Controlpanel : MonoBehaviour {
 	}
 
 
-	// * TO APP >>
+
+	// * TO EXECUTER >>
+	private void NwEvRequestSystemSettings(eParam obj) {
+		RCAS_Peer.Instance.TriggerRemoteEvent(Edia.Events.Network.NwEvRequestSystemSettings);
+	}
 
 	private void NwEvNextMessagePanelMsg(eParam obj) {
 		RCAS_Peer.Instance.TriggerRemoteEvent(Edia.Events.Network.NwEvNextMessagepanelMsg);
@@ -70,12 +76,9 @@ public class RCAS2Controlpanel : MonoBehaviour {
 	}
 
 	#endregion // -------------------------------------------------------------------------------------------------------------------------------
-	#region FROM APP <<
-
-	// * FROM APP <<
+	#region FROM EXECUTER <<
 
 	// Configs
-
 
 	[RCAS_RemoteEvent(Edia.Events.Network.NwEvReadyToGo)]
 	static void NwEvReadyToGo() {

@@ -17,8 +17,7 @@ namespace Edia.Rcas {
 		}
 
 		// ==============================================================================================================================================
-
-		// * FROM MANAGER <<
+		// * FROM CONTROLLER <<
 
 		[RCAS_RemoteEvent(Edia.Events.Network.NwEvSetSessionInfo)]
 		static void NwEvSetSessionInfo(string[] sessionInfoJSONstrings) {
@@ -75,6 +74,12 @@ namespace Edia.Rcas {
 			EventManager.TriggerEvent(Edia.Events.ControlPanel.EvNextMessagePanelMsg, null);
 		}
 		
+		[RCAS_RemoteEvent(Edia.Events.Network.NwEvRequestSystemSettings)]
+		static void NwEvRequestSystemSettings() {
+			AddToLog("NwEvRequestSystemSettings");
+			EventManager.TriggerEvent(Edia.Events.Network.NwEvRequestSystemSettings, null);
+		}
+		
 		// Left over methods from development
 
 		[RCAS_RemoteEvent("poke")]
@@ -95,7 +100,6 @@ namespace Edia.Rcas {
 			Debug.Log($"Parameters received: {args[0]}, {args[1]}, {args[2]}");
 		}
 
-
 		private static void AddToLog(string _msg) {
 			Edia.LogUtilities.AddToLog(_msg, "EXP", Color.cyan);
 		}
@@ -103,7 +107,7 @@ namespace Edia.Rcas {
 
 		// ==============================================================================================================================================
 
-		// * TO MANAGER >>
+		// * TO CONTROLLER >>
 
 		private void StartForwarder() {
 
@@ -125,15 +129,12 @@ namespace Edia.Rcas {
 
 		}
 
-
 		// Configs
-
 
 		private void NwEvReadyToGo(eParam obj) {
 			Debug.Log("Sending NwEvReadyToGo");
 			RCAS_Peer.Instance.TriggerRemoteEvent(Edia.Events.Network.NwEvReadyToGo);
 		}
-
 
 		// Control panel
 

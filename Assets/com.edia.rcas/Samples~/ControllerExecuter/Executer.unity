@@ -567,80 +567,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowLog: 0
---- !u!1001 &449170988
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1366582428}
-    m_Modifications:
-    - target: {fileID: 3957061824435178958, guid: 55ee62f835613bb499c85afaadc7fb29, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3957061824435178958, guid: 55ee62f835613bb499c85afaadc7fb29, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3957061824435178958, guid: 55ee62f835613bb499c85afaadc7fb29, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3957061824435178958, guid: 55ee62f835613bb499c85afaadc7fb29, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3957061824435178958, guid: 55ee62f835613bb499c85afaadc7fb29, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3957061824435178958, guid: 55ee62f835613bb499c85afaadc7fb29, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3957061824435178958, guid: 55ee62f835613bb499c85afaadc7fb29, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3957061824435178958, guid: 55ee62f835613bb499c85afaadc7fb29, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3957061824435178958, guid: 55ee62f835613bb499c85afaadc7fb29, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3957061824435178958, guid: 55ee62f835613bb499c85afaadc7fb29, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6321942814501037393, guid: 55ee62f835613bb499c85afaadc7fb29, type: 3}
-      propertyPath: mTextureFormat
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8450339240878796623, guid: 55ee62f835613bb499c85afaadc7fb29, type: 3}
-      propertyPath: m_Name
-      value: '[ Edia CameraCaptureStreamer ]'
-      objectReference: {fileID: 0}
-    - target: {fileID: 8533278305375314438, guid: 55ee62f835613bb499c85afaadc7fb29, type: 3}
-      propertyPath: m_Cameras.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8533278305375314438, guid: 55ee62f835613bb499c85afaadc7fb29, type: 3}
-      propertyPath: m_Cameras.Array.data[0]
-      value: 
-      objectReference: {fileID: 1120100364}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 55ee62f835613bb499c85afaadc7fb29, type: 3}
---- !u!4 &449170989 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3957061824435178958, guid: 55ee62f835613bb499c85afaadc7fb29, type: 3}
-  m_PrefabInstance: {fileID: 449170988}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &477749067
 GameObject:
   m_ObjectHideFlags: 0
@@ -1559,17 +1485,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 4641388061872961045, guid: 2b0488415d1cc324cb09bd0ffdc2412f, type: 3}
-      insertIndex: 0
-      addedObject: {fileID: 449170989}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2b0488415d1cc324cb09bd0ffdc2412f, type: 3}
---- !u!4 &1366582428 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4641388061872961045, guid: 2b0488415d1cc324cb09bd0ffdc2412f, type: 3}
-  m_PrefabInstance: {fileID: 1366582427}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1366582429 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6937744271246713028, guid: 2b0488415d1cc324cb09bd0ffdc2412f, type: 3}
