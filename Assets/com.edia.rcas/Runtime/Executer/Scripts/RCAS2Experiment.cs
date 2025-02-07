@@ -18,7 +18,12 @@ namespace Edia.Rcas {
 
 		// ==============================================================================================================================================
 		// * FROM CONTROLLER <<
-
+		[RCAS_RemoteEvent(Edia.Events.Network.NwEvUpdateSystemSettings)]
+		static void NwEvUpdateSystemSettings(string updatedSystemsettingsJson) {
+			AddToLog("NwEvUpdateSystemSettings:");
+			EventManager.TriggerEvent(Edia.Events.Settings.EvUpdateSystemSettings, new eParam(updatedSystemsettingsJson));
+		}
+		
 		[RCAS_RemoteEvent(Edia.Events.Network.NwEvSetSessionInfo)]
 		static void NwEvSetSessionInfo(string[] sessionInfoJSONstrings) {
 			// We are sending a array of data
