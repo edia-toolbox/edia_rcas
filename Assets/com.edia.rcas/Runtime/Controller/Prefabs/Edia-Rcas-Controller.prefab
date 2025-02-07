@@ -202,4 +202,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 070ccec85a3fa30448a464855218cef4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 4066143580257519475, guid: 74e580f8d43acec4ebeffecd3ea0e978, type: 3}
+  PairingPanelPrefab: {fileID: 4066143580257519475, guid: 74e580f8d43acec4ebeffecd3ea0e978, type: 3}
