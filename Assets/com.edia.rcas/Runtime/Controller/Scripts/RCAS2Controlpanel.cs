@@ -12,7 +12,8 @@ public class RCAS2Controlpanel : MonoBehaviour {
 		// * TO EXECUTER >>
 		
 		// Settings
-		EventManager.StartListening(Edia.Events.Settings.EvRequestSystemSettings, NwEvRequestSystemSettings); 
+		EventManager.StartListening(Edia.Events.Settings.EvRequestSystemSettings, NwEvRequestSystemSettings);
+		EventManager.StartListening(Edia.Events.Settings.EvUpdateSystemSettings, NwEvUpdateSystemSettings); 
 
 		// State machine
 		EventManager.StartListening(Edia.Events.StateMachine.EvStartExperiment, NwEvStartExperiment);
