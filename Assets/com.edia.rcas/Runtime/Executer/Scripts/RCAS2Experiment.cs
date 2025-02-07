@@ -130,9 +130,8 @@ namespace Edia.Rcas {
 
 		private void NwEvProvideSystemSettings(eParam obj) {
 			Debug.Log("NwEvProvideSystemSettings");
-			RCAS_Peer.Instance.TriggerRemoteEvent(Edia.Events.Network.NwEvProvideSystemSettings);
+			RCAS_Peer.Instance.TriggerRemoteEvent(Edia.Events.Network.NwEvProvideSystemSettings, obj.GetString());
 		}
-
 		
 		// Configs
 
