@@ -45,9 +45,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isHost: 1
-  deviceName: HTC Vive Focus 3
+  deviceName: fakehmd
   PairingPort: 27015
-  AutoSetLocalPort: 1
+  AutoSetLocalPort: 0
   LocalPort: 27016
   _localIPAddress: 
   startPairingFunctionOnStart: 1

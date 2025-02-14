@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using Edia;
-using Edia.Rcas;
 using Edia.Utilities;
 
 // Communication manager interface. Translates internal commands into network packages and viseversa
@@ -17,9 +15,13 @@ namespace Edia.Rcas {
 		}
 
 		// ==============================================================================================================================================
-
-		// * FROM MANAGER <<
-
+		// * FROM CONTROLLER <<
+		[RCAS_RemoteEvent(Edia.Events.Network.NwEvUpdateSystemSettings)]
+		static void NwEvUpdateSystemSettings(string updatedSystemsettingsJson) {
+			AddToLog("NwEvUpdateSystemSettings:");
+			EventManager.TriggerEvent(Edia.Events.Settings.EvUpdateSystemSettings, new eParam(updatedSystemsettingsJson));
+		}
+		
 		[RCAS_RemoteEvent(Edia.Events.Network.NwEvSetSessionInfo)]
 		static void NwEvSetSessionInfo(string[] sessionInfoJSONstrings) {
 			// We are sending a array of data
@@ -51,12 +53,6 @@ namespace Edia.Rcas {
 			EventManager.TriggerEvent(Edia.Events.StateMachine.EvStartExperiment, null);
 		}
 
-		//[RCAS_RemoteEvent(Edia.Events.Network.NwEvFinalizeSession)]
-		//static void NwEvFinaliseExperiment() {
-		//	AddToLog("NwEvFinaliseExperiment");
-		//	EventManager.TriggerEvent(Edia.Events.StateMachine.EvFinalizeSession, null);
-		//}
-
 		[RCAS_RemoteEvent(Edia.Events.Network.NwEvProceed)]
 		static void NwEvProceed() {
 			AddToLog("NwEvProceed");
@@ -73,6 +69,12 @@ namespace Edia.Rcas {
 		static void NwEvNextMessagpanelMsg() {
 			AddToLog("NwEvNextMessagpanelMsg");
 			EventManager.TriggerEvent(Edia.Events.ControlPanel.EvNextMessagePanelMsg, null);
+		}
+		
+		[RCAS_RemoteEvent(Edia.Events.Network.NwEvRequestSystemSettings)]
+		static void NwEvRequestSystemSettings() {
+			AddToLog("NwEvRequestSystemSettings");
+			EventManager.TriggerEvent(Edia.Events.Settings.EvRequestSystemSettings, null);
 		}
 		
 		// Left over methods from development
@@ -95,7 +97,6 @@ namespace Edia.Rcas {
 			Debug.Log($"Parameters received: {args[0]}, {args[1]}, {args[2]}");
 		}
 
-
 		private static void AddToLog(string _msg) {
 			Edia.LogUtilities.AddToLog(_msg, "EXP", Color.cyan);
 		}
@@ -103,10 +104,13 @@ namespace Edia.Rcas {
 
 		// ==============================================================================================================================================
 
-		// * TO MANAGER >>
+		// * TO CONTROLLER >>
 
 		private void StartForwarder() {
 
+			// Settings
+			EventManager.StartListening(Edia.Events.Settings.EvProvideSystemSettings, NwEvProvideSystemSettings);
+			
 			// Configs
 			EventManager.StartListening(Edia.Events.Config.EvReadyToGo, NwEvReadyToGo);
 
@@ -125,15 +129,19 @@ namespace Edia.Rcas {
 
 		}
 
+		// Settings
 
+		private void NwEvProvideSystemSettings(eParam obj) {
+			Debug.Log("NwEvProvideSystemSettings");
+			RCAS_Peer.Instance.TriggerRemoteEvent(Edia.Events.Network.NwEvProvideSystemSettings, obj.GetString());
+		}
+		
 		// Configs
-
 
 		private void NwEvReadyToGo(eParam obj) {
 			Debug.Log("Sending NwEvReadyToGo");
 			RCAS_Peer.Instance.TriggerRemoteEvent(Edia.Events.Network.NwEvReadyToGo);
 		}
-
 
 		// Control panel
 

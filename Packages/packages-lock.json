@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.edia.core": {
-      "version": "git@gitlab.gwdg.de:edia/edia_core.git?path=Assets/com.edia.core#fix/multimessagepanel",
+      "version": "git@gitlab.gwdg.de:edia/edia_core.git?path=Assets/com.edia.core#fix/merged/showinghands",
       "depth": 0,
       "source": "git",
       "dependencies": {
@@ -12,7 +12,7 @@
         "com.unity.nuget.newtonsoft-json": "3.2.1",
         "com.unity.textmeshpro": "3.0.8"
       },
-      "hash": "d6f13b6fb9d3bbbeb3d8a6a1d0fc4fd6dcdc66ac"
+      "hash": "59e22aebdf7c6365eb07b2fd7e5049d702d02895"
     },
     "com.htc.upm.wave.openxr": {
       "version": "1.0.3",
@@ -70,7 +70,7 @@
       }
     },
     "com.unity.ide.rider": {
-      "version": "3.0.26",
+      "version": "3.0.34",
       "depth": 0,
       "source": "registry",
       "dependencies": {

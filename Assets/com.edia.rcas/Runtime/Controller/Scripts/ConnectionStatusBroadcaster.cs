@@ -1,16 +1,13 @@
 using UnityEngine;
 using Edia;
-using Edia.Controller;
 using Edia.Rcas;
 using System.Net;
-
 
 public class ConnectionStatusBroadcaster : MonoBehaviour
 {
 	private void Start()
 	{
-		if (ControlPanel.Instance.Settings.ControlMode == ControlMode.Remote)
-			RegisterEventListeners();
+		RegisterEventListeners();
 	}
 
 	private void RegisterEventListeners () {
@@ -20,9 +17,6 @@ public class ConnectionStatusBroadcaster : MonoBehaviour
 
 	private void OnDestroy()
 	{
-		if (ControlPanel.Instance.Settings.ControlMode != ControlMode.Remote)
-			return;
-
 		RCAS_Peer.Instance.OnConnectionEstablished -= Connected;
 		RCAS_Peer.Instance.OnConnectionLost -= Disconnected;
 	}
