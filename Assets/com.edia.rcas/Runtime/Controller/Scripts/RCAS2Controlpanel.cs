@@ -6,10 +6,15 @@ using UnityEngine;
 /// <summary> In project version of the connector to a remote interface </summary>
 public class RCAS2Controlpanel : MonoBehaviour {
 
-	#region TO APP >>
+	#region TO EXECUTER >>
 
 	private void Awake() {
-		// * TO APP >>
+
+		// * TO EXECUTER >>
+		
+		// Settings
+		EventManager.StartListening(Edia.Events.Settings.EvRequestSystemSettings, NwEvRequestSystemSettings);
+		EventManager.StartListening(Edia.Events.Settings.EvUpdateSystemSettings, NwEvUpdateSystemSettings); 
 
 		// State machine
 		EventManager.StartListening(Edia.Events.StateMachine.EvStartExperiment, NwEvStartExperiment);
@@ -30,8 +35,14 @@ public class RCAS2Controlpanel : MonoBehaviour {
 		
 	}
 
-
-	// * TO APP >>
+	// * TO EXECUTER >>
+	private void NwEvUpdateSystemSettings(eParam obj) {
+		RCAS_Peer.Instance.TriggerRemoteEvent(Edia.Events.Network.NwEvUpdateSystemSettings, obj.GetString());
+	}
+	
+	private void NwEvRequestSystemSettings(eParam obj) {
+		RCAS_Peer.Instance.TriggerRemoteEvent(Edia.Events.Network.NwEvRequestSystemSettings);
+	}
 
 	private void NwEvNextMessagePanelMsg(eParam obj) {
 		RCAS_Peer.Instance.TriggerRemoteEvent(Edia.Events.Network.NwEvNextMessagepanelMsg);
@@ -70,12 +81,17 @@ public class RCAS2Controlpanel : MonoBehaviour {
 	}
 
 	#endregion // -------------------------------------------------------------------------------------------------------------------------------
-	#region FROM APP <<
+	#region FROM EXECUTER <<
 
-	// * FROM APP <<
-
+	// Settings
+	
+	[RCAS_RemoteEvent(Edia.Events.Network.NwEvProvideSystemSettings)]
+	static void NwEvProvideSystemSettings(string args) {
+		Debug.Log("Received NwEvProvideSystemSettings");
+		EventManager.TriggerEvent(Edia.Events.Settings.EvProvideSystemSettings, new eParam(args));
+	}
+	
 	// Configs
-
 
 	[RCAS_RemoteEvent(Edia.Events.Network.NwEvReadyToGo)]
 	static void NwEvReadyToGo() {

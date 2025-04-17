@@ -359,7 +359,7 @@ GameObject:
   - component: {fileID: 119380138671441292}
   - component: {fileID: 6777941683323102549}
   m_Layer: 5
-  m_Name: '[ PanelPairingOffer ]'
+  m_Name: Panel-PairingOffer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

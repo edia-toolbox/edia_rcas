@@ -141,6 +141,7 @@ GameObject:
   - component: {fileID: 8089772705190328355}
   - component: {fileID: 8424997792447339222}
   - component: {fileID: 5382520552077051870}
+  - component: {fileID: 8016592490301749855}
   m_Layer: 0
   m_Name: Edia-Rcas-Controller
   m_TagString: Untagged
@@ -189,3 +190,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 726ae5fe0c58b7d4d811f7a89849ef4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8016592490301749855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9092653821738208010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 070ccec85a3fa30448a464855218cef4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PairingPanelPrefab: {fileID: 4066143580257519475, guid: 74e580f8d43acec4ebeffecd3ea0e978, type: 3}
