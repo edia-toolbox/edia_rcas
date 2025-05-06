@@ -2,7 +2,6 @@
   "dependencies": {
     "com.edia.core": "git@github.com:edia-toolbox/edia_core.git?path=Assets/com.edia.core#dev",
     "com.edia.uxf": "https://github.com/edia-org/unity-experiment-framework.git?path=Assets/com.edia.uxf#dev",
-    "com.htc.upm.wave.openxr": "1.0.3",
     "com.unity.collab-proxy": "2.7.1",
     "com.unity.feature.development": "1.0.2",
     "com.unity.ide.rider": "3.0.36",

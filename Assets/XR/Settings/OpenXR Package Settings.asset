@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ViveWristTracker Android
   m_EditorClassIdentifier: 
   m_enabled: 0
+  <failedInitialization>k__BackingField: 0
   nameUi: VIVE Focus 3 Wrist Tracker
   version: 1.0.0
   featureIdInternal: vive.wave.openxr.feature.tracker
@@ -20,6 +21,7 @@ MonoBehaviour:
   company: HTC
   priority: 0
   required: 0
+  m_XrInstanceCreated: 0
 --- !u!114 &-8449348019514622720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,6 +334,7 @@ MonoBehaviour:
   m_Name: ViveCompositionLayer Android
   m_EditorClassIdentifier: 
   m_enabled: 0
+  <failedInitialization>k__BackingField: 0
   nameUi: VIVE Focus 3 Composition Layer
   version: 1.0.0
   featureIdInternal: vive.wave.openxr.feature.compositionlayer
@@ -340,6 +343,11 @@ MonoBehaviour:
   priority: 0
   required: 0
   enableAutoFallback: 0
+  m_XrInstanceCreated: 0
+  m_XrSessionCreated: 0
+  m_XrSessionEnding: 0
+  m_XrSessionNewState: 0
+  m_XrSessionOldState: 0
 --- !u!114 &-5520703954505470306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -353,6 +361,7 @@ MonoBehaviour:
   m_Name: VIVEFocus3Profile Android
   m_EditorClassIdentifier: 
   m_enabled: 1
+  <failedInitialization>k__BackingField: 0
   nameUi: VIVE Focus 3 Controller Interaction
   version: 1.0.0
   featureIdInternal: vive.wave.openxr.feature.focus3controller
@@ -373,6 +382,7 @@ MonoBehaviour:
   m_Name: ViveFacialTracking Android
   m_EditorClassIdentifier: 
   m_enabled: 0
+  <failedInitialization>k__BackingField: 0
   nameUi: VIVE Focus 3 Facial Tracking
   version: 1.0.0
   featureIdInternal: vive.wave.openxr.feature.facial.tracking
@@ -380,6 +390,65 @@ MonoBehaviour:
   company: HTC
   priority: 0
   required: 0
+  m_XrInstanceCreated: 0
+  m_XrSessionCreated: 0
+  hasEyeTracker: 0
+  hasLipTracker: 0
+  eyeUpdateFrame: -1
+  lipUpdateFrame: -1
+  s_EyeExpressionData:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  s_LipExpressionData:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
 --- !u!114 &-4574275936920394967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -500,6 +569,7 @@ MonoBehaviour:
   m_Name: ViveHandTracking Android
   m_EditorClassIdentifier: 
   m_enabled: 0
+  <failedInitialization>k__BackingField: 0
   nameUi: VIVE Focus 3 Hand Tracking
   version: 4.0.0
   featureIdInternal: vive.wave.openxr.feature.hand.tracking
@@ -507,6 +577,12 @@ MonoBehaviour:
   company: HTC
   priority: 0
   required: 0
+  m_XrInstanceCreated: 0
+  m_XrSessionCreated: 0
+  hasReferenceSpaceLocal: 0
+  hasReferenceSpaceStage: 0
+  hasLeftHandTracker: 0
+  hasRightHandTracker: 0
 --- !u!114 &-3517297602313062446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -617,15 +693,6 @@ MonoBehaviour:
   - {fileID: -2785503274745798890}
   - {fileID: 7754139293899149683}
   - {fileID: -7470896213285330363}
-  - {fileID: -5687067816003705101}
-  - {fileID: 4503879357507151792}
-  - {fileID: 1074914071745644465}
-  - {fileID: -5520703954505470306}
-  - {fileID: -5142526572978365244}
-  - {fileID: 5069325099292416916}
-  - {fileID: -3692952453951120281}
-  - {fileID: 5352267036851926782}
-  - {fileID: -9170909797690302819}
   - {fileID: -8449348019514622720}
   - {fileID: 2095116965971018351}
   m_renderMode: 1
@@ -766,6 +833,7 @@ MonoBehaviour:
   m_Name: ViveCompositionLayerCylinder Android
   m_EditorClassIdentifier: 
   m_enabled: 0
+  <failedInitialization>k__BackingField: 0
   nameUi: VIVE Focus 3 Composition Layer (Cylinder)
   version: 1.0.0
   featureIdInternal: vive.wave.openxr.feature.compositionlayer.cylinder
@@ -773,6 +841,7 @@ MonoBehaviour:
   company: HTC
   priority: 0
   required: 0
+  m_CylinderExtensionEnabled: 1
 --- !u!114 &1255993022498074470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -983,6 +1052,7 @@ MonoBehaviour:
   m_Name: ViveCompositionLayerColorScaleBias Android
   m_EditorClassIdentifier: 
   m_enabled: 0
+  <failedInitialization>k__BackingField: 0
   nameUi: VIVE Focus 3 Composition Layer (Color Scale Bias)
   version: 1.0.0
   featureIdInternal: vive.wave.openxr.feature.compositionlayer.colorscalebias
@@ -990,6 +1060,7 @@ MonoBehaviour:
   company: HTC
   priority: 0
   required: 0
+  m_ColorScaleBiasExtensionEnabled: 1
 --- !u!114 &5069325099292416916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1003,6 +1074,7 @@ MonoBehaviour:
   m_Name: ViveHandInteraction Android
   m_EditorClassIdentifier: 
   m_enabled: 0
+  <failedInitialization>k__BackingField: 0
   nameUi: VIVE Focus 3 Hand Interaction
   version: 1.0.0
   featureIdInternal: vive.wave.openxr.feature.hand.interaction
@@ -1010,6 +1082,7 @@ MonoBehaviour:
   company: HTC
   priority: 0
   required: 0
+  m_XrInstanceCreated: 0
 --- !u!114 &5352267036851926782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1023,6 +1096,7 @@ MonoBehaviour:
   m_Name: VIVEFocus3Feature Android
   m_EditorClassIdentifier: 
   m_enabled: 1
+  <failedInitialization>k__BackingField: 0
   nameUi: VIVE Focus 3 Support
   version: 1.0.0
   featureIdInternal: com.unity.openxr.feature.vivefocus3
