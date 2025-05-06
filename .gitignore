@@ -92,3 +92,7 @@ crashlytics-build.properties
 **/.idea/**/*.iml
 **/.idea/**/contentModel.xml
 **/.idea/**/modules.xml
+
+# Unity samples
+/[Aa]ssets/com.edia.rcas/[Ss]amples~/XR Hands/
+/[Aa]ssets/com.edia.rcas/[Ss]amples~/XR Interaction Toolkit/
