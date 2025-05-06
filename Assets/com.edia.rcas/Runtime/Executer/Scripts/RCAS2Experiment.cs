@@ -41,11 +41,11 @@ namespace Edia.Rcas {
 			EventManager.TriggerEvent(Edia.Events.Config.EvSetXBlockDefinitions, new eParam(blockDefintionsJSONstrings));
 		}
 
-		[RCAS_RemoteEvent(Edia.Events.Network.NwEvSetTaskDefinitions)]
-		static void NwEvSetTaskDefinitions(string[] taskDefinitionsJSONstrings) {
-			AddToLog("NwEvSetTaskDefinitions" + taskDefinitionsJSONstrings.Length);
-			EventManager.TriggerEvent(Edia.Events.Config.EvSetTaskDefinitions, new eParam(taskDefinitionsJSONstrings));
-		}
+		// [RCAS_RemoteEvent(Edia.Events.Network.NwEvSetTaskDefinitions)]
+		// static void NwEvSetTaskDefinitions(string[] taskDefinitionsJSONstrings) {
+		// 	AddToLog("NwEvSetTaskDefinitions" + taskDefinitionsJSONstrings.Length);
+		// 	EventManager.TriggerEvent(Edia.Events.Config.EvSetTaskDefinitions, new eParam(taskDefinitionsJSONstrings));
+		// }
 
 		[RCAS_RemoteEvent(Edia.Events.Network.NwEvStartExperiment)]
 		static void NwEvStartExperiment() {
@@ -98,7 +98,7 @@ namespace Edia.Rcas {
 		}
 
 		private static void AddToLog(string _msg) {
-			Edia.LogUtilities.AddToLog(_msg, "EXP", Color.cyan);
+			Edia.Utilities.Log.AddToConsoleLog(_msg, "EXP", Color.cyan);
 		}
 
 

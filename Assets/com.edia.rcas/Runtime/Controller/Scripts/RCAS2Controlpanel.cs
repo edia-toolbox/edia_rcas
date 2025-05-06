@@ -28,7 +28,7 @@ public class RCAS2Controlpanel : MonoBehaviour {
 		EventManager.StartListening(Edia.Events.Config.EvSetSessionInfo, NwEvSetSessionInfo);
 		EventManager.StartListening(Edia.Events.Config.EvSetXBlockSequence, NwEvSetXBlockSequence);
 		EventManager.StartListening(Edia.Events.Config.EvSetXBlockDefinitions, NwEvSetXBlockDefinitions);
-		EventManager.StartListening(Edia.Events.Config.EvSetTaskDefinitions, NwEvSetTaskDefinitions);
+		// EventManager.StartListening(Edia.Events.Config.EvSetTaskDefinitions, NwEvSetTaskDefinitions);
 
 		// Control panel
 		EventManager.StartListening(Edia.Events.ControlPanel.EvNextMessagePanelMsg, NwEvNextMessagePanelMsg);
