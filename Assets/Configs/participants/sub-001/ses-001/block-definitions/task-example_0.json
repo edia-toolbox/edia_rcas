@@ -5,7 +5,7 @@
   "settings": [
     { "key": "timer_showcube", "value": "1" }
   ],
-  "instructions": [
+  "messages": [
   ],
   "trialSettings": {
     "keys": ["active_object"],
