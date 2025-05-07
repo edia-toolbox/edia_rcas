@@ -96,6 +96,6 @@ crashlytics-build.properties
 # Unity samples
 /[Aa]ssets/com.edia.rcas/[Ss]amples~/XR Hands/
 /[Aa]ssets/com.edia.rcas/[Ss]amples~/XR Interaction Toolkit/
-/[Aa]ssets/[Ss]amples~/XR Hands/
-/[Aa]ssets/[Ss]amples~/XR Interaction Toolkit/
+/[Aa]ssets/[Ss]amples/XR Hands/
+/[Aa]ssets/[Ss]amples/XR Interaction Toolkit/
 
