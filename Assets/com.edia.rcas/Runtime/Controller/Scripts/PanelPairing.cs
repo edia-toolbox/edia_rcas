@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Linq;
 using Edia;
 using Edia.Controller;
 using Edia.Rcas;
@@ -11,6 +8,8 @@ using TMPro;
 
 public class PanelPairing : ExperimenterPanel
 {
+	[Header("Refs")]
+	[InspectorHeader("EDIA RCAS", "Pairing request", "Shows the device that wan't to connect to this controller")]
 	public Image icon;
 	public TextMeshProUGUI Output_Info;
 

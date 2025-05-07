@@ -10,6 +10,11 @@ namespace Edia.Rcas {
     /// </summary>
     public class RCAS2Experiment : MonoBehaviour {
 
+
+	    [Header("Settings")]
+	    [InspectorHeader("EDIA RCAS", "Executor interface", "Converts network traffic into EDIA commands")]
+	    public bool StartForwardingOnAwake = true;
+	    
 		private void Awake() {
 			StartForwarder();
 		}

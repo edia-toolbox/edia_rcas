@@ -44,7 +44,7 @@ On the other hand it sends a converted rendertexture from a dedicated streaming 
 ## Description
 This is the source project in which the package is a part.
 
-## Documentation
+## Technical Documentation
 For details when it comes to setup, installation and usage, refer to the following documentation:
 - [Intro](https://github.com/edia-toolbox/edia_rcas/blob/dev/Documentation/0_Readme.md)
 - [Device-Pairing](https://github.com/edia-toolbox/edia_rcas/blob/dev//Documentation/1_DevicePairing.md)

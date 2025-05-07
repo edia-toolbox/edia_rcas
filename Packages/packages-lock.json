@@ -13,7 +13,7 @@
         "com.unity.nuget.newtonsoft-json": "3.2.1",
         "com.unity.textmeshpro": "3.0.8"
       },
-      "hash": "7f01b3b0c8b5c29bf28a975a9b62c4c7d4f37c28"
+      "hash": "51d1b21efbccb275cb8ccc4d62f7c4d93a5111e0"
     },
     "com.edia.uxf": {
       "version": "https://github.com/edia-org/unity-experiment-framework.git?path=Assets/com.edia.uxf#dev",
