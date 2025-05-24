@@ -8,11 +8,11 @@ namespace Edia.Rcas {
     /// <summary>
     /// Communication manager interface. Translates internal commands into network packages and viseversa
     /// </summary>
+	[EdiaHeader("EDIA RCAS", "Executor interface", "Converts network traffic into EDIA commands")]
     public class RCAS2Experiment : MonoBehaviour {
 
 
 	    [Header("Settings")]
-	    [InspectorHeader("EDIA RCAS", "Executor interface", "Converts network traffic into EDIA commands")]
 	    public bool StartForwardingOnAwake = true;
 	    
 		private void Awake() {

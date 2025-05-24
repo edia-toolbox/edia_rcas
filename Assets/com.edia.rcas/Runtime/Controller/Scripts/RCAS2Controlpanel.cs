@@ -4,10 +4,10 @@ using Edia.Rcas;
 using UnityEngine;
 
 /// <summary> In project version of the connector to a remote interface </summary>
+[EdiaHeader("EDIA RCAS", "Controller interface", "Converts internal commands into network packages")]
 public class RCAS2Controlpanel : MonoBehaviour {
 
 	[Header("Settings")]
-	[InspectorHeader("EDIA RCAS", "Controller interface", "Converts internal commands into network packages")]
 	public bool StartForwardingOnAwake = true; // dummy property //TODO: change 'inspectorheader' into non-field dependend
 	
 	#region TO EXECUTER >>

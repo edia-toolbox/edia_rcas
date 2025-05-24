@@ -6,10 +6,10 @@ using Edia.Rcas;
 using TMPro;
 
 
+[EdiaHeader("EDIA RCAS", "Pairing request", "Shows the device that wan't to connect to this controller")]
 public class PanelPairing : ExperimenterPanel
 {
 	[Header("Refs")]
-	[InspectorHeader("EDIA RCAS", "Pairing request", "Shows the device that wan't to connect to this controller")]
 	public Image icon;
 	public TextMeshProUGUI Output_Info;
 
