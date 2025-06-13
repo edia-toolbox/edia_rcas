@@ -52,3 +52,7 @@ For details when it comes to setup, installation and usage, refer to the followi
 - [Remote-Events](https://github.com/edia-toolbox/edia_rcas/blob/dev//Documentation/3_RemoteEvents.md)
 - [Custom-Messages](https://github.com/edia-toolbox/edia_rcas/blob/dev//Documentation/4_CustomMessages.md)
 
+
+## Credits
+Essential parts of the code in this package were written by Benjamin Kahl.  
+If you are using this repository for your research or other public work, please cite the [EDIA Toolbox](https://github.com/edia-toolbox/edia_core/).
