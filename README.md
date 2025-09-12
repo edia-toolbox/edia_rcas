@@ -1,4 +1,8 @@
-`EDIA Remote` (Remote-Control-And-Streaming) is a Unity framework enabling remote control of an VR application on a HMD. 
+<p align="center">
+  <img src="./Assets/com.edia.rcas/Editor/Resources/Icons/IconRCAS.png" width="128" />
+</p>
+
+`EDIA Remote` (aka `RCAS` — Remote-Control-And-Streaming) is a Unity framework enabling remote control of an VR application on a HMD. 
 
 # Samples
 
