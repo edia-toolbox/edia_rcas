@@ -54,5 +54,5 @@ For details when it comes to setup, installation and usage, refer to the followi
 
 
 ## Credits
-Essential parts of the code in this package were written by Benjamin Kahl.  
+Essential parts of the code in this package were written by [Benjamin Kahl](https://github.com/Helliaca) ([website](https://benjamin.kahl.fi/index.html)).  
 If you are using this repository for your research or other public work, please cite the [EDIA Toolbox](https://github.com/edia-toolbox/edia_core/).
