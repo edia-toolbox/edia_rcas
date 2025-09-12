@@ -60,3 +60,8 @@ For details when it comes to setup, installation and usage, refer to the followi
 ## Credits
 Essential parts of the code in this package were written by [Benjamin Kahl](https://github.com/Helliaca) ([website](https://benjamin.kahl.fi/index.html)).  
 If you are using this repository for your research or other public work, please cite the [EDIA Toolbox](https://github.com/edia-toolbox/edia_core/).
+
+## Contribution
+We are happy to receive feedback and contributions. If you want to report a bug, please open a GitHub issue. 
+If you have questions or suggestions, please use the [GitHub Discussion board](https://github.com/edia-toolbox/edia_core/discussions). 
+If you want to [contribute to EDIA](https://github.com/edia-toolbox/edia_core/blob/dev/CONTRIBUTOR.md), ideally first reach out to us (e.g., via the [Discussion board](https://github.com/edia-toolbox/edia_core/discussions) or [email](mailto:edia.toolbox@gmail.com)), and/or post a pull request.  
