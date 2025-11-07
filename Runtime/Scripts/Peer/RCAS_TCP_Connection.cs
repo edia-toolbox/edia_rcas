@@ -1,0 +1,325 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System.Net.Sockets;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
+using System.Threading;
+using UnityEngine.UI;
+using Unity.Collections;
+using UnityEngine.Android;
+using System.Collections.Concurrent;
+using System.Linq;
+
+namespace Edia.Rcas
+{
+    public sealed class RCAS_TCP_Connection : System.IDisposable
+    {
+        #region MEMBERS
+        internal bool isConnected => Client is not null && Client.Connected;
+        internal bool isAwaitingConnection => ListenerTask is not null && ListenerTask.Status != TaskStatus.Running;
+
+        TcpClient Client;
+        TcpListener Listener;
+
+        Task ListenerTask;
+        Task ReceiverTask;
+        Task SenderTask;
+
+        ConcurrentQueue<byte[]> SendQueue = new ConcurrentQueue<byte[]>();
+        ConcurrentQueue<byte[]> ReceiveQueue = new ConcurrentQueue<byte[]>();
+
+        internal delegate void dOnConnectionEstablished(IPEndPoint EP);
+        internal dOnConnectionEstablished OnConnectionEstablished = delegate { };
+
+        internal delegate void dOnReceivedMessage(RCAS_TCPMessage msg);
+        internal dOnReceivedMessage OnReceivedMessage = delegate { };
+
+        internal delegate void dOnConnectionLost(IPEndPoint EP);
+        internal dOnConnectionLost OnConnectionLost = delegate { };
+
+        public IPEndPoint LocalEndPoint
+        {
+            get
+            {
+                return (IPEndPoint)(Listener != null ? Listener.LocalEndpoint : Client?.Client?.LocalEndPoint);
+            }
+        }
+
+        public IPEndPoint RemoteEndPoint
+        {
+            get
+            {
+                return (IPEndPoint)Client?.Client?.RemoteEndPoint;
+            }
+        }
+        #endregion
+
+        #region INIT
+        public RCAS_TCP_Connection()
+        {
+
+        }
+        #endregion
+
+        #region SENDMESSAGE
+        public void SendMessage(string message, RCAS_TCP_CHANNEL channel)
+        {
+            SendMessage(new RCAS_TCPMessage(message, channel));
+        }
+
+        public void SendMessage(RCAS_TCPMessage message)
+        {
+            if (!isConnected)
+            {
+                Debug.LogWarning("Tried to send a TCP Message without being connected to a remote client! Message will be discarded.");
+                return;
+            }
+
+            SendQueue.Enqueue(message.raw_data.ToArray());
+            if (SenderTask == null || SenderTask.Status != TaskStatus.Running)
+            {
+                SenderTask = new Task(TaskFunc_Sender);
+                SenderTask.Start();
+            }
+        }
+        #endregion
+
+        #region UPDATE
+        private bool prev_Connected = false;
+        IPEndPoint prev_RemoteEP = null;
+        internal void Update()
+        {
+            if (!prev_Connected && isConnected)
+            {
+                OnConnectionEstablished.Invoke(RemoteEndPoint);
+            }
+            else if (prev_Connected && !isConnected)
+            {
+                OnConnectionLost.Invoke(prev_RemoteEP);
+            }
+            prev_Connected = isConnected;
+            prev_RemoteEP = RemoteEndPoint;
+
+            if (ReceiveQueue.TryDequeue(out var item))
+            {
+                byte[] data = item;
+                ProcessData(data);
+            }
+        }
+        #endregion
+
+        #region MISC
+        private void ProcessData(byte[] receiveData)
+        {
+            RCAS_TCPMessage msg = new RCAS_TCPMessage(receiveData);
+
+            OnReceivedMessage.Invoke(msg);
+        }
+        #endregion
+
+        #region NETWORKING
+        internal bool OpenConnection(IPEndPoint OnLocalEndPoint)
+        {
+            if (isConnected || isAwaitingConnection)
+            {
+                Debug.LogError(isConnected);
+                Debug.LogError(isAwaitingConnection);
+                Debug.LogError("Tried to connect to a TCP EndPoint whilst awaiting a client or already connected!");
+                return false;
+            }
+
+            try
+            {
+                Listener = new TcpListener(OnLocalEndPoint);
+                Debug.Log($"Listening for new TCP Clients on {LocalEndPoint.Address}:{LocalEndPoint.Port}");
+
+                ListenerTask = new Task(TaskFunc_Listener);
+                ListenerTask.Start();
+
+                return true;
+            }
+            catch
+            {
+                Debug.Log("Could not open TCP Connection!");
+                return false;
+            }
+        }
+
+        internal bool ConnectTo(string ipAddress, int port, IPEndPoint LocalEndPoint)
+        {
+            // Ensure we are not awaiting connection already
+            if (isConnected || isAwaitingConnection)
+            {
+                Debug.LogError("Tried to connect to a TCP EndPoint whilst awaiting a client or already connected!");
+                return false;
+            }
+
+            try
+            {
+                Debug.Log($"Trying to connect to {ipAddress}:{port}");
+                Client = new TcpClient(LocalEndPoint);
+                Client.Connect(ipAddress, port);
+
+                ReceiverTask = new Task(TaskFunc_Receiver);
+                ReceiverTask.Start();
+
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                CloseConnection();
+                Debug.Log($"Could not connect to TCP server {ipAddress}:{port} with local endpoint {LocalEndPoint.Address}:{LocalEndPoint.Port}");
+                Debug.LogException(e);
+                return false;
+            }
+        }
+
+        internal void CloseConnection()
+        {
+            SendQueue.Clear();
+            if (Client != null) Debug.Log("TCP Connection Closed");
+            try
+            {
+                Listener?.Stop();
+                Client?.GetStream()?.Close();
+                Client?.Close();
+            }
+            catch { }
+            Client = null;
+            Listener = null;
+        }
+        #endregion
+
+        #region TASKS
+        private void TaskFunc_Listener()
+        {
+            try
+            {
+                //Debug.Log("Listener started");
+                Listener.Start();
+                Client = Listener.AcceptTcpClient();
+                ReceiverTask = new Task(TaskFunc_Receiver);
+                ReceiverTask.Start();
+                Listener.Stop();
+                //Debug.Log("RCAS: Client connected to Server!");
+            }
+            finally
+            {
+                //Debug.Log("Listener stopped");
+                Listener = null;
+                ListenerTask = null;
+            }
+        }
+
+        private void TaskFunc_Receiver() {
+            try {
+                //Debug.Log("Receiver started");
+                using (NetworkStream stream = Client.GetStream()) {
+                    while (isConnected) {
+                        //System.Span<byte> buffer = new byte[Client.ReceiveBufferSize];
+                        byte[] buffer = new byte[Client.ReceiveBufferSize];
+
+                        int bytesRead = stream.Read(buffer, 0, 1);
+
+                        if (bytesRead != 1) {
+                            Debug.LogError("no first byte");
+                            break;
+                        }
+
+                        if (buffer[0] == RCAS_TCPMessage.VALIDMESSAGEBYTE) {
+                            //bytesRead = await stream.ReadAsync(buffer, 1, (int)HN_TCP_Message.HEADERSIZE - 1);
+                            bytesRead = stream.Read(buffer, 1, (int)RCAS_TCPMessage.HEADERSIZE - 1);
+                        }
+
+                        if (bytesRead != (int)RCAS_TCPMessage.HEADERSIZE - 1) {
+                            Debug.LogError("bytes read do not match header size");
+                            break;
+                        }
+
+                        if (RCAS_TCPMessage.TryMessageLengthFromReceivedBytes(buffer, out uint mlen)) {
+                            int totalBytesRead = 0;
+                            int offset = (int)RCAS_TCPMessage.HEADERSIZE;
+
+                            while (totalBytesRead < mlen) {
+                                int bytesReadC = stream.Read(buffer, offset + totalBytesRead, (int)(mlen - totalBytesRead));
+                                if (bytesReadC == 0) {
+                                    // Connection closed or error occurred
+                                    Debug.LogError("Stream closed before reading the full message");
+                                    break;
+                                }
+                                totalBytesRead += bytesReadC;
+                            }
+
+                            if (totalBytesRead != mlen) {
+                                Debug.LogError($"Bytes read do not match message length {totalBytesRead} - {mlen}");
+                                break;
+                            }
+
+                            // Now process the received data
+                            ProcessReceivedBytes(totalBytesRead + (int)RCAS_TCPMessage.HEADERSIZE, buffer);
+                        }
+                    }
+                }
+            } finally {
+                Debug.LogError("Connection closed");
+                CloseConnection();
+                //Debug.Log("Receiver ended");
+            }
+        }
+
+
+        // Called by TaskFunc_Receiver!
+        private void ProcessReceivedBytes(int bytesRead, System.ReadOnlySpan<byte> buffer)
+        {
+            bool messageIsValid = RCAS_TCPMessage.TryMessageLengthFromReceivedBytes(buffer, out uint msg_len);
+            msg_len += RCAS_TCPMessage.HEADERSIZE; // convert message-only length to total length of the packet
+
+            // Something is wrong with this message
+            if (!messageIsValid)
+            {
+                Debug.LogWarning("Received an invalid message.");
+            }
+            // There are more than just one message in the buffer!
+            else if (msg_len < bytesRead)
+            {
+                //Debug.Log("Received multi-message.");
+                ReceiveQueue.Enqueue(buffer.Slice(0, (int)msg_len).ToArray());
+
+                // Process the next message
+                ProcessReceivedBytes(bytesRead - (int)msg_len, buffer.Slice((int)msg_len));
+            }
+            // Just one message in the buffer
+            else
+            {
+                //Debug.Log("Received single-message.");
+                ReceiveQueue.Enqueue(buffer.Slice(0, bytesRead).ToArray());
+            }
+        }
+
+        private void TaskFunc_Sender()
+        {
+            try
+            {
+                //Debug.Log("Sender started");
+                while (SendQueue.TryDequeue(out byte[] sendData))
+                {
+                    if (!Client.Connected) continue;
+
+                    Client.GetStream().Write(sendData);
+                }
+            }
+            finally
+            {
+                //Debug.Log("Sender ended");
+            }
+        }
+        #endregion
+
+        public void Dispose()
+        {
+            CloseConnection();
+        }
+    }
+}

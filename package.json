@@ -1,0 +1,23 @@
+{
+  "name": "com.edia.rcas",
+  "displayName": "EDIA Rcas",
+  "version": "0.6.0",
+  "unity": "6000.0",
+  "description": "EDIA Remote control. (& beta HMD streaming).",
+  "keywords": [
+    "vr",
+    "standalone"
+  ],  
+  "author": {
+    "name": "EDIA"
+  },
+  "dependencies": {},
+  "samples": [
+    {
+      "displayName": "Networked Controller & Executer scenes",
+      "description": "Two scenes set up to connect over the network for remote control. Does NOT include functioning experiment!",
+      "path": "Samples~/ControllerExecuter/"
+    }
+  ],
+  "hideInEditor": false
+}
