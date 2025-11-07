@@ -1,0 +1,11 @@
+{
+  "type": "task",
+  "subType": "example",
+  "settings": [
+    { "key": "task_colors", "value": "#FFFF00,#FF0000,#00FFFF" }
+  ],
+  "message": [
+    { "key": "_intro", "value": "Now this is an example task." },
+    { "key": "_outro", "value": "Done" }
+  ]
+}

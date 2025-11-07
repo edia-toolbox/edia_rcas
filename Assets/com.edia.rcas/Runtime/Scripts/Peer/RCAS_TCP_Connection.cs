@@ -12,7 +12,7 @@ using UnityEngine.Android;
 using System.Collections.Concurrent;
 using System.Linq;
 
-namespace Edia.RCAS
+namespace Edia.Rcas
 {
     public sealed class RCAS_TCP_Connection : System.IDisposable
     {
@@ -213,31 +213,62 @@ namespace Edia.RCAS
             }
         }
 
-        private void TaskFunc_Receiver()
-        {
-            try
-            {
+        private void TaskFunc_Receiver() {
+            try {
                 //Debug.Log("Receiver started");
-                while (isConnected)
-                {
-                    System.Span<byte> buffer = new byte[Client.ReceiveBufferSize];
+                using (NetworkStream stream = Client.GetStream()) {
+                    while (isConnected) {
+                        //System.Span<byte> buffer = new byte[Client.ReceiveBufferSize];
+                        byte[] buffer = new byte[Client.ReceiveBufferSize];
 
-                    int bytesRead = Client.GetStream().Read(buffer);
+                        int bytesRead = stream.Read(buffer, 0, 1);
 
-                    if (bytesRead == 0)
-                    {
-                        CloseConnection();
-                        return;
+                        if (bytesRead != 1) {
+                            Debug.LogError("no first byte");
+                            break;
+                        }
+
+                        if (buffer[0] == RCAS_TCPMessage.VALIDMESSAGEBYTE) {
+                            //bytesRead = await stream.ReadAsync(buffer, 1, (int)HN_TCP_Message.HEADERSIZE - 1);
+                            bytesRead = stream.Read(buffer, 1, (int)RCAS_TCPMessage.HEADERSIZE - 1);
+                        }
+
+                        if (bytesRead != (int)RCAS_TCPMessage.HEADERSIZE - 1) {
+                            Debug.LogError("bytes read do not match header size");
+                            break;
+                        }
+
+                        if (RCAS_TCPMessage.TryMessageLengthFromReceivedBytes(buffer, out uint mlen)) {
+                            int totalBytesRead = 0;
+                            int offset = (int)RCAS_TCPMessage.HEADERSIZE;
+
+                            while (totalBytesRead < mlen) {
+                                int bytesReadC = stream.Read(buffer, offset + totalBytesRead, (int)(mlen - totalBytesRead));
+                                if (bytesReadC == 0) {
+                                    // Connection closed or error occurred
+                                    Debug.LogError("Stream closed before reading the full message");
+                                    break;
+                                }
+                                totalBytesRead += bytesReadC;
+                            }
+
+                            if (totalBytesRead != mlen) {
+                                Debug.LogError($"Bytes read do not match message length {totalBytesRead} - {mlen}");
+                                break;
+                            }
+
+                            // Now process the received data
+                            ProcessReceivedBytes(totalBytesRead + (int)RCAS_TCPMessage.HEADERSIZE, buffer);
+                        }
                     }
-
-                    ProcessReceivedBytes(bytesRead, buffer);
                 }
-            }
-            finally
-            {
+            } finally {
+                Debug.LogError("Connection closed");
+                CloseConnection();
                 //Debug.Log("Receiver ended");
             }
         }
+
 
         // Called by TaskFunc_Receiver!
         private void ProcessReceivedBytes(int bytesRead, System.ReadOnlySpan<byte> buffer)

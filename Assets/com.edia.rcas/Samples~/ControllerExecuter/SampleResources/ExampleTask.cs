@@ -66,7 +66,7 @@ public class ExampleTask : XBlock {
 		MessagePanelInVR.Instance.ShowMessage("Click the object", 2f);
 
 		// Enable interaction from the user. The system will automatically enable the Ray Interaction for the active hands set in the settings.
-		XRManager.Instance.EnableXRRayInteraction(true);
+		XRManager.Instance.EnableRayInteraction(true);
 
 		// Tell the system to wait on proceed
 		Experiment.Instance.WaitOnProceed();
@@ -108,7 +108,7 @@ public class ExampleTask : XBlock {
 
 	public void UserClicked() {
 		Debug.Log("UserClicked ");
-		XRManager.Instance.EnableXRRayInteraction(false);
+		XRManager.Instance.EnableRayInteraction(false);
 		Experiment.Instance.Proceed();
 	}
 
@@ -130,7 +130,7 @@ public class ExampleTask : XBlock {
 
 	public override void OnStartTrial() {
 		// Disable XR interaction from the user
-		XRManager.Instance.EnableXRRayInteraction(false);
+		XRManager.Instance.EnableRayInteraction(false);
 
 		HideStimuli();
 	}

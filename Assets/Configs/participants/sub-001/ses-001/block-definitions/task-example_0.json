@@ -1,0 +1,18 @@
+{
+  "type": "task",
+  "subType": "example",
+  "blockId": "task_example_0",
+  "settings": [
+    { "key": "timer_showcube", "value": "1" }
+  ],
+  "messages": [
+  ],
+  "trialSettings": {
+    "keys": ["active_object"],
+    "valueList": [
+      { "values": ["cube"] },
+      { "values": ["sphere"] }, 
+	  { "values": ["cube"] }
+    ]
+  }
+}

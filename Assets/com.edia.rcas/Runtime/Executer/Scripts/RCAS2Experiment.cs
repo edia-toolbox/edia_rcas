@@ -1,29 +1,32 @@
-﻿using System.Linq;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Events;
-using Edia.RCAS;
+﻿using UnityEngine;
 using Edia.Utilities;
 
 // Communication manager interface. Translates internal commands into network packages and viseversa
 // ==============================================================================================================================================
-namespace Edia {
 
-	/// <summary>
-	/// Communication manager interface. Translates internal commands into network packages and viseversa
-	/// </summary>
-	public class RCAS2Experiment : MonoBehaviour {
+namespace Edia.Rcas {
+    /// <summary>
+    /// Communication manager interface. Translates internal commands into network packages and viseversa
+    /// </summary>
+	[EdiaHeader("EDIA RCAS", "Executor interface", "Converts network traffic into EDIA commands")]
+    public class RCAS2Experiment : MonoBehaviour {
 
+
+	    [Header("Settings")]
+	    public bool StartForwardingOnAwake = true;
+	    
 		private void Awake() {
 			StartForwarder();
 		}
 
 		// ==============================================================================================================================================
-
-		// * FROM MANAGER <<
-
+		// * FROM CONTROLLER <<
+		[RCAS_RemoteEvent(Edia.Events.Network.NwEvUpdateSystemSettings)]
+		static void NwEvUpdateSystemSettings(string updatedSystemsettingsJson) {
+			AddToLog("NwEvUpdateSystemSettings:");
+			EventManager.TriggerEvent(Edia.Events.Settings.EvUpdateSystemSettings, new eParam(updatedSystemsettingsJson));
+		}
+		
 		[RCAS_RemoteEvent(Edia.Events.Network.NwEvSetSessionInfo)]
 		static void NwEvSetSessionInfo(string[] sessionInfoJSONstrings) {
 			// We are sending a array of data
@@ -43,23 +46,17 @@ namespace Edia {
 			EventManager.TriggerEvent(Edia.Events.Config.EvSetXBlockDefinitions, new eParam(blockDefintionsJSONstrings));
 		}
 
-		[RCAS_RemoteEvent(Edia.Events.Network.NwEvSetTaskDefinitions)]
-		static void NwEvSetTaskDefinitions(string[] taskDefinitionsJSONstrings) {
-			AddToLog("NwEvSetTaskDefinitions" + taskDefinitionsJSONstrings.Length);
-			EventManager.TriggerEvent(Edia.Events.Config.EvSetTaskDefinitions, new eParam(taskDefinitionsJSONstrings));
-		}
+		// [RCAS_RemoteEvent(Edia.Events.Network.NwEvSetTaskDefinitions)]
+		// static void NwEvSetTaskDefinitions(string[] taskDefinitionsJSONstrings) {
+		// 	AddToLog("NwEvSetTaskDefinitions" + taskDefinitionsJSONstrings.Length);
+		// 	EventManager.TriggerEvent(Edia.Events.Config.EvSetTaskDefinitions, new eParam(taskDefinitionsJSONstrings));
+		// }
 
 		[RCAS_RemoteEvent(Edia.Events.Network.NwEvStartExperiment)]
 		static void NwEvStartExperiment() {
 			AddToLog("NwEvStartExperiment");
 			EventManager.TriggerEvent(Edia.Events.StateMachine.EvStartExperiment, null);
 		}
-
-		//[RCAS_RemoteEvent(Edia.Events.Network.NwEvFinalizeSession)]
-		//static void NwEvFinaliseExperiment() {
-		//	AddToLog("NwEvFinaliseExperiment");
-		//	EventManager.TriggerEvent(Edia.Events.StateMachine.EvFinalizeSession, null);
-		//}
 
 		[RCAS_RemoteEvent(Edia.Events.Network.NwEvProceed)]
 		static void NwEvProceed() {
@@ -73,6 +70,18 @@ namespace Edia {
 			EventManager.TriggerEvent(Edia.Events.Casting.EvToggleCasting, null);
 		}
 
+		[RCAS_RemoteEvent(Edia.Events.Network.NwEvNextMessagepanelMsg)]
+		static void NwEvNextMessagpanelMsg() {
+			AddToLog("NwEvNextMessagpanelMsg");
+			EventManager.TriggerEvent(Edia.Events.ControlPanel.EvNextMessagePanelMsg, null);
+		}
+		
+		[RCAS_RemoteEvent(Edia.Events.Network.NwEvRequestSystemSettings)]
+		static void NwEvRequestSystemSettings() {
+			AddToLog("NwEvRequestSystemSettings");
+			EventManager.TriggerEvent(Edia.Events.Settings.EvRequestSystemSettings, null);
+		}
+		
 		// Left over methods from development
 
 		[RCAS_RemoteEvent("poke")]
@@ -93,18 +102,20 @@ namespace Edia {
 			Debug.Log($"Parameters received: {args[0]}, {args[1]}, {args[2]}");
 		}
 
-
 		private static void AddToLog(string _msg) {
-			Edia.LogUtilities.AddToLog(_msg, "EXP", Color.cyan);
+			Edia.Utilities.Log.AddToConsoleLog(_msg, "EXP", Color.cyan);
 		}
 
 
 		// ==============================================================================================================================================
 
-		// * TO MANAGER >>
+		// * TO CONTROLLER >>
 
 		private void StartForwarder() {
 
+			// Settings
+			EventManager.StartListening(Edia.Events.Settings.EvProvideSystemSettings, NwEvProvideSystemSettings);
+			
 			// Configs
 			EventManager.StartListening(Edia.Events.Config.EvReadyToGo, NwEvReadyToGo);
 
@@ -117,21 +128,25 @@ namespace Edia {
 			EventManager.StartListening(Edia.Events.ControlPanel.EvStartTimer, NwEvStartTimer);
 			EventManager.StartListening(Edia.Events.ControlPanel.EvStopTimer, NwEvStopTimer);
 			EventManager.StartListening(Edia.Events.StateMachine.EvSessionEnded, NwEvSessionEnded);
-
+			
 			// Eye
 			EventManager.StartListening(Edia.Events.Eye.EvEnableEyeCalibrationTrigger, NwEvEnableEyeCalibrationTrigger);
 
 		}
 
+		// Settings
 
+		private void NwEvProvideSystemSettings(eParam obj) {
+			Debug.Log("NwEvProvideSystemSettings");
+			RCAS_Peer.Instance.TriggerRemoteEvent(Edia.Events.Network.NwEvProvideSystemSettings, obj.GetString());
+		}
+		
 		// Configs
-
 
 		private void NwEvReadyToGo(eParam obj) {
 			Debug.Log("Sending NwEvReadyToGo");
 			RCAS_Peer.Instance.TriggerRemoteEvent(Edia.Events.Network.NwEvReadyToGo);
 		}
-
 
 		// Control panel
 
@@ -176,6 +191,5 @@ namespace Edia {
 		private void NwEvEnableEyeCalibrationTrigger(eParam obj) {
 			RCAS_Peer.Instance.TriggerRemoteEvent(Edia.Events.Network.NwEvEnableEyeCalibrationTrigger, obj.GetBool().ToString());
 		}
-
 	}
 }
